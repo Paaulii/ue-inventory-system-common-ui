@@ -27,7 +27,8 @@ public class Inventory : ModuleRules
 			{
 				"Core",
 				"EnhancedInput",
-				"StructUtils"
+				"StructUtils", 
+				"ModelViewViewModel"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

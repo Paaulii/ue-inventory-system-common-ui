@@ -6,6 +6,7 @@
 
 class UCommonLocalPlayer;
 class UGameUIPolicy;
+
 UCLASS(Abstract, config = Game)
 class INVENTORYSYSTEM_API UGameUIManagerSubsystem : public UGameInstanceSubsystem
 {
