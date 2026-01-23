@@ -1,4 +1,4 @@
-﻿// // Copyright Paulina Hałatek, All Rights Reserved.
+﻿// Copyright Paulina Hałatek, All Rights Reserved.
 
 #pragma once
 
@@ -19,12 +19,8 @@ public:
 	virtual void Deinitialize() override;
 
 	void InitializeViewModels();
-	UInventoryViewModel* GetInventoryVM() {return InventoryViewModel;}
-protected:
-	UPROPERTY(EditDefaultsOnly, Category = "UI|Viewmodels")
-	TSubclassOf<UInventoryViewModel> InventoryViewModelClass = nullptr;
+	UInventoryViewModel* GetInventoryVM() { return InventoryViewModel; }
 private:
 	UPROPERTY()
 	TObjectPtr<UInventoryViewModel> InventoryViewModel = nullptr;
-
 };
