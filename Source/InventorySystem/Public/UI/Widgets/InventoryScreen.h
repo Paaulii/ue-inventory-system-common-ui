@@ -14,7 +14,7 @@ class INVENTORYSYSTEM_API UInventoryScreen : public UCommonActivatableWidget
 	GENERATED_BODY()
 
 private:
-	virtual void NativeConstruct() override;
+	virtual void NativeOnInitialized() override;
 	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
 

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CategoryViewModel.h"
-#include "ItemRarity.h"
+#include "Data/ItemRarity.h"
 #include "MVVMViewModelBase.h"
 #include "ItemViewModel.generated.h"
 

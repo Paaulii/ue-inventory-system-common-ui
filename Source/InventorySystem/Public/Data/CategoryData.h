@@ -3,10 +3,10 @@
 #include "CoreMinimal.h"
 #include "ItemData.h"
 #include "StructUtils/InstancedStruct.h"
-#include "CategoryInfo.generated.h"
+#include "CategoryData.generated.h"
 
 USTRUCT(BlueprintType)
-struct FCategoryInfo
+struct FCategoryData
 {
 	GENERATED_BODY()
 
@@ -14,7 +14,7 @@ struct FCategoryInfo
 	FText CategoryName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UTexture2D* CategoryIcon;
+	UTexture2D* CategoryIcon = nullptr;
 
 	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
 	TArray<TInstancedStruct<FItemData>> Items;
