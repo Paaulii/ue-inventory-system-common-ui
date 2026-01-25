@@ -27,7 +27,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ChangeCategory(const int Offset) const;
 	void ResetTabs() const;
-	void SetViewModelsRef();
+	void CacheViewModels();
 	
 
 	UPROPERTY(meta = (BindWidget))

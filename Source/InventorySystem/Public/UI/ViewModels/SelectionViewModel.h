@@ -15,10 +15,10 @@ class INVENTORYSYSTEM_API USelectionViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 public:
-	void Initialize();
 	UCategoryViewModel* GetSelectedCategory() const { return SelectedCategory; }
 	UItemViewModel* GetSelectedItem() const { return SelectedItem; }
-
+	
+	UFUNCTION(BlueprintCallable)
 	void SetSelectedCategory(UCategoryViewModel* Category);
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)

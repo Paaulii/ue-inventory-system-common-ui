@@ -25,14 +25,14 @@ void UCategoryTabs::CreateTabs(const TArray<UCategoryViewModel*> CategoryViewMod
 		return;
 	}
 	
-	SetViewModelsRef();
+	CacheViewModels();
 	ResetTabs();
 	for ( UCategoryViewModel* CategoryViewModel : CategoryViewModels)
 	{
 		UUserWidget* NewTab = TabButtons->CreateEntry();
 		if (UCategoryButtonTab* ButtonTab = Cast<UCategoryButtonTab>(NewTab))
 		{
-			ButtonTab->Initialize(CategoryViewModel);
+			ButtonTab->Setup(CategoryViewModel, SelectionVM);
 		}
 	}
 
@@ -52,7 +52,7 @@ void UCategoryTabs::ChangeCategory(const int Offset) const
 	});
 
 	Index += Offset;
-	if (Index < AllCategories.Num())
+	if (AllCategories.IsValidIndex(Index))
 	{
 		SelectionVM->SetSelectedCategory(AllCategories[Index]);
 	}
@@ -72,7 +72,7 @@ void UCategoryTabs::ResetTabs() const
 	TabButtons->Reset();
 }
 
-void UCategoryTabs::SetViewModelsRef()
+void UCategoryTabs::CacheViewModels()
 {
 	UUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIManagerSubsystem>();
 	if (SelectionVM == nullptr )

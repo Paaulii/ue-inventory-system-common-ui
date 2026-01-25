@@ -15,6 +15,9 @@ void UGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
 	{
 		RootLayout = CreateWidget<UPrimaryGameLayout>(PlayerController, LayoutClass);
 		AddLayoutToViewport(LocalPlayer, RootLayout);
+		FInputModeGameAndUI InputMode;
+		InputMode.SetWidgetToFocus(RootLayout->TakeWidget()); 
+		PlayerController->SetInputMode(InputMode);
 		return;
 	}
 	
@@ -31,8 +34,7 @@ void UGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
 
 void UGameUIPolicy::AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
 {
-	Layout->SetPlayerContext(FLocalPlayerContext(LocalPlayer));
-	Layout->AddToPlayerScreen();
+	Layout->AddToViewport();
 	OnRootLayoutAddedToViewport(LocalPlayer, Layout);
 }
 

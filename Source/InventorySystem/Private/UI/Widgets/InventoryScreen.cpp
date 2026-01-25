@@ -6,7 +6,6 @@
 #include "UI/ViewModels/InventoryViewModel.h"
 #include "View/MVVMView.h"
 
-UE_DISABLE_OPTIMIZATION
 
 void UInventoryScreen::NativeOnInitialized()
 {
