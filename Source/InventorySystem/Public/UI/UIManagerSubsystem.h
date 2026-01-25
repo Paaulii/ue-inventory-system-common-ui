@@ -6,6 +6,7 @@
 #include "GameUIManagerSubsystem.h"
 #include "UIManagerSubsystem.generated.h"
 
+class USelectionViewModel;
 class UInventoryViewModel;
 /**
  * 
@@ -20,7 +21,11 @@ public:
 
 	void InitializeViewModels();
 	UInventoryViewModel* GetInventoryVM() { return InventoryViewModel; }
+	USelectionViewModel* GetSelectionVM() { return SelectionViewModel; }
 private:
 	UPROPERTY()
 	TObjectPtr<UInventoryViewModel> InventoryViewModel = nullptr;
+
+	UPROPERTY()
+	TObjectPtr<USelectionViewModel> SelectionViewModel = nullptr;
 };

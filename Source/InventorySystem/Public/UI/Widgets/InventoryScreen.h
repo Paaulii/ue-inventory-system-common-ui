@@ -18,5 +18,6 @@ private:
 	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
 
-	UMVVMView* MVVMView = nullptr;
+	UPROPERTY()
+	TObjectPtr<UMVVMView> MVVMView = nullptr;
 };

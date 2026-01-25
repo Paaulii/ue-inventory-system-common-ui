@@ -4,6 +4,7 @@
 #include "UI/UIManagerSubsystem.h"
 
 #include "UI/ViewModels/InventoryViewModel.h"
+#include "UI/ViewModels/SelectionViewModel.h"
 
 void UUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -24,4 +25,6 @@ void UUIManagerSubsystem::InitializeViewModels()
 
 	// TODO: Connect it with Model
 	InventoryViewModel->Initialize();
+
+	SelectionViewModel = NewObject<USelectionViewModel>(this);
 }
