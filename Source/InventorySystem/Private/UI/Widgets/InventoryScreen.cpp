@@ -31,7 +31,8 @@ void UInventoryScreen::NativeOnActivated()
 
 			// Set currency
 			Inventory.CurrencyAmount = 1000;
-
+			Inventory.MaxItemsCapacity = 20;
+			
 			FCategoryData ResourcesCategory;
 			ResourcesCategory.CategoryName = FText::FromString("Resources");
 

@@ -10,5 +10,6 @@ struct FInventoryData
 	GENERATED_BODY()
 	
 	int CurrencyAmount;
+	int MaxItemsCapacity;
 	TArray<FCategoryData> Categories;
 };
