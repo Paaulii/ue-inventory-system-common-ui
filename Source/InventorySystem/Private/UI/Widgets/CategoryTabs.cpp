@@ -11,11 +11,9 @@
 #include "UI/Widgets/CategoryButtonTab.h"
 #include "View/MVVMView.h"
 
-
-void UCategoryTabs::NativeOnInitialized()
+void UCategoryTabs::OnActivated() const
 {
-	Super::NativeOnInitialized();
-	//GetViewModels();
+	SelectTab(0);
 }
 
 void UCategoryTabs::CreateTabs(const TArray<UCategoryViewModel*> CategoryViewModels)
@@ -52,6 +50,17 @@ void UCategoryTabs::ChangeCategory(const int Offset) const
 	});
 
 	Index += Offset;
+	SelectTab(Index);
+}
+
+void UCategoryTabs::SelectTab(const int Index) const
+{
+	if (!InventoryVM  || !SelectionVM)
+	{
+		return;
+	}
+	
+	TArray<UCategoryViewModel*> AllCategories = InventoryVM->GetCategories();
 	if (AllCategories.IsValidIndex(Index))
 	{
 		SelectionVM->SetSelectedCategory(AllCategories[Index]);
@@ -66,7 +75,6 @@ void UCategoryTabs::ResetTabs() const
 		{
 			ButtonTab->Deinitialize();
 		}
-
 	}
 	
 	TabButtons->Reset();

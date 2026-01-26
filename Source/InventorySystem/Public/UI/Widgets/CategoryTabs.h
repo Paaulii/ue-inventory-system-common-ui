@@ -19,13 +19,14 @@ class INVENTORYSYSTEM_API UCategoryTabs : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	virtual void NativeOnInitialized() override;
-	
+	void OnActivated() const;
 	UFUNCTION(BlueprintCallable)
 	void CreateTabs(const TArray<UCategoryViewModel*> CategoryViewModels);
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeCategory(const int Offset) const;
+
+	void SelectTab(const int Index) const;
 	void ResetTabs() const;
 	void CacheViewModels();
 	
