@@ -4,6 +4,7 @@
 #include "UI/ViewModels/CategoryViewModel.h"
 
 #include "Data/CategoryData.h"
+#include "UI/ViewModels/ItemViewModel.h"
 
 void UCategoryViewModel::Initialize(const FCategoryData& CategoryData)
 {
@@ -28,7 +29,14 @@ void UCategoryViewModel::SetCategoryIcon(UTexture2D* Icon)
 	UE_MVVM_SET_PROPERTY_VALUE(CategoryIcon, Icon);
 }
 
-void UCategoryViewModel::SetItemArray(const TArray<TInstancedStruct<FItemData>>& ItemData)
+void UCategoryViewModel::SetItemArray(const TArray<TInstancedStruct<FItemData>>& ItemsData)
 {
-	// TODO: Create VM for each Item Data
+	for (const TInstancedStruct<FItemData>& ItemData : ItemsData)
+	{
+		UItemViewModel* NewItemVM = NewObject<UItemViewModel>(this);
+		NewItemVM->Initialize(ItemData.GetPtr(), this);
+		CategoryItems.Add(NewItemVM);
+	}
+
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(CategoryItems);
 }

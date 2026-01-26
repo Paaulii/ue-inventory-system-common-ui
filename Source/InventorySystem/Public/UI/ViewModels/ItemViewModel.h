@@ -13,6 +13,7 @@ class INVENTORYSYSTEM_API UItemViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 public:
+	void Initialize(const FItemData* ItemData, UCategoryViewModel* CategoryVM);
 	FText GetItemName() const { return ItemName; }
 	FText GetDescription() const { return Description; }
 	UTexture2D* GetSmallImage() const { return SmallImage; }
@@ -22,6 +23,8 @@ public:
 	bool GetIsEquipped() const { return IsEquipped; }
 	UCategoryViewModel* GetCategory() const { return Category; }
 	int32 GetRequiredLevel() const { return RequiredLevel; }
+	
+	void SetIsEquipped(const bool Value);
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	FText ItemName;
@@ -41,13 +44,21 @@ protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	int32 CurrencyValue;
 	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	bool IsEquipped;
 	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	TObjectPtr<UCategoryViewModel> Category;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	int32 RequiredLevel;
-	
+private:
+	void SetItemName(const FText& Name);
+	void SetDescription(const FText& NewDescription);
+	void SetSmallImage(UTexture2D* Image);
+	void SetLargeImage(UTexture2D* Image);
+	void SetRarity(const EItemRarity& ItemRarity);
+	void SetCurrencyValue(const int32 Currency);
+	void SetCategory(UCategoryViewModel* CategoryVM);
+	void SetRequiredLevel(int32 Level);
 };

@@ -8,8 +8,13 @@ USTRUCT(BlueprintType)
 struct FInventoryData
 {
 	GENERATED_BODY()
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int CurrencyAmount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MaxItemsCapacity;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FCategoryData> Categories;
 };

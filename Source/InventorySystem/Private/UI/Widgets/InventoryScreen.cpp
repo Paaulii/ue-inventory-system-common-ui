@@ -27,27 +27,7 @@ void UInventoryScreen::NativeOnActivated()
 
 		if (!bIsDataDebugInitialized)
 		{
-			FInventoryData Inventory;
-
-			// Set currency
-			Inventory.CurrencyAmount = 1000;
-			Inventory.MaxItemsCapacity = 20;
-			
-			FCategoryData ResourcesCategory;
-			ResourcesCategory.CategoryName = FText::FromString("Resources");
-
-			FCategoryData WeaponsCategory;
-			WeaponsCategory.CategoryName = FText::FromString("Weapons");
-
-			FCategoryData ArmorCategory;
-			ArmorCategory.CategoryName = FText::FromString("Armor");
-
-			// Add category to inventory
-			Inventory.Categories.Add(ResourcesCategory);
-			Inventory.Categories.Add(WeaponsCategory);
-			Inventory.Categories.Add(ArmorCategory);
-			UE_LOG(LogTemp, Warning, TEXT("Inventory categories: %d"), Inventory.Categories.Num());
-			UIManager->GetInventoryVM()->RebuildInventory(Inventory);
+			UIManager->GetInventoryVM()->RebuildInventory(DebugData->InventoryData);
 			bIsDataDebugInitialized = true;
 		}
 	}

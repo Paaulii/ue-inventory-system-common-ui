@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "CommonActivatableWidget.h"
+#include "Data/DebugInventoryData.h"
 #include "InventoryScreen.generated.h"
 
+struct FInventoryData;
 class UCategoryTabs;
 class UMVVMView;
 
@@ -16,6 +18,9 @@ class INVENTORYSYSTEM_API UInventoryScreen : public UCommonActivatableWidget
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget) )
 	TObjectPtr<UCategoryTabs> CategoryTabs;
+	
+	UPROPERTY(EditDefaultsOnly )
+	TObjectPtr<UDebugInventoryData> DebugData ;
 	
 private:
 	virtual void NativeOnInitialized() override;
