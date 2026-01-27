@@ -31,6 +31,7 @@ void UCategoryViewModel::SetCategoryIcon(UTexture2D* Icon)
 
 void UCategoryViewModel::SetItemArray(const TArray<TInstancedStruct<FItemData>>& ItemsData)
 {
+	CategoryItems.Empty();
 	for (const TInstancedStruct<FItemData>& ItemData : ItemsData)
 	{
 		UItemViewModel* NewItemVM = NewObject<UItemViewModel>(this);

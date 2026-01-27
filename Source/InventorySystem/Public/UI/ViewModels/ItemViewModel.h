@@ -21,10 +21,9 @@ public:
 	EItemRarity GetRarity() const { return Rarity; }
 	int32 GetCurrencyValue() const { return CurrencyValue; }
 	bool GetIsEquipped() const { return IsEquipped; }
+	bool GetIsEmpty() const { return IsEmpty; }
 	UCategoryViewModel* GetCategory() const { return Category; }
 	int32 GetRequiredLevel() const { return RequiredLevel; }
-	
-	void SetIsEquipped(const bool Value);
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	FText ItemName;
@@ -44,8 +43,11 @@ protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	int32 CurrencyValue;
 	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	bool IsEquipped;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool IsEmpty;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	TObjectPtr<UCategoryViewModel> Category;
@@ -60,5 +62,7 @@ private:
 	void SetRarity(const EItemRarity& ItemRarity);
 	void SetCurrencyValue(const int32 Currency);
 	void SetCategory(UCategoryViewModel* CategoryVM);
+	void SetIsEquipped(bool bState);
+	void SetIsEmpty(bool bState);
 	void SetRequiredLevel(int32 Level);
 };

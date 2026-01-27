@@ -48,9 +48,14 @@ void UItemViewModel::SetCurrencyValue(const int32 Currency)
 	UE_MVVM_SET_PROPERTY_VALUE(CurrencyValue, Currency);
 }
 
-void UItemViewModel::SetIsEquipped(bool Value)
+void UItemViewModel::SetIsEquipped(bool bState)
 {
-	UE_MVVM_SET_PROPERTY_VALUE(IsEquipped, Value);
+	UE_MVVM_SET_PROPERTY_VALUE(IsEquipped, bState);
+}
+
+void UItemViewModel::SetIsEmpty(bool bState)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(IsEmpty, bState);
 }
 
 void UItemViewModel::SetCategory(UCategoryViewModel* CategoryVM)
