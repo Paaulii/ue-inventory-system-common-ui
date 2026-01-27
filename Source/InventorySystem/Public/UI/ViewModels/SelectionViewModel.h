@@ -20,10 +20,13 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetSelectedCategory(UCategoryViewModel* Category);
+
+	UFUNCTION(BlueprintCallable)
+	void SetSelectedItem(UItemViewModel* ItemVM);
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	UCategoryViewModel* SelectedCategory;
 
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	UItemViewModel* SelectedItem;
 };
