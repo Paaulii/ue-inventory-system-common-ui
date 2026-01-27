@@ -14,7 +14,7 @@ void UItemViewModel::Initialize(const FItemData* ItemData, UCategoryViewModel* C
 	SetRarity(ItemData->Rarity);
 	SetCurrencyValue(ItemData->CurrencyValue);
 	SetIsEquipped(false);
-	SetCategory(Category);
+	SetCategory(CategoryVM);
 	SetRequiredLevel(ItemData->RequiredLevel);
 }
 
