@@ -38,11 +38,12 @@ void UInventoryScreen::NativeOnActivated()
 
 void UInventoryScreen::NativeOnDeactivated()
 {
-	Super::NativeOnDeactivated();
 	if (MVVMView)
 	{
 		MVVMView->SetViewModel("InventoryViewModel", nullptr);
 	}
+	
+	Super::NativeOnDeactivated();
 }
 
 void UInventoryScreen::NotifyChildWidgetsOnActivated() const
