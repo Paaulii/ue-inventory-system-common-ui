@@ -14,9 +14,12 @@ void USelectionViewModel::SetSelectedItem(UItemViewModel* ItemVM)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(SelectedItem, ItemVM);
 	
-	UCategoryViewModel* SelectedItemCategory = SelectedItem->GetCategory();
-	if ( SelectedItemCategory != SelectedCategory)
+	if (ItemVM !=  nullptr)
 	{
-		SetSelectedCategory(SelectedItemCategory);
+		UCategoryViewModel* SelectedItemCategory = SelectedItem->GetCategory();
+		if ( SelectedItemCategory != SelectedCategory)
+		{
+			SetSelectedCategory(SelectedItemCategory);
+		}
 	}
 }
