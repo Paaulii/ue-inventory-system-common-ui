@@ -19,9 +19,8 @@ class INVENTORYSYSTEM_API UCategoryTabs : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	void OnActivated() const;
 	UFUNCTION(BlueprintCallable)
-	void CreateTabs(const TArray<UCategoryViewModel*> CategoryViewModels);
+	void VM_CreateTabs(const TArray<UCategoryViewModel*> CategoryViewModels);
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeCategory(const int Offset) const;
@@ -35,8 +34,8 @@ public:
 	TObjectPtr<UDynamicEntryBox> TabButtons;
 
 	UPROPERTY()
-	TObjectPtr<UInventoryViewModel> InventoryVM;
+	TObjectPtr<UInventoryViewModel> CacheInventoryVM;
 	
 	UPROPERTY()
-	TObjectPtr<USelectionViewModel> SelectionVM;
+	TObjectPtr<USelectionViewModel> CacheSelectionVM;
 };

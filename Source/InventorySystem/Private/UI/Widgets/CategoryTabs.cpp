@@ -11,39 +11,34 @@
 #include "UI/Widgets/CategoryButtonTab.h"
 #include "View/MVVMView.h"
 
-void UCategoryTabs::OnActivated() const
-{
-	SelectTab(0);
-}
-
-void UCategoryTabs::CreateTabs(const TArray<UCategoryViewModel*> CategoryViewModels)
+void UCategoryTabs::VM_CreateTabs(const TArray<UCategoryViewModel*> CategoryViewModels)
 {
 	if (CategoryViewModels.Num() <= 0 )
 	{
 		return;
 	}
 	
-	CacheViewModels();
 	ResetTabs();
+	CacheViewModels();
 	for ( UCategoryViewModel* CategoryViewModel : CategoryViewModels)
 	{
 		UUserWidget* NewTab = TabButtons->CreateEntry();
 		if (UCategoryButtonTab* ButtonTab = Cast<UCategoryButtonTab>(NewTab))
 		{
-			ButtonTab->Setup(CategoryViewModel, SelectionVM);
+			ButtonTab->Setup(CategoryViewModel, CacheSelectionVM);
 		}
 	}
 
 	if (CategoryViewModels.IsValidIndex(0))
 	{
-		SelectionVM->SetSelectedCategory(CategoryViewModels[0]);
+		CacheSelectionVM->SetSelectedCategory(CategoryViewModels[0]);
 	}
 }
 
 void UCategoryTabs::ChangeCategory(const int Offset) const
 {
-	UCategoryViewModel* SelectedCategory = SelectionVM->GetSelectedCategory();
-	TArray<UCategoryViewModel*> AllCategories = InventoryVM->GetCategories();
+	UCategoryViewModel* SelectedCategory = CacheSelectionVM->GetSelectedCategory();
+	TArray<UCategoryViewModel*> AllCategories = CacheInventoryVM->GetCategories();
 	int Index = AllCategories.IndexOfByPredicate([SelectedCategory](const UCategoryViewModel* CategoryViewModel)
 	{
 		return CategoryViewModel == SelectedCategory;
@@ -55,15 +50,15 @@ void UCategoryTabs::ChangeCategory(const int Offset) const
 
 void UCategoryTabs::SelectTab(const int Index) const
 {
-	if (!InventoryVM  || !SelectionVM)
+	if (!CacheInventoryVM  || !CacheSelectionVM)
 	{
 		return;
 	}
 	
-	TArray<UCategoryViewModel*> AllCategories = InventoryVM->GetCategories();
+	TArray<UCategoryViewModel*> AllCategories = CacheInventoryVM->GetCategories();
 	if (AllCategories.IsValidIndex(Index))
 	{
-		SelectionVM->SetSelectedCategory(AllCategories[Index]);
+		CacheSelectionVM->SetSelectedCategory(AllCategories[Index]);
 	}
 }
 
@@ -83,13 +78,13 @@ void UCategoryTabs::ResetTabs() const
 void UCategoryTabs::CacheViewModels()
 {
 	UUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIManagerSubsystem>();
-	if (SelectionVM == nullptr )
+	if (CacheSelectionVM == nullptr )
 	{
-		SelectionVM = UIManager->GetSelectionVM();
+		CacheSelectionVM = UIManager->GetSelectionVM();
 	}
 
-	if (InventoryVM == nullptr )
+	if (CacheInventoryVM == nullptr )
 	{
-		InventoryVM = UIManager->GetInventoryVM();
+		CacheInventoryVM = UIManager->GetInventoryVM();
 	}
 }

@@ -27,8 +27,6 @@ private:
 	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
 
-	void NotifyChildWidgetsOnActivated() const;
-	
 	UPROPERTY()
 	TObjectPtr<UMVVMView> MVVMView = nullptr;
 	

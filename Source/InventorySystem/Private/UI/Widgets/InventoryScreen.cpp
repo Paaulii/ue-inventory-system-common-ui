@@ -4,6 +4,7 @@
 #include "Data/InventoryData.h"
 #include "UI/UIManagerSubsystem.h"
 #include "UI/ViewModels/InventoryViewModel.h"
+#include "UI/ViewModels/SelectionViewModel.h"
 #include "UI/Widgets/CategoryTabs.h"
 #include "View/MVVMView.h"
 
@@ -31,8 +32,6 @@ void UInventoryScreen::NativeOnActivated()
 			bIsDataDebugInitialized = true;
 		}
 	}
-	
-	NotifyChildWidgetsOnActivated();
 }
 
 
@@ -44,9 +43,4 @@ void UInventoryScreen::NativeOnDeactivated()
 	}
 	
 	Super::NativeOnDeactivated();
-}
-
-void UInventoryScreen::NotifyChildWidgetsOnActivated() const
-{
-	CategoryTabs->OnActivated();
 }
