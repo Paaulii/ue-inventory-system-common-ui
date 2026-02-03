@@ -1,1 +1,3 @@
-
+*.cpp text working-tree-encoding=UTF-8
+*.h   text working-tree-encoding=UTF-8
+*.inl text working-tree-encoding=UTF-8
