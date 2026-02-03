@@ -53,11 +53,6 @@ void UItemViewModel::SetIsEquipped(bool bState)
 	UE_MVVM_SET_PROPERTY_VALUE(IsEquipped, bState);
 }
 
-void UItemViewModel::SetIsEmpty(bool bState)
-{
-	UE_MVVM_SET_PROPERTY_VALUE(IsEmpty, bState);
-}
-
 void UItemViewModel::SetCategory(UCategoryViewModel* CategoryVM)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Category, CategoryVM);
