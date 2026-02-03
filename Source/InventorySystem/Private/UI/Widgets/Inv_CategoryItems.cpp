@@ -1,7 +1,7 @@
 // Copyright Paulina Hałatek, All Rights Reserved.
 
 
-#include "UI/Widgets/CategoryItems.h"
+#include "UI/Widgets/Inv_CategoryItems.h"
 
 #include "UI/UIManagerSubsystem.h"
 #include "UI/ViewModels/SelectionViewModel.h"
@@ -11,47 +11,34 @@
 #include "Components/DynamicEntryBox.h"
 #include "UI/Widgets/ItemTile.h"
 
-void UCategoryItems::NativeOnInitialized()
+void UInv_CategoryItems::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	PopulateSlots();
 }
 
-void UCategoryItems::NativeOnActivated()
+void UInv_CategoryItems::CacheViewModels(UUIManagerSubsystem* UIManager)
 {
-	Super::NativeOnActivated();
-	if (UUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIManagerSubsystem>())
-	{
-		MVVMView = Cast<UMVVMView>(GetExtension(UMVVMView::StaticClass()));
-		if (MVVMView)
-		{
-			MVVMView->SetViewModel("SelectionViewModel", UIManager->GetSelectionVM());
-			CachedSelectionVM = UIManager->GetSelectionVM();
+	MVVMView->SetViewModel("SelectionViewModel", UIManager->GetSelectionVM());
+	CachedSelectionVM = UIManager->GetSelectionVM();
 
-			MVVMView->SetViewModel("InventoryViewModel", UIManager->GetInventoryVM());
-			CachedInventoryVM = UIManager->GetInventoryVM();
+	MVVMView->SetViewModel("InventoryViewModel", UIManager->GetInventoryVM());
+	CachedInventoryVM = UIManager->GetInventoryVM();
 
-			CachedCategoryVM = Cast<UCategoryViewModel>(MVVMView->GetViewModel("CategoryViewModel").GetObject());
-		}
-	}
+	CachedCategoryVM = Cast<UCategoryViewModel>(MVVMView->GetViewModel("CategoryViewModel").GetObject());
 }
 
-void UCategoryItems::NativeOnDeactivated()
+void UInv_CategoryItems::ClearViewModelsCache()
 {
-	if (MVVMView)
-	{
-		MVVMView->SetViewModel("SelectionViewModel", nullptr);
-		MVVMView->SetViewModel("InventoryViewModel", nullptr);
-		MVVMView->SetViewModel("CategoryViewModel", nullptr);
-		CachedSelectionVM = nullptr;
-		CachedCategoryVM = nullptr;
-		CachedInventoryVM = nullptr;
-	}
-
-	Super::NativeOnDeactivated();
+	MVVMView->SetViewModel("SelectionViewModel", nullptr);
+	MVVMView->SetViewModel("InventoryViewModel", nullptr);
+	MVVMView->SetViewModel("CategoryViewModel", nullptr);
+	CachedSelectionVM = nullptr;
+	CachedCategoryVM = nullptr;
+	CachedInventoryVM = nullptr;
 }
 
-FText UCategoryItems::VM_GetItemsCapacityText(TArray<UItemViewModel*> ItemsVM) const
+FText UInv_CategoryItems::VM_GetItemsCapacityText(TArray<UItemViewModel*> ItemsVM) const
 {
 	if (CachedInventoryVM == nullptr)
 	{
@@ -66,7 +53,7 @@ FText UCategoryItems::VM_GetItemsCapacityText(TArray<UItemViewModel*> ItemsVM) c
 	return ItemCapacityText;
 }
 
-UUserWidget* UCategoryItems::GetFocusTile() const
+UUserWidget* UInv_CategoryItems::GetFocusTile() const
 {
 	int SelectedItemIndex = FMath::Max(GetItemIndexForSelectedCategory(), 0);
 	TArray<UUserWidget*> CategoryItems = DynamicEntryBox_Items->GetAllEntries();
@@ -79,13 +66,13 @@ UUserWidget* UCategoryItems::GetFocusTile() const
 	return nullptr;
 }
 
-void UCategoryItems::OnItemTileReady(UItemTile* ItemTile)
+void UInv_CategoryItems::OnItemTileReady(UItemTile* ItemTile)
 {
-	ItemTile->OnItemSelected.RemoveDynamic(this, &UCategoryItems::OnItemTileReady);
+	ItemTile->OnItemSelected.RemoveDynamic(this, &UInv_CategoryItems::OnItemTileReady);
 	RequestRefreshFocus();
 }
 
-void UCategoryItems::PopulateSlots()
+void UInv_CategoryItems::PopulateSlots()
 {
 	ItemTiles.Empty();
 	for (int i = 0; i < MaxDynamicEntryBoxCapacity; i++)
@@ -94,12 +81,12 @@ void UCategoryItems::PopulateSlots()
 
 		if (i == 0)
 		{
-			ItemTile->OnItemSelected.AddDynamic(this, &UCategoryItems::OnItemTileReady);
+			ItemTile->OnItemSelected.AddDynamic(this, &UInv_CategoryItems::OnItemTileReady);
 		}
 	}
 }
 
-void UCategoryItems::VM_UpdateSlots(TArray<UItemViewModel*> ItemsVM)
+void UInv_CategoryItems::VM_UpdateSlots(TArray<UItemViewModel*> ItemsVM)
 {
 	for (int i = 0; i < ItemTiles.Num(); i++)
 	{
@@ -111,14 +98,14 @@ void UCategoryItems::VM_UpdateSlots(TArray<UItemViewModel*> ItemsVM)
 	RequestRefreshFocus();
 }
 
-UItemTile* UCategoryItems::CreateSlot()
+UItemTile* UInv_CategoryItems::CreateSlot()
 {
 	UItemTile* ItemTile = Cast<UItemTile>(DynamicEntryBox_Items->CreateEntry());
 	ItemTiles.Add(ItemTile);
 	return ItemTile;
 }
 
-int UCategoryItems::GetItemIndexForSelectedCategory() const
+int UInv_CategoryItems::GetItemIndexForSelectedCategory() const
 {
 	if (CachedSelectionVM == nullptr || CachedCategoryVM == nullptr)
 	{

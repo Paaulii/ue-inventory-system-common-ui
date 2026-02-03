@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonActivatableWidget.h"
-#include "CategoryItems.generated.h"
+#include "Inv_ActivatableMvvmWidget.h"
+#include "Inv_CategoryItems.generated.h"
 
 class UItemTile;
 class UInventoryViewModel;
@@ -17,13 +17,14 @@ class USelectionViewModel;
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API UCategoryItems : public UCommonActivatableWidget
+class INVENTORYSYSTEM_API UInv_CategoryItems : public UInv_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
 public:
 	virtual void NativeOnInitialized() override;
-	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override;
+	virtual void CacheViewModels(UUIManagerSubsystem* UIManager) override;
+	virtual void ClearViewModelsCache() override;
+	
 protected:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -60,9 +61,6 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UInventoryViewModel> CachedInventoryVM;
-
-	UPROPERTY()
-	TObjectPtr<UMVVMView> MVVMView;
 
 	UPROPERTY()
 	TArray<UItemTile*> ItemTiles;

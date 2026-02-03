@@ -4,32 +4,33 @@
 
 #include "CoreMinimal.h"
 #include "CommonActivatableWidget.h"
+#include "Inv_ActivatableMvvmWidget.h"
 #include "Data/DebugInventoryData.h"
-#include "InventoryScreen.generated.h"
+#include "Inv_InventoryScreen.generated.h"
 
+class UInventoryViewModel;
 struct FInventoryData;
 class UCategoryTabs;
 class UMVVMView;
 
 UCLASS()
-class INVENTORYSYSTEM_API UInventoryScreen : public UCommonActivatableWidget
+class INVENTORYSYSTEM_API UInv_InventoryScreen : public UInv_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
+public:
+	virtual void NativeOnActivated() override;
 protected:
+	virtual void CacheViewModels(UUIManagerSubsystem* UIManager) override;
+	virtual void ClearViewModelsCache() override;
+	
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget) )
 	TObjectPtr<UCategoryTabs> CategoryTabs;
 	
 	UPROPERTY(EditDefaultsOnly )
 	TObjectPtr<UDebugInventoryData> DebugData ;
-	
 private:
-	virtual void NativeOnInitialized() override;
-	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override;
-
 	UPROPERTY()
-	TObjectPtr<UMVVMView> MVVMView = nullptr;
+	TObjectPtr<UInventoryViewModel> CachedInventoryVM;
 	
-
 	bool bIsDataDebugInitialized = false;
 };
