@@ -11,7 +11,7 @@
 
 void UInv_ItemDetails::VM_SelectedItemImageUpdated(UTexture2D* Image)
 {
-	SelectedItemImage->SetBrushFromTexture(Image);
+	Image_SelectedItem->SetBrushFromTexture(Image);
 }
 
 void UInv_ItemDetails::CacheViewModels(UUIManagerSubsystem* UIManager)

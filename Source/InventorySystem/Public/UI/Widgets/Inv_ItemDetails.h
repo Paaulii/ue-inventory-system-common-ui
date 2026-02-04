@@ -22,14 +22,12 @@ class INVENTORYSYSTEM_API UInv_ItemDetails : public UInv_ActivatableMvvmWidget
 public:
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedItemImageUpdated(UTexture2D* Image);
-	
-	
 protected:
 	virtual void CacheViewModels(UUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 private:
 	UPROPERTY(meta = (BindWidget))
-	UImage* SelectedItemImage;
+	UImage* Image_SelectedItem;
 	
 	UPROPERTY()
 	TObjectPtr<USelectionViewModel> CachedSelectionVM;
