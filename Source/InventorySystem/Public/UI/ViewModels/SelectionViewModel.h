@@ -17,13 +17,21 @@ class INVENTORYSYSTEM_API USelectionViewModel : public UMVVMViewModelBase
 public:
 	UCategoryViewModel* GetSelectedCategory() const { return SelectedCategory; }
 	UItemViewModel* GetSelectedItem() const { return SelectedItem; }
+	bool GetRefreshFocusRequested() const { return RefreshFocusRequested; }
 	
 	UFUNCTION(BlueprintCallable)
 	void SetSelectedCategory(UCategoryViewModel* Category);
 
 	UFUNCTION(BlueprintCallable)
 	void SetSelectedItem(UItemViewModel* ItemVM);
+	
+	UFUNCTION(BlueprintCallable)
+	void TryRequestRefreshFocusTarget();
+
 protected:
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool RefreshFocusRequested;
+	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	UCategoryViewModel* SelectedCategory;
 

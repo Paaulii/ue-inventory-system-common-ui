@@ -23,3 +23,12 @@ void USelectionViewModel::SetSelectedItem(UItemViewModel* ItemVM)
 		}
 	}
 }
+
+void USelectionViewModel::TryRequestRefreshFocusTarget()
+{
+	if (RefreshFocusRequested == false)
+	{
+		UE_MVVM_SET_PROPERTY_VALUE(RefreshFocusRequested,true);
+		UE_MVVM_SET_PROPERTY_VALUE(RefreshFocusRequested,false);
+	}
+}

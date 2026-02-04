@@ -24,8 +24,6 @@ void UInv_CategoryItems::CacheViewModels(UUIManagerSubsystem* UIManager)
 
 	MVVMView->SetViewModel("InventoryViewModel", UIManager->GetInventoryVM());
 	CachedInventoryVM = UIManager->GetInventoryVM();
-
-	CachedCategoryVM = Cast<UCategoryViewModel>(MVVMView->GetViewModel("CategoryViewModel").GetObject());
 }
 
 void UInv_CategoryItems::ClearViewModelsCache()
@@ -36,6 +34,16 @@ void UInv_CategoryItems::ClearViewModelsCache()
 	CachedSelectionVM = nullptr;
 	CachedCategoryVM = nullptr;
 	CachedInventoryVM = nullptr;
+}
+
+void UInv_CategoryItems::VM_ForceFocusEvaluation(bool bHasPendingRequest)
+{
+	if (!bHasPendingRequest)
+	{
+		return;
+	}
+
+	RequestRefreshFocus();
 }
 
 FText UInv_CategoryItems::VM_GetItemsCapacityText(TArray<UItemViewModel*> ItemsVM) const
@@ -96,6 +104,12 @@ void UInv_CategoryItems::VM_UpdateSlots(TArray<UItemViewModel*> ItemsVM)
 	}
 	
 	RequestRefreshFocus();
+}
+
+void UInv_CategoryItems::VM_SelectedCategoryChanged(UCategoryViewModel* CategoryVM)
+{
+	CachedCategoryVM = CategoryVM;
+	MVVMView->SetViewModel("CategoryViewModel", CategoryVM);
 }
 
 UItemTile* UInv_CategoryItems::CreateSlot()

@@ -24,14 +24,18 @@ public:
 	virtual void NativeOnInitialized() override;
 	virtual void CacheViewModels(UUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
-	
 protected:
-
+	UFUNCTION(BlueprintCallable)
+	void VM_ForceFocusEvaluation(bool bHasPendingRequest);
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FText VM_GetItemsCapacityText(TArray<UItemViewModel*> ItemsVM) const;
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_UpdateSlots(TArray<UItemViewModel*> ItemsVM);
+	
+	UFUNCTION(BlueprintCallable)
+	void VM_SelectedCategoryChanged(UCategoryViewModel* CategoryVM);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UUserWidget* GetFocusTile() const;
@@ -53,6 +57,7 @@ private:
 	void PopulateSlots();
 	UItemTile* CreateSlot();
 	int GetItemIndexForSelectedCategory() const;
+	
 	UPROPERTY()
 	TObjectPtr<USelectionViewModel> CachedSelectionVM;
 

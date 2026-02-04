@@ -8,6 +8,7 @@
 #include "Data/DebugInventoryData.h"
 #include "Inv_InventoryScreen.generated.h"
 
+class USelectionViewModel;
 class UInventoryViewModel;
 struct FInventoryData;
 class UCategoryTabs;
@@ -19,18 +20,19 @@ class INVENTORYSYSTEM_API UInv_InventoryScreen : public UInv_ActivatableMvvmWidg
 	GENERATED_BODY()
 public:
 	virtual void NativeOnActivated() override;
+	
 protected:
 	virtual void CacheViewModels(UUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
-	
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget) )
-	TObjectPtr<UCategoryTabs> CategoryTabs;
 	
 	UPROPERTY(EditDefaultsOnly )
 	TObjectPtr<UDebugInventoryData> DebugData ;
 private:
 	UPROPERTY()
 	TObjectPtr<UInventoryViewModel> CachedInventoryVM;
+	
+	UPROPERTY()
+	TObjectPtr<USelectionViewModel> CachedSelectionVM;
 	
 	bool bIsDataDebugInitialized = false;
 };
