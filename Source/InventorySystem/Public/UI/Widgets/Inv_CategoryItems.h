@@ -6,6 +6,7 @@
 #include "Inv_ActivatableMvvmWidget.h"
 #include "Inv_CategoryItems.generated.h"
 
+class UInv_InputAction;
 class UItemTile;
 class UInventoryViewModel;
 class UDynamicEntryBox;
@@ -29,22 +30,32 @@ protected:
 	void VM_ForceFocusEvaluation(bool bHasPendingRequest);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FText VM_GetItemsCapacityText(TArray<UItemViewModel*> ItemsVM) const;
+	FText VM_GetItemsCapacityText(UItemViewModel* ItemVM) const;
 	
 	UFUNCTION(BlueprintCallable)
-	void VM_UpdateSlots(TArray<UItemViewModel*> ItemsVM);
+	void VM_CategoryItemsChanged(TArray<UItemViewModel*> ItemsVM);
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedCategoryChanged(UCategoryViewModel* CategoryVM);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UUserWidget* GetFocusTile() const;
+	void SelectFirstItemOnPage();
+
+	UFUNCTION(BlueprintCallable)
+	void ChangePage(int PageOffset);
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UDynamicEntryBox> DynamicEntryBox_Items;
 
 	UPROPERTY(EditDefaultsOnly)
 	int MaxDynamicEntryBoxCapacity;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UInv_InputAction> InputAction_PreviousPage;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UInv_InputAction> InputAction_NextPage;
 private:
 	/**
 	 * Function used for refreshing focus target when first tile is ready - when it's selection state animation is finished
@@ -53,8 +64,10 @@ private:
 	 */
 	UFUNCTION()
 	void OnItemTileReady(UItemTile* ItemTile);
-	
+
+	void UpdateSlots(TArray<UItemViewModel*> ItemViewModels);
 	void PopulateSlots();
+	void UpdatePageButtonVisibility();
 	UItemTile* CreateSlot();
 	int GetItemIndexForSelectedCategory() const;
 	
@@ -69,4 +82,10 @@ private:
 
 	UPROPERTY()
 	TArray<UItemTile*> ItemTiles;
+	
+	UPROPERTY()
+	TArray<UItemViewModel*> CachedItemsVM;
+	
+	int CurrentPage = 0;
+	int PageCount = 1;
 };

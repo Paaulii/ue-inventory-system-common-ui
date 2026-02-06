@@ -96,7 +96,7 @@ void UItemTile::ResetTile()
 
 void UItemTile::OnFocused()
 {
-	if (CachedSelectionVM == nullptr || bIsSelected)
+	if (CachedSelectionVM == nullptr )
 	{
 		return;
 	}
