@@ -7,20 +7,23 @@ public class InventorySystem : ModuleRules
 	public InventorySystem(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
-			"Core", "CoreUObject", "Engine", "InputCore", 
-			"EnhancedInput", "StructUtils", "UMG", "GameplayTags", "ModelViewViewModel", "FieldNotification", "CommonUI"
+			"Core", "CoreUObject", "Engine", "InputCore",
+			"EnhancedInput", "StructUtils", "UMG", "GameplayTags", "ModelViewViewModel", "FieldNotification", "CommonUI", "UISystem"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {     "Slate",
-    "SlateCore",
-    "FieldNotification" });
+		PrivateDependencyModuleNames.AddRange(new string[]
+		{
+			"Slate",
+			"SlateCore",
+			"FieldNotification"
+		});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
+
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 

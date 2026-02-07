@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-#include "CommonLocalPlayer.generated.h"
+#include "UIS_LocalPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API UCommonLocalPlayer : public ULocalPlayer
+class UISYSTEM_API UUIS_LocalPlayer : public ULocalPlayer
 {
 	GENERATED_BODY()
 public:
 	/** Called when the local player is assigned a player controller */
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerControllerSetDelegate, UCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FPlayerControllerSetDelegate, UUIS_LocalPlayer* LocalPlayer, APlayerController* PlayerController);
 	FPlayerControllerSetDelegate OnPlayerControllerSet;
 
 };

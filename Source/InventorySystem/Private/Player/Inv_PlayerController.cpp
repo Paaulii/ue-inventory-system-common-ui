@@ -1,12 +1,12 @@
 ﻿// // Copyright Paulina Hałatek, All Rights Reserved.
 #include "Player/Inv_PlayerController.h"
-#include "Player/CommonLocalPlayer.h"
+#include "Player/UIS_LocalPlayer.h"
 
 void AInv_PlayerController::ReceivedPlayer()
 {
 	Super::ReceivedPlayer();
 
-	if (UCommonLocalPlayer* LocalPlayer = Cast<UCommonLocalPlayer>(Player))
+	if (UUIS_LocalPlayer* LocalPlayer = Cast<UUIS_LocalPlayer>(Player))
 	{
 		LocalPlayer->OnPlayerControllerSet.Broadcast(LocalPlayer, this);
 	}

@@ -3,19 +3,19 @@
 
 #include "GameModes/MainMenuGameMode.h"
 #include "CommonActivatableWidget.h"
-#include "GameUIManagerSubsystem.h"
-#include "UI/CommonUILayerTags.h"
-#include "UI/GameUIPolicy.h"
-#include "UI/PrimaryGameLayout.h"
+#include "UIS_UIManagerSubsystem.h"
+#include "UI/UIS_CommonUILayerTags.h"
+#include "UI/UIS_GameUIPolicy.h"
+#include "UI/UIS_PrimaryGameLayout.h"
 
 void AMainMenuGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	if (UGameUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UGameUIManagerSubsystem>())
+	if (UUIS_UIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIS_UIManagerSubsystem>())
 	{
-		if (UGameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+		if (UUIS_GameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 		{
-			UPrimaryGameLayout* RootLayout = Policy->GetRootLayout();
+			UUIS_PrimaryGameLayout* RootLayout = Policy->GetRootLayout();
 
 			RootLayout->PushWidgetToLayerStack(UI::Layer::Menu, MainMenuWidgetClass);
 		}

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameUIManagerSubsystem.h"
+#include "UIS_UIManagerSubsystem.h"
 #include "UIManagerSubsystem.generated.h"
 
 class USelectionViewModel;
@@ -12,7 +12,7 @@ class UInventoryViewModel;
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API UUIManagerSubsystem : public UGameUIManagerSubsystem
+class INVENTORYSYSTEM_API UUIManagerSubsystem : public UUIS_UIManagerSubsystem
 {
 	GENERATED_BODY()
 public:

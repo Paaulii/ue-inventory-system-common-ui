@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "CommonGameInstance.generated.h"
+#include "UIS_CommonGameInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API UCommonGameInstance : public UGameInstance
+class UISYSTEM_API UUIS_CommonGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	

@@ -1,19 +1,19 @@
-﻿#include "UI/GameUIPolicy.h"
+﻿#include "UI/UIS_GameUIPolicy.h"
 
 #include "Blueprint/UserWidget.h"
-#include "Player/CommonLocalPlayer.h"
-#include "UI/PrimaryGameLayout.h"
+#include "Player/UIS_LocalPlayer.h"
+#include "UI/UIS_PrimaryGameLayout.h"
 
-void UGameUIPolicy::NotifyPlayerAdded(UCommonLocalPlayer* LocalPlayer)
+void UUIS_GameUIPolicy::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer)
 {
 	CreateLayoutWidget(LocalPlayer);
 }
 
-void UGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
+void UUIS_GameUIPolicy::CreateLayoutWidget(UUIS_LocalPlayer* LocalPlayer)
 {
 	if (APlayerController* PlayerController = LocalPlayer->GetPlayerController(GetWorld()))
 	{
-		RootLayout = CreateWidget<UPrimaryGameLayout>(PlayerController, LayoutClass);
+		RootLayout = CreateWidget<UUIS_PrimaryGameLayout>(PlayerController, LayoutClass);
 		AddLayoutToViewport(LocalPlayer, RootLayout);
 		FInputModeGameAndUI InputMode;
 		InputMode.SetWidgetToFocus(RootLayout->TakeWidget()); 
@@ -22,7 +22,7 @@ void UGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
 	}
 	
 	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(
-		this, [this](UCommonLocalPlayer* LocalPlayer, APlayerController* PlayerController)
+		this, [this](UUIS_LocalPlayer* LocalPlayer, APlayerController* PlayerController)
 		{
 			if (RootLayout != nullptr)
 			{
@@ -32,13 +32,13 @@ void UGameUIPolicy::CreateLayoutWidget(UCommonLocalPlayer* LocalPlayer)
 		});
 }
 
-void UGameUIPolicy::AddLayoutToViewport(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
+void UUIS_GameUIPolicy::AddLayoutToViewport(UUIS_LocalPlayer* LocalPlayer, UUIS_PrimaryGameLayout* Layout)
 {
 	Layout->AddToViewport();
 	OnRootLayoutAddedToViewport(LocalPlayer, Layout);
 }
 
-void UGameUIPolicy::OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlayer, UPrimaryGameLayout* Layout)
+void UUIS_GameUIPolicy::OnRootLayoutAddedToViewport(UUIS_LocalPlayer* LocalPlayer, UUIS_PrimaryGameLayout* Layout)
 {
 #if WITH_EDITOR
 	if (GIsEditor && LocalPlayer->IsPrimaryPlayer())
@@ -49,7 +49,7 @@ void UGameUIPolicy::OnRootLayoutAddedToViewport(UCommonLocalPlayer* LocalPlayer,
 #endif
 }
 
-void UGameUIPolicy::RemoveLayoutFromViewport(UPrimaryGameLayout* Layout)
+void UUIS_GameUIPolicy::RemoveLayoutFromViewport(UUIS_PrimaryGameLayout* Layout)
 {
 	TWeakPtr<SWidget> LayoutSlateWidget = Layout->GetCachedWidget();
 	if (LayoutSlateWidget.IsValid())
@@ -58,7 +58,7 @@ void UGameUIPolicy::RemoveLayoutFromViewport(UPrimaryGameLayout* Layout)
 	}
 }
 
-void UGameUIPolicy::NotifyPlayerDestroyed(UCommonLocalPlayer* LocalPlayer)
+void UUIS_GameUIPolicy::NotifyPlayerDestroyed(UUIS_LocalPlayer* LocalPlayer)
 {
 	LocalPlayer->OnPlayerControllerSet.RemoveAll(this);
 	RemoveLayoutFromViewport(RootLayout);

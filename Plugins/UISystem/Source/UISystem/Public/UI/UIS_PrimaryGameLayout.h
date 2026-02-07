@@ -6,14 +6,14 @@
 #include "CommonUserWidget.h"
 #include "GameplayTagContainer.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
-#include "PrimaryGameLayout.generated.h"
+#include "UIS_PrimaryGameLayout.generated.h"
 
 class UCommonActivatableWidget;
 /**
  * 
  */
 UCLASS(Abstract, meta = (DisableNativeTick))
-class INVENTORYSYSTEM_API UPrimaryGameLayout : public UCommonUserWidget
+class UISYSTEM_API UUIS_PrimaryGameLayout : public UCommonUserWidget
 {
 	GENERATED_BODY()
 public:

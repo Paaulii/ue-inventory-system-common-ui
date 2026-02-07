@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "CommonActivatableWidget.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "CommonUIExtensions.generated.h"
+#include "UIS_CommonUIExtensions.generated.h"
 
+struct FGameplayTag;
 /**
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API UCommonUIExtensions : public UBlueprintFunctionLibrary
+class UISYSTEM_API UUIS_CommonUIExtensions : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
