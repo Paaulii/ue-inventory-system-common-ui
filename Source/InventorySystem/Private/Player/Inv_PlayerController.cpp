@@ -1,8 +1,8 @@
 ﻿// // Copyright Paulina Hałatek, All Rights Reserved.
-#include "Player/CommonPlayerController.h"
+#include "Player/Inv_PlayerController.h"
 #include "Player/CommonLocalPlayer.h"
 
-void ACommonPlayerController::ReceivedPlayer()
+void AInv_PlayerController::ReceivedPlayer()
 {
 	Super::ReceivedPlayer();
 
