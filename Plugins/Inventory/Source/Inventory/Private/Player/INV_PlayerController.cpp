@@ -4,6 +4,7 @@
 #include "Player/INV_PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Player/Components/INV_InventoryComponent.h"
 
 void AINV_PlayerController::BeginPlay()
 {
@@ -14,6 +15,8 @@ void AINV_PlayerController::BeginPlay()
 	if (IsValid(Subsystem)) {
 		Subsystem->AddMappingContext(DefaultIMC, 0);
 	}
+
+	InventoryComponent = FindComponentByClass<UINV_InventoryComponent>();
 }
 
 void AINV_PlayerController::SetupInputComponent()
@@ -32,5 +35,10 @@ void AINV_PlayerController::OnInteractWithItem()
 void AINV_PlayerController::OpenInventory()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Open Inventory"));
+	if (!InventoryComponent.IsValid())
+	{
+		return;
+	}
 	
+	InventoryComponent->ToggleInventory();
 }

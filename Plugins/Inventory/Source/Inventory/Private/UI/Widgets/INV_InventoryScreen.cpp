@@ -28,7 +28,7 @@ void UINV_InventoryScreen::NativeOnActivated()
 {
 	Super::NativeOnActivated();
 
-	if (!bIsDataDebugInitialized)
+	if (!bIsDataDebugInitialized && CachedInventoryVM)
 	{
 		CachedInventoryVM->RebuildInventory(DebugData->InventoryData);
 		bIsDataDebugInitialized = true;

@@ -19,6 +19,7 @@ class INVENTORY_API UINV_InventoryScreen : public UINV_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
 public:
+	DECLARE_MULTICAST_DELEGATE(FOnInventory)
 	virtual void NativeOnActivated() override;
 	
 protected:

@@ -6,6 +6,7 @@
 #include "Player/UIS_PlayerController.h"
 #include "INV_PlayerController.generated.h"
 
+class UINV_InventoryComponent;
 class UInputAction;
 class UInputMappingContext;
 /**
@@ -35,4 +36,7 @@ protected:
 	
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+private:
+	TWeakObjectPtr<UINV_InventoryComponent> InventoryComponent;
+
 };

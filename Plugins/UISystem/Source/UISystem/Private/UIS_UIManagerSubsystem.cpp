@@ -10,26 +10,6 @@ void UUIS_UIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		TSubclassOf<UUIS_GameUIPolicy> PolicyClass = DefaultUIPolicyClass.LoadSynchronous();
 		SwitchToPolicy(NewObject<UUIS_GameUIPolicy>(this, PolicyClass));
 	}
-
-	//
-	// if (CurrentPolicy)
-	// {
-	// 	return;
-	// }
-	//
-	// const UUIS_UIManagerSubsystem* Defaults =
-	// 	GetDefault<UUIS_UIManagerSubsystem>();
-	//
-	// if (!Defaults->DefaultUIPolicyClass.IsNull())
-	// {
-	// 	TSubclassOf<UUIS_GameUIPolicy> PolicyClass =
-	// 		Defaults->DefaultUIPolicyClass.LoadSynchronous();
-	//
-	// 	if (PolicyClass)
-	// 	{
-	// 		SwitchToPolicy(NewObject<UUIS_GameUIPolicy>(this, PolicyClass));
-	// 	}
-	// }
 }
 
 void UUIS_UIManagerSubsystem::Deinitialize()
