@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Inv_PlayerController.generated.h"
+#include "UIS_PlayerController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API AInv_PlayerController : public APlayerController
+class UISYSTEM_API AUIS_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 public:

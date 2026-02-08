@@ -1,8 +1,8 @@
 ﻿// // Copyright Paulina Hałatek, All Rights Reserved.
-#include "Player/Inv_PlayerController.h"
+#include "Player/UIS_PlayerController.h"
 #include "Player/UIS_LocalPlayer.h"
 
-void AInv_PlayerController::ReceivedPlayer()
+void AUIS_PlayerController::ReceivedPlayer()
 {
 	Super::ReceivedPlayer();
 
