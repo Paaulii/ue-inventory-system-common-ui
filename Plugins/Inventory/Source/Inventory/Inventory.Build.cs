@@ -28,7 +28,10 @@ public class Inventory : ModuleRules
 				"Core",
 				"EnhancedInput",
 				"StructUtils", 
-				"ModelViewViewModel"
+				"ModelViewViewModel", 
+				"UISystem",
+				"UMG",
+				"CommonUI"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
