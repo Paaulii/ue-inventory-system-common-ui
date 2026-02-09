@@ -29,10 +29,10 @@ void UINV_CategoryViewModel::SetCategoryIcon(UTexture2D* Icon)
 	UE_MVVM_SET_PROPERTY_VALUE(CategoryIcon, Icon);
 }
 
-void UINV_CategoryViewModel::SetItemArray(const TArray<TInstancedStruct<FINV_ItemData>>& ItemsData)
+void UINV_CategoryViewModel::SetItemArray(const TArray<TInstancedStruct<FINV_ItemDefinitionData>>& ItemsData)
 {
 	CategoryItems.Empty();
-	for (const TInstancedStruct<FINV_ItemData>& ItemData : ItemsData)
+	for (const TInstancedStruct<FINV_ItemDefinitionData>& ItemData : ItemsData)
 	{
 		UINV_ItemViewModel* NewItemVM = NewObject<UINV_ItemViewModel>(this);
 		NewItemVM->Initialize(ItemData.GetPtr(), this);

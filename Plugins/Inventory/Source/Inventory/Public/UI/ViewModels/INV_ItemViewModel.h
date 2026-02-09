@@ -13,7 +13,7 @@ class INVENTORY_API UINV_ItemViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 public:
-	void Initialize(const FINV_ItemData* ItemData, UINV_CategoryViewModel* CategoryVM);
+	void Initialize(const FINV_ItemDefinitionData* ItemData, UINV_CategoryViewModel* CategoryVM);
 	FText GetItemName() const { return ItemName; }
 	FText GetDescription() const { return Description; }
 	UTexture2D* GetSmallImage() const { return SmallImage; }

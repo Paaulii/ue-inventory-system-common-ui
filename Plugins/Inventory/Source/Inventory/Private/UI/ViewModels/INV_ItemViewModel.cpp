@@ -3,9 +3,9 @@
 
 #include "UI/ViewModels/INV_ItemViewModel.h"
 
-#include "Data/INV_ItemData.h"
+#include "Data/INV_ItemDefinitionData.h"
 
-void UINV_ItemViewModel::Initialize(const FINV_ItemData* ItemData, UINV_CategoryViewModel* CategoryVM)
+void UINV_ItemViewModel::Initialize(const FINV_ItemDefinitionData* ItemData, UINV_CategoryViewModel* CategoryVM)
 {
 	SetItemName(ItemData->Name);
 	SetDescription(ItemData->Description);

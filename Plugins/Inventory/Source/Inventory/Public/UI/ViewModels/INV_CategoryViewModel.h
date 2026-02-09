@@ -7,7 +7,7 @@
 #include "StructUtils/InstancedStruct.h"
 #include "INV_CategoryViewModel.generated.h"
 
-struct FINV_ItemData;
+struct FINV_ItemDefinitionData;
 struct FINV_CategoryData;
 class UINV_ItemViewModel;
 /**
@@ -37,5 +37,5 @@ protected:
 private:
 	void SetCategoryName(const FText& Name);
 	void SetCategoryIcon(UTexture2D* Icon);
-	void SetItemArray(const TArray<TInstancedStruct<FINV_ItemData>>& ItemData);
+	void SetItemArray(const TArray<TInstancedStruct<FINV_ItemDefinitionData>>& ItemData);
 };

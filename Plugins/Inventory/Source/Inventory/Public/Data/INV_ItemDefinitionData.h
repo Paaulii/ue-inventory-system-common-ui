@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
 #include "INV_ItemRarity.h"
-#include "INV_ItemData.generated.h"
+#include "INV_ItemDefinitionData.generated.h"
 
 USTRUCT(BlueprintType)
-struct FINV_ItemData
+struct FINV_ItemDefinitionData
 {
 	GENERATED_BODY()
 
@@ -60,7 +60,7 @@ struct FINV_ItemData
 };
 
 USTRUCT(BlueprintType)
-struct FSkeletalItemData : public FINV_ItemData
+struct FSkeletalItemData : public FINV_ItemDefinitionData
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayAfter = "Material"))
@@ -68,7 +68,7 @@ struct FSkeletalItemData : public FINV_ItemData
 };
 
 USTRUCT(BlueprintType)
-struct FStaticItemData : public FINV_ItemData
+struct FStaticItemData : public FINV_ItemDefinitionData
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayAfter = "Material"))

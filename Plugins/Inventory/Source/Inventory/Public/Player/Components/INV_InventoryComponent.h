@@ -7,6 +7,7 @@
 #include "INV_InventoryComponent.generated.h"
 
 
+struct FINV_ItemData;
 class UINV_InventoryScreen;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
@@ -19,6 +20,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void LoadInventoryData();
+	void SaveItemToInventoryData(FINV_ItemData& ItemData);
 
 private:
 	void SetInventoryVisible(bool bIsVisible);
@@ -31,4 +34,6 @@ private:
 
 	bool bIsBindToInventoryOnDeactivated;
 	bool bInventoryMenuOpen;
+
+	TArray<FINV_ItemData> CachedInventoryItems;
 };

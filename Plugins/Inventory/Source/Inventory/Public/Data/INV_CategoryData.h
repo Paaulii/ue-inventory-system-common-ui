@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "INV_ItemData.h"
+#include "INV_ItemDefinitionData.h"
 #include "StructUtils/InstancedStruct.h"
 #include "INV_CategoryData.generated.h"
 
@@ -17,5 +17,5 @@ struct FINV_CategoryData
 	UTexture2D* CategoryIcon = nullptr;
 
 	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
-	TArray<TInstancedStruct<FINV_ItemData>> Items;
+	TArray<TInstancedStruct<FINV_ItemDefinitionData>> Items;
 };

@@ -4,6 +4,8 @@
 #include "Player/Components/INV_InventoryComponent.h"
 
 #include "UIS_UIManagerSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/Data/INV_InventorySaveData.h"
 #include "UI/UIS_CommonUILayerTags.h"
 #include "UI/UIS_GameUIPolicy.h"
 #include "UI/UIS_PrimaryGameLayout.h"
@@ -18,6 +20,30 @@ void UINV_InventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	OwningController = Cast<APlayerController>(GetOwner());
+	LoadInventoryData();
+}
+
+void UINV_InventoryComponent::LoadInventoryData()
+{
+	if (UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0)))
+	{
+		CachedInventoryItems = LoadGameInstance->GetInventoryItems();
+		// TODO: Update VM
+	}
+}
+
+void UINV_InventoryComponent::SaveItemToInventoryData(FINV_ItemData& ItemData)
+{
+	UINV_InventorySaveData* SaveGameInstance = Cast<UINV_InventorySaveData>(UGameplayStatics::CreateSaveGameObject(UINV_InventorySaveData::StaticClass()));
+	UWorld* World = GetWorld();
+
+	if (!SaveGameInstance || !World)
+	{
+		return;
+	}
+
+	SaveGameInstance->AddItemToArray(ItemData);
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveData", 0)
 }
 
 void UINV_InventoryComponent::SetInventoryVisible(bool bIsVisible)
