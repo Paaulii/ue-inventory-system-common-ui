@@ -43,7 +43,7 @@ void UINV_InventoryComponent::SaveItemToInventoryData(FINV_ItemData& ItemData)
 	}
 
 	SaveGameInstance->AddItemToArray(ItemData);
-	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveData", 0)
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveData", 0);
 }
 
 void UINV_InventoryComponent::SetInventoryVisible(bool bIsVisible)

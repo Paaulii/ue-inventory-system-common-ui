@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "INV_ItemData.h"
+#include "Data/INV_ItemIdentificationData.h"
 #include "GameFramework/SaveGame.h"
+#include "Data/INV_ItemData.h"
+
 #include "INV_InventorySaveData.generated.h"
 
 UCLASS()
@@ -17,4 +19,7 @@ public:
 protected:
 	UPROPERTY()
 	TArray<FINV_ItemData> PlayerItems;
+
+	UPROPERTY()
+	TArray<FINV_ItemIdentificationData> EquippedItems;
 };

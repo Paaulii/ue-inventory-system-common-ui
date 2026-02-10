@@ -9,7 +9,10 @@ USTRUCT(BlueprintType)
 struct FINV_CategoryData
 {
 	GENERATED_BODY()
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Id;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText CategoryName;
 
