@@ -3,6 +3,8 @@
 #include "INV_ItemRarity.h"
 #include "INV_ItemDefinitionData.generated.h"
 
+class UGameplayEffect;
+
 USTRUCT(BlueprintType)
 struct FINV_ItemDefinitionData
 {
@@ -37,6 +39,9 @@ struct FINV_ItemDefinitionData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UMaterial* Material;
+
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<UGameplayEffect>> Effects;
 };
 
 USTRUCT(BlueprintType)

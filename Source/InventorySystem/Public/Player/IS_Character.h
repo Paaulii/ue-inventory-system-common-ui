@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Inv_Character.generated.h"
+#include "AbilitySystemInterface.h"
+#include "IS_Character.generated.h"
 
+struct FOnAttributeChangeData;
+class UIS_PlayerAttributes;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputMappingContext;
@@ -13,22 +16,32 @@ class UInputAction;
 struct FInputActionValue;
 
 UCLASS()
-class INVENTORYSYSTEM_API AInv_Character : public ACharacter
+class INVENTORYSYSTEM_API AIS_Character : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 public:
-	AInv_Character();
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+ 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	
+	AIS_Character();
+	
 protected:
+	virtual void BeginPlay() override;
 	virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void AddStartupEffects();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void OnHealthChanged(const FOnAttributeChangeData & Data);
 	
-	/** Camera boom positioning the camera behind the character */
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
 
-	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
 	
@@ -43,4 +56,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
+	
+	UPROPERTY()
+	TObjectPtr<UIS_PlayerAttributes> AttributeSet;
 };

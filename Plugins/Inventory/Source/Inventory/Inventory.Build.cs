@@ -31,7 +31,8 @@ public class Inventory : ModuleRules
 				"ModelViewViewModel", 
 				"UISystem",
 				"UMG",
-				"CommonUI"
+				"CommonUI",
+				"GameplayAbilities"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

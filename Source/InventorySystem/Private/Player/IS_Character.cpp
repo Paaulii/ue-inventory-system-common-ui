@@ -1,7 +1,8 @@
 ﻿// Copyright Paulina Hałatek, All Rights Reserved.
 
 
-#include "Player/Inv_Character.h"
+#include "Player/IS_Character.h"
+#include "Player/IS_Character.h"
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -9,8 +10,10 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystem/AttributeSets/IS_PlayerAttributes.h"
 
-AInv_Character::AInv_Character()
+AIS_Character::AIS_Character()
 {
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -36,9 +39,30 @@ AInv_Character::AInv_Character()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
 	FollowCamera->bUsePawnControlRotation = false;
+
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AttributeSet = CreateDefaultSubobject<UIS_PlayerAttributes>(TEXT("AttributeSet"));
 }
 
-void AInv_Character::NotifyControllerChanged()
+void AIS_Character::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &AIS_Character::OnHealthChanged);
+		UE_LOG(LogTemp, Warning, TEXT("Health: %f"), AttributeSet->GetHealth());
+	}
+	AddStartupEffects();
+}
+
+UAbilitySystemComponent* AIS_Character::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void AIS_Character::NotifyControllerChanged()
 {
 	Super::NotifyControllerChanged();
 
@@ -51,20 +75,39 @@ void AInv_Character::NotifyControllerChanged()
 	}
 }
 
-void AInv_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AIS_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AInv_Character::Move);
-
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AInv_Character::Look);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AIS_Character::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AIS_Character::Look);
 	}
 }
 
-void AInv_Character::Move(const FInputActionValue& Value)
+void AIS_Character::AddStartupEffects()
+{
+	if (AbilitySystemComponent == nullptr )
+	{
+		return;
+	}
+	
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+	
+	for (auto GameplayEffect : StartupEffects)
+	{
+		FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, 1, EffectContext);
+		if (NewHandle.IsValid())
+		{
+			AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+			// AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(GameplayEffect, nullptr);
+		}
+	}
+}
+
+void AIS_Character::Move(const FInputActionValue& Value)
 {
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -82,7 +125,7 @@ void AInv_Character::Move(const FInputActionValue& Value)
 	}
 }
 
-void AInv_Character::Look(const FInputActionValue& Value)
+void AIS_Character::Look(const FInputActionValue& Value)
 {
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -91,6 +134,12 @@ void AInv_Character::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AIS_Character::OnHealthChanged(const FOnAttributeChangeData & Data)
+{
+	
+	UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
 }
 
 

@@ -12,7 +12,8 @@ public class InventorySystem : ModuleRules
 		{
 			"Core", "CoreUObject", "Engine", "InputCore",
 			"EnhancedInput", "StructUtils", "UMG", "GameplayTags", 
-			"ModelViewViewModel", "FieldNotification", "CommonUI", "UISystem", "Inventory"
+			"ModelViewViewModel", "FieldNotification", "CommonUI", "UISystem", "Inventory",
+			"GameplayAbilities"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
