@@ -18,6 +18,8 @@ class INVENTORY_API AINV_PlayerController : public AUIS_PlayerController
 	GENERATED_BODY()
 
 public:
+	AINV_PlayerController();
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TObjectPtr<UInputMappingContext> DefaultIMC;
 
@@ -36,7 +38,8 @@ protected:
 	
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
-private:
-	TWeakObjectPtr<UINV_InventoryComponent> InventoryComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
 
 };
