@@ -6,6 +6,7 @@
 #include "UIS_UIManagerSubsystem.h"
 #include "UIS_MvvmUIManagerSubsystem.generated.h"
 
+class AUIS_PlayerController;
 class UUIS_ViewModelBase;
 class UMVVMViewModelBase;
 class UINV_SelectionViewModel;
@@ -21,6 +22,10 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+	virtual void NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer) override;
+	
+	UFUNCTION()
+	void OnPawnPossessed();
 	
 	void InitializeViewModels();
 	void DeinitializeViewModels();

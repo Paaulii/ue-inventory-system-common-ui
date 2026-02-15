@@ -6,6 +6,7 @@
 #include "UI/Widgets/INV_ActivatableMvvmWidget.h"
 #include "IS_HudWidget.generated.h"
 
+class UIS_PlayerStatViewModel;
 /**
  * 
  */
@@ -16,4 +17,8 @@ class INVENTORYSYSTEM_API UIS_HudWidget : public UINV_ActivatableMvvmWidget
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
+private:
+	UPROPERTY()
+	TObjectPtr<UIS_PlayerStatViewModel> CachedPlayerStatVM;
+	
 };

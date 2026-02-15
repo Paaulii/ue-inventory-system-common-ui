@@ -51,8 +51,10 @@ void AIS_Character::BeginPlay()
 	if (AbilitySystemComponent)
 	{
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &AIS_Character::OnHealthChanged);
-		UE_LOG(LogTemp, Warning, TEXT("Health: %f"), AttributeSet->GetHealth());
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &AIS_Character::NotifyHealthChanged);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxHealthAttribute()).AddUObject(this, &AIS_Character::NotifyMaxHealthChanged);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetManaAttribute()).AddUObject(this, &AIS_Character::NotifyManaChanged);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetManaAttribute()).AddUObject(this, &AIS_Character::NotifyMaxManaChanged);
 	}
 	AddStartupEffects();
 }
@@ -136,10 +138,24 @@ void AIS_Character::Look(const FInputActionValue& Value)
 	}
 }
 
-void AIS_Character::OnHealthChanged(const FOnAttributeChangeData & Data)
+void AIS_Character::NotifyHealthChanged(const FOnAttributeChangeData& Data) const
 {
-	
-	UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
+	OnHealthChanged.Broadcast(Data.NewValue);
+}
+
+void AIS_Character::NotifyMaxHealthChanged(const FOnAttributeChangeData& Data) const
+{
+	OnMaxHealthChanged.Broadcast(Data.NewValue);
+}
+
+void AIS_Character::NotifyMaxManaChanged(const FOnAttributeChangeData& Data) const
+{
+	OnMaxManaChanged.Broadcast(Data.NewValue);
+}
+
+void AIS_Character::NotifyManaChanged(const FOnAttributeChangeData& Data) const
+{
+	OnManaChanged.Broadcast(Data.NewValue);
 }
 
 

@@ -24,10 +24,18 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Health")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, Health)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "MaxHealth")
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, MaxHealth)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Mana")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, Mana)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "MaxMana")
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, MaxMana)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Armor")
 	FGameplayAttributeData Armor;

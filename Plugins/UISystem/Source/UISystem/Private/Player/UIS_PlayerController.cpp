@@ -11,3 +11,9 @@ void AUIS_PlayerController::ReceivedPlayer()
 		LocalPlayer->OnPlayerControllerSet.Broadcast(LocalPlayer, this);
 	}
 }
+
+void AUIS_PlayerController::OnPossess(APawn* PossessedPawn)
+{
+	Super::OnPossess(PossessedPawn);
+	OnPawnPossessed.Broadcast();
+}

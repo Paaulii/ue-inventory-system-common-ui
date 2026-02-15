@@ -14,5 +14,9 @@ class UISYSTEM_API AUIS_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 public:
-	virtual void ReceivedPlayer() override;	
+	virtual void ReceivedPlayer() override;
+	virtual void OnPossess(APawn* PossessedPawn) override;
+
+	DECLARE_MULTICAST_DELEGATE(FPawnPossessedDelegate);
+	FPawnPossessedDelegate OnPawnPossessed;
 };

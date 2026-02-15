@@ -15,17 +15,23 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FPlayerStatChange, int32);
+
 UCLASS()
 class INVENTORYSYSTEM_API AIS_Character : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	AIS_Character();
  
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	
-	AIS_Character();
+	FPlayerStatChange OnHealthChanged;	
+	FPlayerStatChange OnMaxHealthChanged;	
+	FPlayerStatChange OnManaChanged;	
+	FPlayerStatChange OnMaxManaChanged;	
 	
 protected:
 	virtual void BeginPlay() override;
@@ -34,7 +40,11 @@ protected:
 	void AddStartupEffects();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void OnHealthChanged(const FOnAttributeChangeData & Data);
+	
+	void NotifyHealthChanged(const FOnAttributeChangeData& Data) const;
+	void NotifyMaxHealthChanged(const FOnAttributeChangeData& Data) const;
+	void NotifyManaChanged(const FOnAttributeChangeData& Data) const;
+	void NotifyMaxManaChanged(const FOnAttributeChangeData& Data) const;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
