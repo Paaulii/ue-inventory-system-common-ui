@@ -3,23 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MVVMViewModelBase.h"
+#include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_InventoryViewModel.generated.h"
 
 struct FINV_CategoryData;
 struct FINV_InventoryData;
 class UINV_CategoryViewModel;
-/**
- * 
- */
+
 UCLASS()
-class INVENTORY_API UINV_InventoryViewModel : public UMVVMViewModelBase
+class INVENTORY_API UINV_InventoryViewModel : public UUIS_ViewModelBase
 {
 	GENERATED_BODY()
-	// TODO: Add initialization for player's inventory data
 public:
-	void Initialize();
-	void Deinitialize();
+	virtual void Initialize() override;
+	virtual void Deinitialize() override;
 	void RebuildInventory(const FINV_InventoryData& InventoryData);
 	void ResetCategories();
 	void InitializeCategoryVM(const TArray<FINV_CategoryData>& CategoryDataArray);

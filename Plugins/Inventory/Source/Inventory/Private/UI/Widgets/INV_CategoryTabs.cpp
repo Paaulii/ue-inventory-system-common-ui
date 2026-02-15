@@ -4,7 +4,7 @@
 #include "UI/Widgets/INV_CategoryTabs.h"
 
 #include "Components/DynamicEntryBox.h"
-#include "UI/INV_UIManagerSubsystem.h"
+#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
 #include "UI/ViewModels/INV_InventoryViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
@@ -77,14 +77,14 @@ void UINV_CategoryTabs::ResetTabs() const
 
 void UINV_CategoryTabs::CacheViewModels()
 {
-	UINV_UIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UINV_UIManagerSubsystem>();
+	UUIS_MvvmUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIS_MvvmUIManagerSubsystem>();
 	if (CacheSelectionVM == nullptr )
 	{
-		CacheSelectionVM = UIManager->GetSelectionVM();
+		CacheSelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
 	}
 
 	if (CacheInventoryVM == nullptr )
 	{
-		CacheInventoryVM = UIManager->GetInventoryVM();
+		CacheInventoryVM = UIManager->GetViewModel<UINV_InventoryViewModel>();
 	}
 }

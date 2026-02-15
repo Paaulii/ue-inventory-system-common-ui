@@ -5,7 +5,7 @@
 
 #include "Components/Image.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
-#include "UI/INV_UIManagerSubsystem.h"
+#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
 
 
@@ -14,10 +14,11 @@ void UINV_ItemDetails::VM_SelectedItemImageUpdated(UTexture2D* Image)
 	Image_SelectedItem->SetBrushFromTexture(Image);
 }
 
-void UINV_ItemDetails::CacheViewModels(UINV_UIManagerSubsystem* UIManager)
+void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 {
-	MVVMView->SetViewModel("SelectionViewModel", UIManager->GetSelectionVM());
-	CachedSelectionVM = UIManager->GetSelectionVM();
+	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
+	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
+	CachedSelectionVM = SelectionVM;
 }
 
 void UINV_ItemDetails::ClearViewModelsCache()

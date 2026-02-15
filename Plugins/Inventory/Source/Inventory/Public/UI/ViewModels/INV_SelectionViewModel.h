@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "INV_ItemViewModel.h"
 #include "MVVMViewModelBase.h"
+#include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_SelectionViewModel.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class INVENTORY_API UINV_SelectionViewModel : public UMVVMViewModelBase
+class INVENTORY_API UINV_SelectionViewModel : public UUIS_ViewModelBase
 {
 	GENERATED_BODY()
 public:

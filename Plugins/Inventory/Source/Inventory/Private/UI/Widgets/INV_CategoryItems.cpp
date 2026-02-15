@@ -3,7 +3,7 @@
 
 #include "UI/Widgets/INV_CategoryItems.h"
 
-#include "UI/INV_UIManagerSubsystem.h"
+#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
 #include "UI/ViewModels/INV_InventoryViewModel.h"
@@ -18,13 +18,15 @@ void UINV_CategoryItems::NativeOnInitialized()
 	PopulateSlots();
 }
 
-void UINV_CategoryItems::CacheViewModels(UINV_UIManagerSubsystem* UIManager)
+void UINV_CategoryItems::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 {
-	MVVMView->SetViewModel("SelectionViewModel", UIManager->GetSelectionVM());
-	CachedSelectionVM = UIManager->GetSelectionVM();
+	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
+	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
+	CachedSelectionVM = SelectionVM;
 
-	MVVMView->SetViewModel("InventoryViewModel", UIManager->GetInventoryVM());
-	CachedInventoryVM = UIManager->GetInventoryVM();
+	UINV_InventoryViewModel* InventoryVM = UIManager->GetViewModel<UINV_InventoryViewModel>();
+	MVVMView->SetViewModel("InventoryViewModel", InventoryVM);
+	CachedInventoryVM = InventoryVM;
 }
 
 void UINV_CategoryItems::ClearViewModelsCache()

@@ -28,7 +28,8 @@ public class UISystem : ModuleRules
 				"Core",
 				"UMG",
 				"GameplayTags",
-				"CommonUI",
+				"CommonUI", 
+				"ModelViewViewModel",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

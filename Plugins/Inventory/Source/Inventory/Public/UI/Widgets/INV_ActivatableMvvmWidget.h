@@ -6,7 +6,7 @@
 #include "CommonActivatableWidget.h"
 #include "INV_ActivatableMvvmWidget.generated.h"
 
-class UINV_UIManagerSubsystem;
+class UUIS_MvvmUIManagerSubsystem;
 class UMVVMView;
 /**
  * 
@@ -20,7 +20,7 @@ public:
 	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
 protected:
-	virtual void CacheViewModels(UINV_UIManagerSubsystem* UIManager) PURE_VIRTUAL(UInv_ActivatableMvvmWidget::CacheViewModels, );
+	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) PURE_VIRTUAL(UInv_ActivatableMvvmWidget::CacheViewModels, );
 	virtual void ClearViewModelsCache() PURE_VIRTUAL(UInv_ActivatableMvvmWidget::ClearViewModelsCache, );
 	
 	UPROPERTY()

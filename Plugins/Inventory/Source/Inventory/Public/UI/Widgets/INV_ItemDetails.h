@@ -23,7 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedItemImageUpdated(UTexture2D* Image);
 protected:
-	virtual void CacheViewModels(UINV_UIManagerSubsystem* UIManager) override;
+	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 private:
 	UPROPERTY(meta = (BindWidget))

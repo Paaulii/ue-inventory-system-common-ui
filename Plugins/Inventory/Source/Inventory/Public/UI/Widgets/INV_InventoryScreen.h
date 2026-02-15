@@ -23,7 +23,7 @@ public:
 	virtual void NativeOnActivated() override;
 	
 protected:
-	virtual void CacheViewModels(UINV_UIManagerSubsystem* UIManager) override;
+	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 	
 	UPROPERTY(EditDefaultsOnly )

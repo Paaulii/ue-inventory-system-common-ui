@@ -14,6 +14,6 @@ class INVENTORYSYSTEM_API UIS_HudWidget : public UINV_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
 protected:
-	virtual void CacheViewModels(UINV_UIManagerSubsystem* UIManager) override;
+	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 };
