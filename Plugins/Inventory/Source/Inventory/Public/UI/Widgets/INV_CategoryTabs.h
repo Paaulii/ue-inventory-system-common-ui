@@ -9,7 +9,7 @@
 class UINV_InventoryViewModel;
 class UINV_CategoryViewModel;
 class UINV_SelectionViewModel;
-struct FINV_CategoryData;
+struct FINV_CategoryDefinitionData;
 class UDynamicEntryBox;
 /**
  * 

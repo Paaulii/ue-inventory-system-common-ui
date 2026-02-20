@@ -1,11 +1,11 @@
 ﻿#include "Player/Data/INV_InventorySaveData.h"
+#include "Data/Types/INV_ItemSaveDataTypes.h"
 
-
-void UINV_InventorySaveData::AddItemToArray(FINV_ItemData& ItemData)
+void UINV_InventorySaveData::AddItemToArray(FINV_ItemSaveData& ItemData)
 {
 	bool bItemFound = false;
 	
-	for (FINV_ItemData& PlayerItemData: PlayerItems)
+	for (FINV_ItemSaveData& PlayerItemData: PlayerItems)
 	{
 		if (ItemData.IdData.Id == PlayerItemData.IdData.Id &&
 			ItemData.IdData.CategoryId == PlayerItemData.IdData.CategoryId)

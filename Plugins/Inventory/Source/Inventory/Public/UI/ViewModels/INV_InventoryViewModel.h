@@ -6,8 +6,9 @@
 #include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_InventoryViewModel.generated.h"
 
-struct FINV_CategoryData;
-struct FINV_InventoryData;
+struct FINV_CategoryDisplayData;
+struct FINV_InventoryDisplayData;
+class UINV_InventoryComponent;
 class UINV_CategoryViewModel;
 
 UCLASS()
@@ -17,9 +18,10 @@ class INVENTORY_API UINV_InventoryViewModel : public UUIS_ViewModelBase
 public:
 	virtual void Initialize() override;
 	virtual void Deinitialize() override;
-	void RebuildInventory(const FINV_InventoryData& InventoryData);
+	UFUNCTION()
+	void RebuildInventory(const FINV_InventoryDisplayData& InventoryData);
 	void ResetCategories();
-	void InitializeCategoryVM(const TArray<FINV_CategoryData>& CategoryDataArray);
+	void InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray);
 	float GetCurrencyAmount() const { return CurrencyAmount; }
 	int GetMaxItemsCapacity() const { return MaxItemsCapacity; }
 	TArray<UINV_CategoryViewModel*> GetCategories() const { return Categories;}
@@ -36,4 +38,7 @@ protected:
 private:
 	void SetCurrencyAmount(float Value);
 	void SetMaxItemsCapacity(int Value);
+
+	UPROPERTY()
+	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
 };

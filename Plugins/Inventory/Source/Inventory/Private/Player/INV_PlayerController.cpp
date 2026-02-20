@@ -4,7 +4,8 @@
 #include "Player/INV_PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Player/Components/INV_InventoryComponent.h"
+#include "Player/Components/Inventory/INV_InventoryComponent.h"
+
 AINV_PlayerController::AINV_PlayerController()
 {
 	InventoryComponent = CreateDefaultSubobject<UINV_InventoryComponent>("InventoryComponent");

@@ -1,17 +1,21 @@
 ﻿#pragma once
+
 #include "CoreMinimal.h"
 #include "INV_ItemRarity.h"
-#include "INV_ItemDefinitionData.generated.h"
-
+#include "StructUtils/InstancedStruct.h"
+#include "INV_InventoryDataAssetTypes.generated.h"
 class UGameplayEffect;
 
 USTRUCT(BlueprintType)
-struct FINV_ItemDefinitionData
+struct FINV_ItemAssetDefinition
 {
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Id;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 CategoryId;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Name;
@@ -45,7 +49,7 @@ struct FINV_ItemDefinitionData
 };
 
 USTRUCT(BlueprintType)
-struct FSkeletalItemData : public FINV_ItemDefinitionData
+struct FSkeletalItemData : public FINV_ItemAssetDefinition
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayAfter = "Material"))
@@ -53,9 +57,21 @@ struct FSkeletalItemData : public FINV_ItemDefinitionData
 };
 
 USTRUCT(BlueprintType)
-struct FStaticItemData : public FINV_ItemDefinitionData
+struct FStaticItemData : public FINV_ItemAssetDefinition
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayAfter = "Material"))
 	UStaticMesh* StaticMesh;
-};	
+};
+
+USTRUCT(BlueprintType)
+struct FINV_CategoryDefinitionData
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Id;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText CategoryName;
+};

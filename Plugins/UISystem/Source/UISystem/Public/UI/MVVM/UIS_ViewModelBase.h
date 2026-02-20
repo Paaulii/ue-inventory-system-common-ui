@@ -15,9 +15,6 @@ class UISYSTEM_API UUIS_ViewModelBase : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 public:
-	virtual void Initialize()
-	{
-		UE_LOG(LogTemp, Warning, TEXT("INITIALIZE VIEW MODEL"));
-	};
+	virtual void Initialize(){};
 	virtual void Deinitialize(){};
 };

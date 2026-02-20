@@ -2,20 +2,19 @@
 
 
 #include "UI/ViewModels/INV_ItemViewModel.h"
+#include "Data/Types/INV_InventoryDisplayTypes.h"
 
-#include "Data/INV_ItemDefinitionData.h"
-
-void UINV_ItemViewModel::Initialize(const FINV_ItemDefinitionData* ItemData, UINV_CategoryViewModel* CategoryVM)
+void UINV_ItemViewModel::Initialize(const FINV_ItemDisplayData& ItemData, UINV_CategoryViewModel* CategoryVM)
 {
-	SetItemName(ItemData->Name);
-	SetDescription(ItemData->Description);
-	SetSmallImage(ItemData->SmallImage);
-	SetLargeImage(ItemData->LargeImage);
-	SetRarity(ItemData->Rarity);
-	SetCurrencyValue(ItemData->CurrencyValue);
+	SetItemName(ItemData.Name);
+	SetDescription(ItemData.Description);
+	SetSmallImage(ItemData.SmallImage);
+	SetLargeImage(ItemData.LargeImage);
+	SetRarity(ItemData.Rarity);
+	SetCurrencyValue(ItemData.CurrencyValue);
 	SetIsEquipped(false);
 	SetCategory(CategoryVM);
-	SetRequiredLevel(ItemData->RequiredLevel);
+	SetRequiredLevel(ItemData.RequiredLevel);
 }
 
 void UINV_ItemViewModel::SetItemName(const FText& Name)

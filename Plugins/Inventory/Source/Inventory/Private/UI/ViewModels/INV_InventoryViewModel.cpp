@@ -3,20 +3,34 @@
 
 #include "UI/ViewModels/INV_InventoryViewModel.h"
 
-#include "Data/INV_InventoryData.h"
+#include "Data/Types/INV_InventoryDisplayTypes.h"
+#include "GameFramework/Character.h"
+#include "Player/Components/Inventory/INV_InventoryComponent.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
 
 void UINV_InventoryViewModel::Initialize()
 {
-	// TODO: Add logic to subscribe to player's inventory data events
+	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		InventoryComponent = PlayerController->FindComponentByClass<UINV_InventoryComponent>();
+		if (InventoryComponent)
+		{
+			InventoryComponent->OnInventoryDataChanged.BindUObject(this, &UINV_InventoryViewModel::RebuildInventory);
+		}
+	}
 }
 
 void UINV_InventoryViewModel::Deinitialize()
 {
-	// TODO: Unsubscribe from player's events
+	if (!InventoryComponent)
+	{
+		return;
+	}
+
+	InventoryComponent->OnInventoryDataChanged.Unbind();
 }
 
-void UINV_InventoryViewModel::RebuildInventory(const FINV_InventoryData& InventoryData)
+void UINV_InventoryViewModel::RebuildInventory(const FINV_InventoryDisplayData& InventoryData)
 {
 	SetCurrencyAmount(InventoryData.CurrencyAmount);
 	SetMaxItemsCapacity(InventoryData.MaxItemsCapacity);
@@ -31,11 +45,11 @@ void UINV_InventoryViewModel::ResetCategories()
 	}
 }
 
-void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryData>& CategoryDataArray)
+void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray)
 {
 	ResetCategories();
 	
-	for (const FINV_CategoryData& CategoryData : CategoryDataArray)
+	for (const FINV_CategoryDisplayData& CategoryData : CategoryDataArray)
 	{
 		UINV_CategoryViewModel* CategoryVM = NewObject<UINV_CategoryViewModel>(this);
 		CategoryVM->Initialize(CategoryData);

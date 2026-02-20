@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "INV_CategoryViewModel.h"
-#include "Data/INV_ItemRarity.h"
 #include "MVVMViewModelBase.h"
+#include "Data/Types/INV_ItemRarity.h"
 #include "INV_ItemViewModel.generated.h"
 
 UCLASS()
@@ -13,7 +13,7 @@ class INVENTORY_API UINV_ItemViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
 public:
-	void Initialize(const FINV_ItemDefinitionData* ItemData, UINV_CategoryViewModel* CategoryVM);
+	void Initialize(const FINV_ItemDisplayData& ItemData, UINV_CategoryViewModel* CategoryVM);
 	FText GetItemName() const { return ItemName; }
 	FText GetDescription() const { return Description; }
 	UTexture2D* GetSmallImage() const { return SmallImage; }
