@@ -18,6 +18,7 @@ class INVENTORY_API UINV_InventoryViewModel : public UUIS_ViewModelBase
 public:
 	virtual void Initialize() override;
 	virtual void Deinitialize() override;
+	
 	UFUNCTION()
 	void RebuildInventory(const FINV_InventoryDisplayData& InventoryData);
 	void ResetCategories();

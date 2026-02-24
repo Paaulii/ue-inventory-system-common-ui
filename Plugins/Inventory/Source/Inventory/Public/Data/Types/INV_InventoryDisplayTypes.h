@@ -8,7 +8,7 @@ struct FINV_CategoryDisplayData;
 struct FINV_ItemDisplayData;
 enum class EINV_ItemRarity : uint8;
 
-USTRUCT(BlueprintType)
+USTRUCT()
 struct FINV_InventoryDisplayData
 {
 	GENERATED_BODY()
