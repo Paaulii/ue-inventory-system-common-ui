@@ -7,12 +7,24 @@
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
+#include "CommonTextBlock.h"
 
-
-void UINV_ItemDetails::VM_SelectedItemImageUpdated(UTexture2D* Image)
+void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 {
-	Image_SelectedItem->SetBrushFromTexture(Image);
+	bool bIsItemEmpty = SelectedItem == nullptr;
+	SetVisibility(bIsItemEmpty? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+	
+	if (bIsItemEmpty)
+	{
+			return;
+	}
+	
+	Text_Name->SetText(SelectedItem->GetItemName());
+	Text_Description->SetText(SelectedItem->GetDescription());
+	Text_Value->SetText(FText::AsNumber(SelectedItem->GetCurrencyValue()));
+	Image_SelectedItem->SetBrushFromTexture(SelectedItem->GetLargeImage());
 }
+
 
 void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 {

@@ -7,27 +7,34 @@
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_ItemDetails.generated.h"
 
+class UINV_ItemViewModel;
 class UImage;
 class UINV_SelectionViewModel;
 class UMVVMView;
-/**
- * 
- */
- // TODO: This will be definite convention for files, 
- // for now I leave the rest of the files, but at the end of implementing Inventory System I will fix their naming.
+
+class UCommonTextBlock;
 UCLASS()
 class INVENTORY_API UINV_ItemDetails : public UINV_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable)
-	void VM_SelectedItemImageUpdated(UTexture2D* Image);
+	void VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem);
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 private:
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_SelectedItem;
+	
+	UPROPERTY(meta = (BindWidget))
+	UCommonTextBlock* Text_Name;
+	
+	UPROPERTY(meta = (BindWidget))
+	UCommonTextBlock* Text_Description;
+
+	UPROPERTY(meta = (BindWidget))
+	UCommonTextBlock* Text_Value;
 	
 	UPROPERTY()
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
