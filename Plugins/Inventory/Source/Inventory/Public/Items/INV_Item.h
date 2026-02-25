@@ -6,6 +6,7 @@
 #include "Data/Types/INV_ItemDefinition.h"
 #include "GameFramework/Actor.h"
 #include "Interaction/INV_Highlightable.h"
+#include "StructUtils/InstancedStruct.h"
 #include "INV_Item.generated.h"
 
 struct FINV_ItemAssetDefinition;
@@ -24,7 +25,7 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void Highlight_Implementation() override;
 	virtual void UnHighlight_Implementation() override;
-	virtual void ChangeMesh(FINV_ItemAssetDefinition* ItemAssetDefinition) PURE_VIRTUAL(AINVItem::ChangeMesh, );;
+	virtual void ChangeMesh(TInstancedStruct<FINV_ItemAssetDefinition>*  ItemAssetDefinition) PURE_VIRTUAL(AINVItem::ChangeMesh, );;
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 #endif
@@ -42,9 +43,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TObjectPtr<UMaterialInterface> HighlightMaterial;
 
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UMeshComponent> MeshComponent;
 private:
+	void Setup();
 	UPROPERTY()
 	TObjectPtr<URotatingMovementComponent> RotatingComponent;
 };

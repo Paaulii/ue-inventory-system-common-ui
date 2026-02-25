@@ -15,17 +15,13 @@ AINV_Item::AINV_Item()
 void AINV_Item::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (MeshComponent)
-	{
-		SetupMesh();
-	}
+	Setup();
 }
 
 void AINV_Item::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	SetupMesh();
+	Setup();
 }
 
 void AINV_Item::Highlight_Implementation()
@@ -42,8 +38,10 @@ void AINV_Item::UnHighlight_Implementation()
 void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
-	
-	FName PropertyName = (PropertyChangedEvent.MemberProperty != NULL) ? PropertyChangedEvent.MemberProperty->GetFName() : NAME_None;
+
+	FName PropertyName = (PropertyChangedEvent.MemberProperty != NULL)
+		                     ? PropertyChangedEvent.MemberProperty->GetFName()
+		                     : NAME_None;
 	if (PropertyName == GET_MEMBER_NAME_CHECKED(AINV_Item, ItemDefinition))
 	{
 		if (ItemDefinition.ItemId >= 0 && ItemDefinition.CategoryId >= 0)
@@ -56,7 +54,8 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 
 void AINV_Item::SetupMesh()
 {
-	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemDefinition.ItemId, ItemDefinition.CategoryId);
+	TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition = InventoryDataAsset->GetInstancedItemDefinition(
+		ItemDefinition.ItemId, ItemDefinition.CategoryId);
 
 	if (!ItemAssetDefinition)
 	{
@@ -71,3 +70,10 @@ void AINV_Item::PickUp()
 	Destroy();
 }
 
+void AINV_Item::Setup()
+{
+	if (MeshComponent)
+	{
+		SetupMesh();
+	}
+}

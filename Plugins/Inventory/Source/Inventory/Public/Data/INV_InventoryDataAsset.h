@@ -22,4 +22,5 @@ public:
 	TArray<TInstancedStruct<FINV_ItemAssetDefinition>> Items;
 
 	FINV_ItemAssetDefinition* GetItemDefinition(int ItemId, int CategoryId);
+	TInstancedStruct<FINV_ItemAssetDefinition>* GetInstancedItemDefinition(int ItemId, int CategoryId);
 };
