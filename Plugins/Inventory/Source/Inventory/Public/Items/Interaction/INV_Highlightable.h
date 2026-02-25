@@ -6,7 +6,7 @@
 #include "UObject/Interface.h"
 #include "INV_Highlightable.generated.h"
 
-UINTERFACE()
+UINTERFACE(MinimalAPI)
 class UINV_Highlightable : public UInterface
 {
 	GENERATED_BODY()

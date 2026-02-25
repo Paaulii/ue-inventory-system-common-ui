@@ -59,7 +59,7 @@ void UUIS_MvvmUIManagerSubsystem::DeinitializeViewModels()
 {
 	for (auto ViewModel : ViewModels)
 	{
-		if (ViewModel != nullptr)
+		if (ViewModel.Get())
 		{
 			ViewModel->Deinitialize();
 		}

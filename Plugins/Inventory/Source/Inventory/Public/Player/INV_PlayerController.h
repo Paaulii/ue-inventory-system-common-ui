@@ -6,6 +6,7 @@
 #include "Player/UIS_PlayerController.h"
 #include "INV_PlayerController.generated.h"
 
+class UINV_ItemTracerComponent;
 class UINV_InventoryComponent;
 class UInputAction;
 class UInputMappingContext;
@@ -42,4 +43,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UINV_ItemTracerComponent> ItemTracerComponent;
 };

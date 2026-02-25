@@ -4,17 +4,18 @@
 #include "Player/INV_PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Player/Components/INV_ItemTracerComponent.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 
 AINV_PlayerController::AINV_PlayerController()
 {
 	InventoryComponent = CreateDefaultSubobject<UINV_InventoryComponent>("InventoryComponent");
+	ItemTracerComponent = CreateDefaultSubobject<UINV_ItemTracerComponent>("ItemTracer");
 }
 
 void AINV_PlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>((GetLocalPlayer()));
 
 	if (IsValid(Subsystem)) {
