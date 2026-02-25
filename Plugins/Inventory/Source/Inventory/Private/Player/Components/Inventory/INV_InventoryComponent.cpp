@@ -58,23 +58,14 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 
 	for (auto& CachedPlayerItem : PlayerItemDataList)
 	{
-		TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition = InventoryDataAsset->Items.FindByPredicate(
-			[&CachedPlayerItem](const TInstancedStruct<FINV_ItemAssetDefinition>& Item)
-			{
-				FINV_ItemAssetDefinition ItemAssetDefinition = Item.Get();
+		FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(CachedPlayerItem.IdData.Id, CachedPlayerItem.IdData.CategoryId);
 
-				return ItemAssetDefinition.Id == CachedPlayerItem.IdData.Id && ItemAssetDefinition.CategoryId ==
-					CachedPlayerItem.IdData.
-					                 CategoryId;
-			});
-
-		if (!ItemAssetDefinition)
+		if (ItemAssetDefinition == nullptr)
 		{
 			continue;
 		}
 
-		const FINV_ItemAssetDefinition& ItemAssetRef = ItemAssetDefinition->Get();
-		FINV_ItemDisplayData ItemDisplayData = FINV_ItemDisplayData(ItemAssetRef, CachedPlayerItem.Quantity);
+		FINV_ItemDisplayData ItemDisplayData = FINV_ItemDisplayData(ItemAssetDefinition, CachedPlayerItem.Quantity);
 		
 		if (!ItemsPerCategory.Find(CachedPlayerItem.IdData.CategoryId))
 		{

@@ -39,16 +39,16 @@ struct FINV_ItemDisplayData
 	FINV_ItemDisplayData(): Id(0), SmallImage(nullptr), LargeImage(nullptr),
 	Rarity(EINV_ItemRarity::Common), CurrencyValue(0), RequiredLevel(0), Stacks(0){}
 	
-	FINV_ItemDisplayData(const FINV_ItemAssetDefinition& AssetDefinition, int32 Stacks)
+	FINV_ItemDisplayData(const FINV_ItemAssetDefinition* AssetDefinition, int32 Stacks)
 	{
-		Id = AssetDefinition.Id;
-		Name = AssetDefinition.Name;
-		Description = AssetDefinition.Description;
-		SmallImage = AssetDefinition.SmallImage;
-		LargeImage = AssetDefinition.LargeImage;
-		Rarity = AssetDefinition.Rarity;
-		CurrencyValue = AssetDefinition.CurrencyValue;
-		RequiredLevel = AssetDefinition.RequiredLevel;
+		Id = AssetDefinition->Id;
+		Name = AssetDefinition->Name;
+		Description = AssetDefinition->Description;
+		SmallImage = AssetDefinition->SmallImage;
+		LargeImage = AssetDefinition->LargeImage;
+		Rarity = AssetDefinition->Rarity;
+		CurrencyValue = AssetDefinition->CurrencyValue;
+		RequiredLevel = AssetDefinition->RequiredLevel;
 		this->Stacks = Stacks;
 	}
 	
