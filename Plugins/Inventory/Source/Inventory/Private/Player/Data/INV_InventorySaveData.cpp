@@ -7,4 +7,8 @@ void UINV_InventorySaveData::UpdateItemDataAtIndex(const FINV_ItemData& ItemData
 	{
 		PlayerItems[Index] = ItemData;
 	}
+	else
+	{
+		PlayerItems.Add(ItemData);
+	}
 }

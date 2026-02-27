@@ -28,8 +28,7 @@ void UINV_InventoryComponent::BeginPlay()
 
 void UINV_InventoryComponent::LoadInventoryData()
 {
-	if (UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(
-		UGameplayStatics::LoadGameFromSlot("SaveData", 0)))
+	if (UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0)))
 	{
 		TArray<FINV_ItemData>& CachedInventoryItems = LoadGameInstance->GetInventoryItems();
 		CachedPlayerItems = CachedInventoryItems;
@@ -154,11 +153,8 @@ void UINV_InventoryComponent::RequestShowInventory()
 
 void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 {
-	UINV_InventorySaveData* SaveGameInstance = Cast<UINV_InventorySaveData>(
-	UGameplayStatics::CreateSaveGameObject(UINV_InventorySaveData::StaticClass()));
-	UWorld* World = GetWorld();
-
-	if (!SaveGameInstance || !World)
+	UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
+	if (!LoadGameInstance)
 	{
 		return;
 	}
@@ -215,10 +211,10 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 		}
 		
 		CachedInventoryDisplayData.UpdateItem(ItemDisplayData.GetValue());
-		SaveGameInstance->UpdateItemDataAtIndex(SaveItemData, UpdatedItemIndex);
+		LoadGameInstance->UpdateItemDataAtIndex(SaveItemData, UpdatedItemIndex);
 	}
 	
-	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveData", 0);
+	UGameplayStatics::SaveGameToSlot(LoadGameInstance, "SaveData", 0);
 	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
 }
 
