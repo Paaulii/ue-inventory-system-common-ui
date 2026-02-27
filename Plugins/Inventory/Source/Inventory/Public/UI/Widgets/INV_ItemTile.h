@@ -7,6 +7,7 @@
 #include "CommonLoadGuard.h"
 #include "INV_ItemTile.generated.h"
 
+class UCommonTextBlock;
 class UMVVMView;
 class UINV_SelectionViewModel;
 class UINV_ItemViewModel;
@@ -69,6 +70,9 @@ protected:
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Item;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UCommonTextBlock> Text_Quantity;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float EmptyItemBackgroundFadeValue;

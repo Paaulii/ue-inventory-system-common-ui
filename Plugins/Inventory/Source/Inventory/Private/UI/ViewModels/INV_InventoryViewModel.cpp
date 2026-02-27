@@ -43,6 +43,8 @@ void UINV_InventoryViewModel::ResetCategories()
 	{
 		CategoryViewModel->Deinitialize();
 	}
+	
+	Categories.Empty();
 }
 
 void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray)

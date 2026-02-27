@@ -21,6 +21,6 @@ public:
 	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
 	TArray<TInstancedStruct<FINV_ItemAssetDefinition>> Items;
 
-	FINV_ItemAssetDefinition* GetItemDefinition(int ItemId, int CategoryId);
-	TInstancedStruct<FINV_ItemAssetDefinition>* GetInstancedItemDefinition(int ItemId, int CategoryId);
+	FINV_ItemAssetDefinition* GetItemDefinition(FName ItemId, FName CategoryId);
+	TInstancedStruct<FINV_ItemAssetDefinition>* GetInstancedItemDefinition(FName ItemId, FName CategoryId);
 };

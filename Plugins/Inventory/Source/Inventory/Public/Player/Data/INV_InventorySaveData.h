@@ -6,28 +6,28 @@
 #include "GameFramework/SaveGame.h"
 #include "INV_InventorySaveData.generated.h"
 
-struct FINV_ItemIdentificationData;
-struct FINV_ItemSaveData;
+struct FINV_ItemIdentification;
+struct FINV_ItemData;
 
 UCLASS()
 class INVENTORY_API UINV_InventorySaveData : public USaveGame
 {
 	GENERATED_BODY()
 public:
-	TArray<FINV_ItemSaveData> GetInventoryItems() {return PlayerItems;}
-	int32 GetCurrencyAmount() const {return CurrencyAmount;}
-	int32 GetMaxItemsCapacity() const {return MaxItemsCapacity;}
-	void AddItemToArray(FINV_ItemSaveData& ItemData);
+	TArray<FINV_ItemData>& GetInventoryItems() {return PlayerItems;}
+	int16 GetCurrencyAmount() const {return CurrencyAmount;}
+	int16 GetMaxItemsCapacity() const {return MaxItemsCapacity;}
+	void UpdateItemDataAtIndex(const FINV_ItemData& ItemData, int16 Index);
 protected:
 	UPROPERTY()
-	int32 CurrencyAmount;
+	int16 CurrencyAmount;
 	
 	UPROPERTY()
-	int32 MaxItemsCapacity;
-	
-	UPROPERTY()
-	TArray<FINV_ItemSaveData> PlayerItems;
+	int16 MaxItemsCapacity;
 
 	UPROPERTY()
-	TArray<FINV_ItemIdentificationData> EquippedItems;
+	TArray<FINV_ItemData> PlayerItems;
+	
+	UPROPERTY()
+	TArray<FINV_ItemIdentification> EquippedItems;
 };

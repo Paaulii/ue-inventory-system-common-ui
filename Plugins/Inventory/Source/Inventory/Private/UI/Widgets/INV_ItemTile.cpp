@@ -8,6 +8,7 @@
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "View/MVVMView.h"
 #include "CommonLazyImage.h"
+#include "CommonTextBlock.h"
 #include "Components/Image.h"
 
 void UINV_ItemTile::NativeOnInitialized()
@@ -111,6 +112,7 @@ void UINV_ItemTile::SetEmptyState(bool bState)
 	SetIsSelectable(!bIsEmpty);
 	Background_Image->SetRenderOpacity(bState ? EmptyItemBackgroundFadeValue: 1.f);
 	Item->SetRenderOpacity(bState ? 0.f: 1.f);
+	Text_Quantity->SetVisibility(bState ? ESlateVisibility::Collapsed : ESlateVisibility::Visible);
 }
 
 void UINV_ItemTile::SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward, bool bSkipAnimation)

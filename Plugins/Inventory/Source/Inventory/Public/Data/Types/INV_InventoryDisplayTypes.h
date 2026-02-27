@@ -13,12 +13,14 @@ struct FINV_InventoryDisplayData
 {
 	GENERATED_BODY()
 	FINV_InventoryDisplayData(): CurrencyAmount(0), MaxItemsCapacity(0){}
-	FINV_InventoryDisplayData(int32 CurrencyAmount, int32 MaxItemsCapacity, TArray<FINV_CategoryDisplayData>& Categories)
+	FINV_InventoryDisplayData(const int32 CurrencyAmount, const int32 MaxItemsCapacity, const TArray<FINV_CategoryDisplayData>& Categories)
 	:CurrencyAmount(CurrencyAmount), MaxItemsCapacity(MaxItemsCapacity),Categories(Categories){}
 
 	int32 CurrencyAmount;
 	int32 MaxItemsCapacity;
 	TArray<FINV_CategoryDisplayData> Categories;
+
+	void UpdateItem(const FINV_ItemDisplayData& ItemToUpdate);
 };
 
 USTRUCT()
@@ -26,22 +28,27 @@ struct FINV_CategoryDisplayData
 {
 	GENERATED_BODY()
 	FINV_CategoryDisplayData(){}
-	FINV_CategoryDisplayData(const FText& Name, const TArray<FINV_ItemDisplayData>& Items): CategoryName(Name), Items(Items){}
-	
+	FINV_CategoryDisplayData(const FName& Id, const FText& Name, const TArray<FINV_ItemDisplayData>& Items): Id(Id), CategoryName(Name), Items(Items){}
+
+	FName Id;
 	FText CategoryName;
 	TArray<FINV_ItemDisplayData> Items;
+
+	void AddItemToCategory(FINV_ItemDisplayData* ItemDisplayData);
 };
 
 USTRUCT()
 struct FINV_ItemDisplayData
 {
 	GENERATED_BODY()
-	FINV_ItemDisplayData(): Id(0), SmallImage(nullptr), LargeImage(nullptr),
-	Rarity(EINV_ItemRarity::Common), CurrencyValue(0), RequiredLevel(0), Stacks(0){}
+	FINV_ItemDisplayData(): SaveDataIndex(-1), SmallImage(nullptr), LargeImage(nullptr),
+	Rarity(EINV_ItemRarity::Common), CurrencyValue(0), RequiredLevel(0), Quantity(0),MaxQuantity(0){}
 	
-	FINV_ItemDisplayData(const FINV_ItemAssetDefinition* AssetDefinition, int32 Stacks)
+	FINV_ItemDisplayData(int16 SaveDataIndex, const FINV_ItemAssetDefinition* AssetDefinition, int32 Quantity)
 	{
+		this->SaveDataIndex = SaveDataIndex;
 		Id = AssetDefinition->Id;
+		CategoryId = AssetDefinition->CategoryId;
 		Name = AssetDefinition->Name;
 		Description = AssetDefinition->Description;
 		SmallImage = AssetDefinition->SmallImage;
@@ -49,11 +56,13 @@ struct FINV_ItemDisplayData
 		Rarity = AssetDefinition->Rarity;
 		CurrencyValue = AssetDefinition->CurrencyValue;
 		RequiredLevel = AssetDefinition->RequiredLevel;
-		this->Stacks = Stacks;
+		MaxQuantity = AssetDefinition->MaxQuantity;
+		this->Quantity = Quantity;
 	}
 	
-	
-	int32 Id;
+	int16 SaveDataIndex;
+	FName Id;
+	FName CategoryId;
 	FText Name;
 	FText Description;
 	
@@ -66,5 +75,6 @@ struct FINV_ItemDisplayData
 	EINV_ItemRarity Rarity;
 	int32 CurrencyValue;
 	int32 RequiredLevel;
-	int32 Stacks;
+	int32 Quantity;
+	int32 MaxQuantity;
 };

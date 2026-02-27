@@ -15,6 +15,7 @@ void UINV_ItemViewModel::Initialize(const FINV_ItemDisplayData& ItemData, UINV_C
 	SetIsEquipped(false);
 	SetCategory(CategoryVM);
 	SetRequiredLevel(ItemData.RequiredLevel);
+	SetQuantity(ItemData.Quantity);
 }
 
 void UINV_ItemViewModel::SetItemName(const FText& Name)
@@ -60,4 +61,9 @@ void UINV_ItemViewModel::SetCategory(UINV_CategoryViewModel* CategoryVM)
 void UINV_ItemViewModel::SetRequiredLevel(int32 Level)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(RequiredLevel, Level);
+}
+
+void UINV_ItemViewModel::SetQuantity(int32 Value)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(Quantity, Value);
 }

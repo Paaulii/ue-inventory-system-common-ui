@@ -18,7 +18,6 @@ void UINV_CategoryViewModel::Deinitialize()
 
 void UINV_CategoryViewModel::SetCategoryName(const FText& Name)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *Name.ToString());
 	UE_MVVM_SET_PROPERTY_VALUE(CategoryName, Name);
 }
 

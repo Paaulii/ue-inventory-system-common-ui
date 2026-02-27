@@ -12,10 +12,10 @@ struct FINV_ItemAssetDefinition
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 Id;
+	FName Id;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 CategoryId;
+	FName CategoryId;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Name;
@@ -39,7 +39,7 @@ struct FINV_ItemAssetDefinition
 	int32 RequiredLevel;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MaxStacks;
+	int32 MaxQuantity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UMaterial* Material;
@@ -70,7 +70,7 @@ struct FINV_CategoryDefinitionData
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 Id;
+	FName Id;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText CategoryName;

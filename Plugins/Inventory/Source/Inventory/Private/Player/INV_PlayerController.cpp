@@ -4,6 +4,7 @@
 #include "Player/INV_PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Items/INV_Item.h"
 #include "Player/Components/INV_ItemTracerComponent.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 
@@ -37,6 +38,17 @@ void AINV_PlayerController::SetupInputComponent()
 void AINV_PlayerController::OnInteractWithItem()
 {
 	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
+	TObjectPtr<AActor> HoveredActor = ItemTracerComponent->GetHoveredActor();
+	if (!IsValid(HoveredActor))
+	{
+		return;
+	}
+
+	if (AINV_Item* Item = Cast<AINV_Item>(HoveredActor))
+	{
+		InventoryComponent->TryAddItem(Item->GetItemDefinition());
+		Item->PickUp();
+	} 
 }
 
 void AINV_PlayerController::OpenInventory()

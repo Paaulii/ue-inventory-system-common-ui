@@ -20,6 +20,7 @@ public:
 								   FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual void BeginPlay() override;
+	TObjectPtr<AActor> GetHoveredActor() const { return ThisActor;}
 protected:
 	void TraceForItem();
 	

@@ -44,7 +44,7 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 		                     : NAME_None;
 	if (PropertyName == GET_MEMBER_NAME_CHECKED(AINV_Item, ItemDefinition))
 	{
-		if (ItemDefinition.ItemId >= 0 && ItemDefinition.CategoryId >= 0)
+		if (ItemDefinition.ItemIdentification.ItemId.IsValid() && ItemDefinition.ItemIdentification.CategoryId.IsValid())
 		{
 			SetupMesh();
 		}
@@ -55,7 +55,7 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 void AINV_Item::SetupMesh()
 {
 	TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition = InventoryDataAsset->GetInstancedItemDefinition(
-		ItemDefinition.ItemId, ItemDefinition.CategoryId);
+		ItemDefinition.ItemIdentification.ItemId, ItemDefinition.ItemIdentification.CategoryId);
 
 	if (!ItemAssetDefinition)
 	{

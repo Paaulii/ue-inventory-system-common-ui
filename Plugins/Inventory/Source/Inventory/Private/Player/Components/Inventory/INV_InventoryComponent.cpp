@@ -31,21 +31,23 @@ void UINV_InventoryComponent::LoadInventoryData()
 	if (UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(
 		UGameplayStatics::LoadGameFromSlot("SaveData", 0)))
 	{
-		TArray<FINV_ItemSaveData> CachedInventoryItems = LoadGameInstance->GetInventoryItems();
-		TArray<FINV_CategoryDisplayData> CategoryDisplayDataArray = TranslatePlayerItemsToDisplayData(
-			CachedInventoryItems);
+		TArray<FINV_ItemData>& CachedInventoryItems = LoadGameInstance->GetInventoryItems();
+		CachedPlayerItems = CachedInventoryItems;
+		
+		TArray<FINV_CategoryDisplayData> CategoryDisplayDataArray = TranslatePlayerItemsToDisplayData(CachedInventoryItems);
 
-		const FINV_InventoryDisplayData InventoryDisplayData = FINV_InventoryDisplayData(
+		FINV_InventoryDisplayData InventoryDisplayData = FINV_InventoryDisplayData(
 			LoadGameInstance->GetCurrencyAmount(),
 			LoadGameInstance->GetMaxItemsCapacity(),
 			CategoryDisplayDataArray
 		);
-
+		
+		CachedInventoryDisplayData = InventoryDisplayData;
 		OnInventoryDataChanged.ExecuteIfBound(InventoryDisplayData);
 	}
 }
 
-TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsToDisplayData(const TArray<FINV_ItemSaveData>& PlayerItemDataList)
+TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsToDisplayData(TArray<FINV_ItemData>& PlayerItemDataList) const
 {
 	TArray<FINV_CategoryDisplayData> CategoryDisplayDataList;
 	
@@ -54,63 +56,41 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 		return CategoryDisplayDataList;
 	}
 	
-	TMap<int, TArray<FINV_ItemDisplayData>*> ItemsPerCategory;
+	TMap<FName, TArray<FINV_ItemDisplayData>*> ItemsPerCategory;
 
-	for (auto& CachedPlayerItem : PlayerItemDataList)
-	{
-		FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(CachedPlayerItem.IdData.Id, CachedPlayerItem.IdData.CategoryId);
+	for (int i = 0; i < PlayerItemDataList.Num(); i++ ) {
+		FINV_ItemData& CachedPlayerItem = PlayerItemDataList[i];
+		TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(CachedPlayerItem, i);
 
-		if (ItemAssetDefinition == nullptr)
+		if (!ItemDisplayData.IsSet())
 		{
 			continue;
 		}
-
-		FINV_ItemDisplayData ItemDisplayData = FINV_ItemDisplayData(ItemAssetDefinition, CachedPlayerItem.Quantity);
 		
-		if (!ItemsPerCategory.Find(CachedPlayerItem.IdData.CategoryId))
+		if (!ItemsPerCategory.Find(CachedPlayerItem.ItemIdentification.CategoryId))
 		{
-			TArray<FINV_ItemDisplayData> NewList = TArray<FINV_ItemDisplayData>();
-			ItemsPerCategory.Add(CachedPlayerItem.IdData.Id, &NewList) ;
+			TArray<FINV_ItemDisplayData> NewList;
+			ItemsPerCategory.Add(CachedPlayerItem.ItemIdentification.CategoryId, &NewList) ;
 		}
 		
-		TArray<FINV_ItemDisplayData>* ItemList = ItemsPerCategory[CachedPlayerItem.IdData.CategoryId];
+		TArray<FINV_ItemDisplayData>* ItemList = ItemsPerCategory[CachedPlayerItem.ItemIdentification.CategoryId];
 		
-		
-		ItemList->Add(ItemDisplayData);
+		ItemList->Add(ItemDisplayData.GetValue());
 	}
-
-	
 
 	for (const auto& CurrentCategoryData : InventoryDataAsset->Categories)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *CurrentCategoryData.CategoryName.ToString())
-
-		TArray<FINV_ItemDisplayData> NewList = TArray<FINV_ItemDisplayData>();
+		TArray<FINV_ItemDisplayData> NewList;
 		if (ItemsPerCategory.Find(CurrentCategoryData.Id))
 		{
 			NewList = *ItemsPerCategory[CurrentCategoryData.Id];
 		}
-		
-		CategoryDisplayDataList.Add(FINV_CategoryDisplayData(CurrentCategoryData.CategoryName,NewList));
+
+		FINV_CategoryDisplayData NewCategory = FINV_CategoryDisplayData(CurrentCategoryData.Id, CurrentCategoryData.CategoryName,NewList);
+		CategoryDisplayDataList.Add(NewCategory);
 	}
 
 	return CategoryDisplayDataList;
-}
-
-
-void UINV_InventoryComponent::SaveItemToInventoryData(FINV_ItemSaveData& ItemData)
-{
-	UINV_InventorySaveData* SaveGameInstance = Cast<UINV_InventorySaveData>(
-		UGameplayStatics::CreateSaveGameObject(UINV_InventorySaveData::StaticClass()));
-	UWorld* World = GetWorld();
-
-	if (!SaveGameInstance || !World)
-	{
-		return;
-	}
-
-	SaveGameInstance->AddItemToArray(ItemData);
-	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveData", 0);
 }
 
 void UINV_InventoryComponent::SetInventoryVisible(bool bIsVisible)
@@ -157,8 +137,7 @@ void UINV_InventoryComponent::RequestShowInventory()
 		return;
 	}
 
-	UCommonActivatableWidget* WidgetToActivate = RootLayout->
-		PushWidgetToLayerStack(UI::Layer::GameMenu, InventoryClass);
+	UCommonActivatableWidget* WidgetToActivate = RootLayout->PushWidgetToLayerStack(UI::Layer::GameMenu, InventoryClass);
 
 	if (!bIsBindToInventoryOnDeactivated)
 		if (UINV_InventoryScreen* InventoryScreen = Cast<UINV_InventoryScreen>(WidgetToActivate))
@@ -171,4 +150,89 @@ void UINV_InventoryComponent::RequestShowInventory()
 				bIsBindToInventoryOnDeactivated = false;
 			});
 		}
+}
+
+void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
+{
+	UINV_InventorySaveData* SaveGameInstance = Cast<UINV_InventorySaveData>(
+	UGameplayStatics::CreateSaveGameObject(UINV_InventorySaveData::StaticClass()));
+	UWorld* World = GetWorld();
+
+	if (!SaveGameInstance || !World)
+	{
+		return;
+	}
+	
+	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
+			ItemData.ItemIdentification.ItemId,
+			ItemData.ItemIdentification.CategoryId
+		);
+	
+	int ReminderQuantityToAdd = ItemData.Quantity;
+	const int MaxQuantity = ItemAssetDefinition->MaxQuantity;
+	TArray<FINV_ItemData> PlayerSavedItems = CachedPlayerItems.FilterByPredicate([&ItemData, &MaxQuantity](const FINV_ItemData& SaveItemData)
+	{
+		return  SaveItemData.ItemIdentification.ItemId == ItemData.ItemIdentification.ItemId &&
+			SaveItemData.ItemIdentification.CategoryId == ItemData.ItemIdentification.CategoryId &&
+				SaveItemData.Quantity < MaxQuantity;
+	});
+
+	TArray<int16> UpdatedIndices;
+	if (PlayerSavedItems.Num() > 0)
+	{
+		for (int i = 0 ; i < PlayerSavedItems.Num(); i++)
+		{
+			int16 QuantityAfterAddition = PlayerSavedItems[i].Quantity + ReminderQuantityToAdd;
+			ReminderQuantityToAdd = QuantityAfterAddition - MaxQuantity;
+
+			PlayerSavedItems[i].Quantity = FMath::Clamp(QuantityAfterAddition, 0, MaxQuantity);
+			UpdatedIndices.Add(i);
+		}
+	}
+
+	while (ReminderQuantityToAdd > 0)
+	{
+		int16 ItemQuantity = ReminderQuantityToAdd;
+		
+		if (ReminderQuantityToAdd >= MaxQuantity)
+		{
+			ItemQuantity = MaxQuantity;
+			ReminderQuantityToAdd -= MaxQuantity;
+		}
+		CachedPlayerItems.Add(FINV_ItemData(FINV_ItemIdentification(ItemData.ItemIdentification.ItemId, ItemData.ItemIdentification.CategoryId), ItemQuantity));
+		UpdatedIndices.Add(CachedPlayerItems.Num() - 1);
+	}
+		
+
+	for (auto UpdatedItemIndex : UpdatedIndices)
+	{
+		FINV_ItemData& SaveItemData = CachedPlayerItems[UpdatedItemIndex];
+		TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(SaveItemData, UpdatedItemIndex);
+
+		if (!ItemDisplayData.IsSet())
+		{
+			continue;
+		}
+		
+		CachedInventoryDisplayData.UpdateItem(ItemDisplayData.GetValue());
+		SaveGameInstance->UpdateItemDataAtIndex(SaveItemData, UpdatedItemIndex);
+	}
+	
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, "SaveData", 0);
+	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
+}
+
+TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(const FINV_ItemData& ItemDefinition, int16 SaveDataIndex) const
+{
+	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
+			ItemDefinition.ItemIdentification.ItemId,
+			ItemDefinition.ItemIdentification.CategoryId
+		);
+
+	if (ItemAssetDefinition == nullptr)
+	{
+		return {};
+	}
+
+	return FINV_ItemDisplayData(SaveDataIndex, ItemAssetDefinition, ItemDefinition.Quantity);
 }

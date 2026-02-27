@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Data/Types/INV_ItemDefinition.h"
+#include "Data/Types/INV_ItemSaveDataTypes.h"
 #include "GameFramework/Actor.h"
 #include "Interaction/INV_Highlightable.h"
 #include "StructUtils/InstancedStruct.h"
@@ -32,10 +32,10 @@ public:
 	
 	void SetupMesh();
 	void PickUp();
-	FINV_ItemDefinition GetItemDefinition() const {return ItemDefinition;};
+	FINV_ItemData& GetItemDefinition() { return ItemDefinition; };
 protected:
 	UPROPERTY(EditInstanceOnly, Category= "Item Definition")
-	FINV_ItemDefinition ItemDefinition;
+	FINV_ItemData ItemDefinition;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory" )
 	TObjectPtr<UINV_InventoryDataAsset> InventoryDataAsset;
