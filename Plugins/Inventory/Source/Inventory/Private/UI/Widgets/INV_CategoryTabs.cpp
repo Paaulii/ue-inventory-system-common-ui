@@ -13,14 +13,19 @@
 
 void UINV_CategoryTabs::VM_CreateTabs(const TArray<UINV_CategoryViewModel*> CategoryViewModels)
 {
-	if (CategoryViewModels.Num() <= 0 )
+	if (CategoryViewModels.Num() <= 0)
 	{
 		return;
+	}
+
+	if (CacheSelectionVM)
+	{
+		CacheSelectionVM->SetSelectedCategory(nullptr);
 	}
 	
 	ResetTabs();
 	CacheViewModels();
-	for ( UINV_CategoryViewModel* CategoryViewModel : CategoryViewModels)
+	for (UINV_CategoryViewModel* CategoryViewModel : CategoryViewModels)
 	{
 		UUserWidget* NewTab = TabButtons->CreateEntry();
 		if (UINV_CategoryButtonTab* ButtonTab = Cast<UINV_CategoryButtonTab>(NewTab))
@@ -50,11 +55,11 @@ void UINV_CategoryTabs::ChangeCategory(const int Offset) const
 
 void UINV_CategoryTabs::SelectTab(const int Index) const
 {
-	if (!CacheInventoryVM  || !CacheSelectionVM)
+	if (!CacheInventoryVM || !CacheSelectionVM)
 	{
 		return;
 	}
-	
+
 	TArray<UINV_CategoryViewModel*> AllCategories = CacheInventoryVM->GetCategories();
 	if (AllCategories.IsValidIndex(Index))
 	{
@@ -71,19 +76,19 @@ void UINV_CategoryTabs::ResetTabs() const
 			ButtonTab->Deinitialize();
 		}
 	}
-	
+
 	TabButtons->Reset();
 }
 
 void UINV_CategoryTabs::CacheViewModels()
 {
 	UUIS_MvvmUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIS_MvvmUIManagerSubsystem>();
-	if (CacheSelectionVM == nullptr )
+	if (CacheSelectionVM == nullptr)
 	{
 		CacheSelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
 	}
 
-	if (CacheInventoryVM == nullptr )
+	if (CacheInventoryVM == nullptr)
 	{
 		CacheInventoryVM = UIManager->GetViewModel<UINV_InventoryViewModel>();
 	}

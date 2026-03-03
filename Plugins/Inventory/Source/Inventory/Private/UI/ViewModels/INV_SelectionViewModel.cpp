@@ -6,6 +6,12 @@
 void UINV_SelectionViewModel::SetSelectedCategory(UINV_CategoryViewModel* Category)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(SelectedCategory, Category);
+
+	if (Category == nullptr)
+	{
+		return;
+	}
+	
 	TArray<TObjectPtr<UINV_ItemViewModel>> CategoryItems = SelectedCategory->GetCategoryItems();
 	SetSelectedItem(CategoryItems.IsValidIndex(0) ? CategoryItems[0] : nullptr);
 }

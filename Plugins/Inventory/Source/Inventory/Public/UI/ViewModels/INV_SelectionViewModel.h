@@ -34,7 +34,7 @@ protected:
 	bool RefreshFocusRequested;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
-	UINV_CategoryViewModel* SelectedCategory;
+	TObjectPtr<UINV_CategoryViewModel> SelectedCategory;
 
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	UINV_ItemViewModel* SelectedItem;
