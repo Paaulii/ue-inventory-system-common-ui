@@ -7,6 +7,7 @@
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_ItemDetails.generated.h"
 
+class UINV_ItemActionButton;
 class UINV_ItemViewModel;
 class UImage;
 class UINV_SelectionViewModel;
@@ -35,6 +36,15 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UCommonTextBlock* Text_Value;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UINV_ItemActionButton> Button_Consume;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UINV_ItemActionButton> Button_Equip;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UINV_ItemActionButton> Button_Drop;
 	
 	UPROPERTY()
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
