@@ -14,6 +14,11 @@ void UINV_ItemActionButton::SetEnabledState(bool bState)
 	SetVisualStateWithAnimation(Disabled, bState);
 }
 
+void UINV_ItemActionButton::SetButtonVisibility(bool bState)
+{
+	SetVisibility(bState ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+}
+
 void UINV_ItemActionButton::SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward)
 {
 	EUMGSequencePlayMode::Type PlayModeType =  bPlayForward ? EUMGSequencePlayMode::Forward: EUMGSequencePlayMode::Reverse;

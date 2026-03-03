@@ -40,7 +40,16 @@ struct FINV_ItemAssetDefinition
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 MaxQuantity;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsConsumable;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsEquippable;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsDroppable;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UMaterial* Material;
 

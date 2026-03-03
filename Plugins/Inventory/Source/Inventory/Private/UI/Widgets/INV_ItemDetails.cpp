@@ -8,6 +8,7 @@
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
 #include "CommonTextBlock.h"
+#include "UI/Widgets/INV_ItemActionButton.h"
 
 void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 {
@@ -23,6 +24,10 @@ void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 	Text_Description->SetText(SelectedItem->GetDescription());
 	Text_Value->SetText(FText::AsNumber(SelectedItem->GetCurrencyValue()));
 	Image_SelectedItem->SetBrushFromTexture(SelectedItem->GetLargeImage());
+
+	Button_Consume->SetButtonVisibility(SelectedItem->GetConsumable());
+	Button_Equip->SetButtonVisibility(SelectedItem->GetEquippable());
+	Button_Drop->SetButtonVisibility(SelectedItem->GetDroppable());
 }
 
 

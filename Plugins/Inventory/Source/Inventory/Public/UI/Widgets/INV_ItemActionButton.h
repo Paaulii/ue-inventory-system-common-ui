@@ -13,7 +13,8 @@ UCLASS()
 class INVENTORY_API UINV_ItemActionButton : public UCommonButtonBase
 {
 	GENERATED_BODY()
-
+public:
+	void SetButtonVisibility(bool bState);
 protected:
 	UFUNCTION(BlueprintCallable)
 	void SetHoveredState(bool bState);

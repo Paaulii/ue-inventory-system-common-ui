@@ -24,6 +24,9 @@ public:
 	UINV_CategoryViewModel* GetCategory() const { return Category; }
 	int32 GetRequiredLevel() const { return RequiredLevel; }
 	int32 GetQuantity() const { return Quantity; }
+	bool GetEquippable() const { return Equippable;}
+	bool GetConsumable() const { return Consumable;}
+	bool GetDroppable() const { return Droppable;}
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	FText ItemName;
@@ -54,6 +57,15 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	int32 Quantity;
+
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool Consumable;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool Equippable;
+
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool Droppable;
 private:
 	void SetItemName(const FText& Name);
 	void SetDescription(const FText& NewDescription);
@@ -65,4 +77,7 @@ private:
 	void SetIsEquipped(bool bState);
 	void SetRequiredLevel(int32 Level);
 	void SetQuantity(int32 Value);
+	void SetConsumable(bool bState);
+	void SetEquippable(bool bState);
+	void SetDroppable(bool bState);
 };

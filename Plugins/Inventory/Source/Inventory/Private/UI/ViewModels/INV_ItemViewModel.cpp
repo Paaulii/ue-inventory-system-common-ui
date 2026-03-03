@@ -16,6 +16,9 @@ void UINV_ItemViewModel::Initialize(const FINV_ItemDisplayData& ItemData, UINV_C
 	SetCategory(CategoryVM);
 	SetRequiredLevel(ItemData.RequiredLevel);
 	SetQuantity(ItemData.Quantity);
+	SetConsumable(ItemData.bIsConsumable);
+	SetEquippable(ItemData.bIsEquippable);
+	SetDroppable(ItemData.bIsDroppable);
 }
 
 void UINV_ItemViewModel::SetItemName(const FText& Name)
@@ -66,4 +69,19 @@ void UINV_ItemViewModel::SetRequiredLevel(int32 Level)
 void UINV_ItemViewModel::SetQuantity(int32 Value)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Quantity, Value);
+}
+
+void UINV_ItemViewModel::SetEquippable(bool bState)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(Equippable, bState);
+}
+
+void UINV_ItemViewModel::SetConsumable(bool bState)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(Consumable, bState);
+}
+
+void UINV_ItemViewModel::SetDroppable(bool bState)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(Droppable, bState);
 }
