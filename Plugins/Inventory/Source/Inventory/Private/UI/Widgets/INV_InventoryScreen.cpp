@@ -21,4 +21,7 @@ void UINV_InventoryScreen::ClearViewModelsCache()
 {
 	MVVMView->SetViewModel("InventoryViewModel", nullptr);
 	MVVMView->SetViewModel("SelectionViewModel", nullptr);
+
+	CachedInventoryVM = nullptr;
+	CachedSelectionVM = nullptr;
 }

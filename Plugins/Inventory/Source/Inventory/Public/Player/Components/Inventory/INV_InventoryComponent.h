@@ -7,6 +7,9 @@
 #include "Data/Types/INV_InventoryDisplayTypes.h"
 #include "INV_InventoryComponent.generated.h"
 
+class UCommonActivatableWidget;
+
+class UINV_ModalPromptTexts;
 struct FINV_ItemData;
 class AINV_PlayerController;
 class UINV_InventoryDataAsset;
@@ -23,6 +26,8 @@ public:
 	
 	void ToggleInventory();
 	void TryAddItem(FINV_ItemData& ItemData);
+	FText GetPromptTextById(const FName& PromptId) const;
+	void ShowPopup();
 protected:
 	virtual void BeginPlay() override;
 	void LoadInventoryData();
@@ -37,6 +42,12 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory" )
 	TObjectPtr<UINV_InventoryDataAsset> InventoryDataAsset;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory/Modal" )
+	TObjectPtr<UINV_ModalPromptTexts> ModalPromptTextsData;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory/Modal" )
+	TSubclassOf<UCommonActivatableWidget> ModalClass;
 	
 	TWeakObjectPtr<AINV_PlayerController> OwningController;
 	

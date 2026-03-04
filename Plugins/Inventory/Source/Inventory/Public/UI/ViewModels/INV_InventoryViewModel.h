@@ -6,6 +6,7 @@
 #include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_InventoryViewModel.generated.h"
 
+class UINV_PromptViewModel;
 struct FINV_CategoryDisplayData;
 struct FINV_InventoryDisplayData;
 class UINV_InventoryComponent;
@@ -23,6 +24,8 @@ public:
 	void RebuildInventory(const FINV_InventoryDisplayData& InventoryData);
 	void ResetCategories();
 	void InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray);
+	
+
 	float GetCurrencyAmount() const { return CurrencyAmount; }
 	int GetMaxItemsCapacity() const { return MaxItemsCapacity; }
 	TArray<UINV_CategoryViewModel*> GetCategories() const { return Categories;}
@@ -42,4 +45,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
+
+	UPROPERTY()
+	TObjectPtr<UINV_PromptViewModel> CachedPromptVM;
 };

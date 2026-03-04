@@ -43,7 +43,7 @@ struct FINV_ItemDisplayData
 	GENERATED_BODY()
 	FINV_ItemDisplayData(): SaveDataIndex(-1), SmallImage(nullptr), LargeImage(nullptr),
 	Rarity(EINV_ItemRarity::Common), CurrencyValue(0), RequiredLevel(0), Quantity(0),MaxQuantity(0),
-	bIsConsumable(false), bIsDroppable(false), bIsEquippable(false){}
+	bIsConsumable(false), bIsEquippable(false),bIsDroppable(false){}
 	
 	FINV_ItemDisplayData(int16 SaveDataIndex, const FINV_ItemAssetDefinition* AssetDefinition, int32 Quantity)
 	{

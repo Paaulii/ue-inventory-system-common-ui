@@ -68,6 +68,11 @@ void UINV_ItemTile::VM_OnIsEquippedUpdated(bool bState)
 
 void UINV_ItemTile::SetFocusState(bool bState, bool bSkipAnimation)
 {
+	if (!bIsInteractable)
+	{
+		return;
+	}
+	
 	bIsSelected = bState;
 	SetVisualStateWithAnimation(Selected, bIsSelected, bSkipAnimation);
 }
@@ -80,7 +85,7 @@ void UINV_ItemTile::SetEquippedState(bool bState, bool bSkipAnimation)
 
 void UINV_ItemTile::SetHoveredState(bool bState, bool bSkipAnimation)
 {
-	if (bIsSelected || bIsEmpty)
+	if (bIsSelected || bIsEmpty || !bIsInteractable)
 	{
 		return;
 	}
@@ -112,7 +117,12 @@ void UINV_ItemTile::SetEmptyState(bool bState)
 	SetIsSelectable(!bIsEmpty);
 	Background_Image->SetRenderOpacity(bState ? EmptyItemBackgroundFadeValue: 1.f);
 	Item->SetRenderOpacity(bState ? 0.f: 1.f);
-	Text_Quantity->SetVisibility(bState ? ESlateVisibility::Collapsed : ESlateVisibility::Visible);
+	SetQuantityVisible(bState);
+}
+
+void UINV_ItemTile::SetInteractable(bool bState)
+{
+	bIsInteractable = bState;
 }
 
 void UINV_ItemTile::SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward, bool bSkipAnimation)
@@ -123,6 +133,12 @@ void UINV_ItemTile::SetVisualStateWithAnimation(UWidgetAnimation* Animation, boo
 	
 	PlayAnimation(Animation,AnimationStartTime,1,PlayModeType,AnimationPlaySpeed);
 }
+
+void UINV_ItemTile::SetQuantityVisible(bool bState) const
+{
+	Text_Quantity->SetVisibility(bState ? ESlateVisibility::Collapsed : ESlateVisibility::Visible);
+}
+
 
 void UINV_ItemTile::NotifyOnItemSelected()
 {

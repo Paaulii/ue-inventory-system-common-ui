@@ -7,13 +7,15 @@
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_ItemDetails.generated.h"
 
+class UINV_ItemDetailsViewModel;
+class UINV_PromptViewModel;
+class UINV_InventoryViewModel;
 class UINV_ItemActionButton;
 class UINV_ItemViewModel;
 class UImage;
 class UINV_SelectionViewModel;
-class UMVVMView;
-
 class UCommonTextBlock;
+
 UCLASS()
 class INVENTORY_API UINV_ItemDetails : public UINV_ActivatableMvvmWidget
 {
@@ -21,10 +23,22 @@ class INVENTORY_API UINV_ItemDetails : public UINV_ActivatableMvvmWidget
 public:
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem);
+
+	UFUNCTION(BlueprintCallable)
+	void OnConsumeButtonSelected();
+
+	UFUNCTION(BlueprintCallable)
+	void OnEquipButtonSelected();
+
+	UFUNCTION(BlueprintCallable)
+	void OnDropButtonSelected();
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 private:
+	UPROPERTY(EditInstanceOnly, Category = "Prompts")
+	FName DropPromptId;
+	
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_SelectedItem;
 	
@@ -49,4 +63,9 @@ private:
 	UPROPERTY()
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
 	
+	UPROPERTY()
+	TObjectPtr<UINV_PromptViewModel> CachedPromptVM;
+
+	UPROPERTY()
+	TObjectPtr<UINV_ItemDetailsViewModel> CachedItemDetailsVM;
 };

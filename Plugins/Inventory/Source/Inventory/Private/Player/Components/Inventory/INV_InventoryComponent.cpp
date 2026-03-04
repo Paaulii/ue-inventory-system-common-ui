@@ -5,10 +5,12 @@
 
 #include "UIS_UIManagerSubsystem.h"
 #include "Data/INV_InventoryDataAsset.h"
+#include "Data/INV_ModalPromptTexts.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/INV_PlayerController.h"
 #include "Player/Data/INV_InventorySaveData.h"
+#include "UI/UIS_CommonUIExtensions.h"
 #include "UI/UIS_CommonUILayerTags.h"
 #include "UI/UIS_GameUIPolicy.h"
 #include "UI/UIS_PrimaryGameLayout.h"
@@ -216,6 +218,24 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 	
 	UGameplayStatics::SaveGameToSlot(LoadGameInstance, "SaveData", 0);
 	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
+}
+
+FText UINV_InventoryComponent::GetPromptTextById(const FName& PromptId) const
+{
+	if (!ModalPromptTextsData || !ModalPromptTextsData->Prompts.Contains(PromptId))
+	{
+		return FText::GetEmpty();
+	}
+
+	return ModalPromptTextsData->Prompts[PromptId];
+}
+
+void UINV_InventoryComponent::ShowPopup()
+{
+	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		UUIS_CommonUIExtensions::PushContentToLayer(PlayerController->GetLocalPlayer(), UI::Layer::Modal, ModalClass);
+	}
 }
 
 TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(const FINV_ItemData& ItemDefinition, int16 SaveDataIndex) const

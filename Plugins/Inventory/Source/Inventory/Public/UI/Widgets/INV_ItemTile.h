@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void VM_OnIsEquippedUpdated(bool bState);
 	
+	// UFUNCTION(BlueprintCallable)
+	// void VM_UpdateTileContent(UINV_ItemViewModel* ItemVM);
+	//
 	UFUNCTION(BlueprintCallable)
 	void SetFocusState(bool bState, bool bSkipAnimation);
 	
@@ -49,11 +52,16 @@ public:
 
 	void SetEmptyState(bool bState);
 	
+	void SetInteractable(bool bState);
+	
 	void SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionViewModel* SelectionVM);
 	
 	void SetEquippedState(bool bState, bool bSkipAnimation);
 	
 	void SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward, bool bSkipAnimation);
+
+	void SetQuantityVisible(bool bState) const;
+
 
 protected:
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
@@ -92,4 +100,5 @@ private:
 	bool bIsSelected;
 	bool bIsEquipped;
 	bool bIsEmpty;
+	bool bIsInteractable = true;
 };

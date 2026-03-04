@@ -7,9 +7,11 @@
 #include "GameFramework/Character.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
+#include "UI/ViewModels/INV_PromptViewModel.h"
 
 void UINV_InventoryViewModel::Initialize()
 {
+	Super::Initialize();
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
 		InventoryComponent = PlayerController->FindComponentByClass<UINV_InventoryComponent>();
@@ -22,6 +24,7 @@ void UINV_InventoryViewModel::Initialize()
 
 void UINV_InventoryViewModel::Deinitialize()
 {
+	Super::Deinitialize();
 	if (!InventoryComponent)
 	{
 		return;
