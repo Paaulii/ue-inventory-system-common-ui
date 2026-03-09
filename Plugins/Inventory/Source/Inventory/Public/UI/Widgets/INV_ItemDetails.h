@@ -37,7 +37,9 @@ protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 private:
+	void HandleItemActionPressed(const FINV_ItemActionType& ActionType) const;
 	void DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const;
+	
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_SelectedItem;
 	

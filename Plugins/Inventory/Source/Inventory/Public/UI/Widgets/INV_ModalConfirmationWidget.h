@@ -23,7 +23,7 @@ public:
 	void VM_SelectedItemChanged(UINV_ItemViewModel* ItemVM);
 	
 	UFUNCTION(BlueprintCallable)
-	void VM_ToggleItemQuantityVisibility(bool bShouldShowQuantity);
+	void VM_ToggleItemQuantityVisibility(bool bIsSingleItemQuantityAction);
 	
 	UFUNCTION(BlueprintCallable)
 	void OnConfirmAction();

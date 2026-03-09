@@ -34,12 +34,27 @@ void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 
 void UINV_ItemDetails::OnConsumeButtonSelected()
 {
-	DelegatePerformItemAction(FINV_ItemActionType::Consume);
+	HandleItemActionPressed(FINV_ItemActionType::Consume);
+}
+
+void UINV_ItemDetails::OnDropButtonSelected()
+{
+	HandleItemActionPressed(FINV_ItemActionType::Drop);
 }
 
 void UINV_ItemDetails::OnEquipButtonSelected()
 {
 	DelegatePerformItemAction(FINV_ItemActionType::Equip);
+}
+
+void UINV_ItemDetails::HandleItemActionPressed(const FINV_ItemActionType& ActionType) const
+{
+	if (CachedItemActionVM)
+	{
+		CachedItemActionVM->SetSelectedAction(ActionType);
+		CachedItemActionVM->DelegateShowItemActionPopup();
+		CachedItemActionVM->SetIsSingleItemQuantityAction(false);
+	}
 }
 
 void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const
@@ -55,15 +70,6 @@ void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& Acti
 	}
 }
 
-void UINV_ItemDetails::OnDropButtonSelected()
-{
-	if (CachedItemActionVM)
-	{
-		CachedItemActionVM->SetSelectedAction(FINV_ItemActionType::Drop);
-		CachedItemActionVM->DelegateShowItemActionPopup();
-		CachedItemActionVM->SetIsSingleItemQuantityAction(false);
-	}
-}
 
 void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 {
@@ -83,3 +89,4 @@ void UINV_ItemDetails::ClearViewModelsCache()
 	CachedSelectionVM = nullptr;
 	CachedItemActionVM = nullptr;
 }
+

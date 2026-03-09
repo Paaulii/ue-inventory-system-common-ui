@@ -15,9 +15,9 @@ void UINV_ModalConfirmationWidget::VM_SelectedItemChanged(UINV_ItemViewModel* It
 	Image_Icon->SetBrushFromTexture(ItemVM->GetSmallImage());
 }
 
-void UINV_ModalConfirmationWidget::VM_ToggleItemQuantityVisibility(bool bShouldShowQuantity)
+void UINV_ModalConfirmationWidget::VM_ToggleItemQuantityVisibility(bool bIsSingleItemQuantityAction)
 {
-	Text_Quantity->SetVisibility(bShouldShowQuantity? ESlateVisibility::Visible : ESlateVisibility::Collapsed);	
+	Text_Quantity->SetVisibility(bIsSingleItemQuantityAction? ESlateVisibility::Collapsed : ESlateVisibility::Visible);	
 }
 
 void UINV_ModalConfirmationWidget::OnConfirmAction()
