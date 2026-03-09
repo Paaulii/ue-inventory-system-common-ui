@@ -8,20 +8,20 @@
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
 #include "CommonTextBlock.h"
-#include "UI/ViewModels/INV_PromptViewModel.h"
-#include "UI/ViewModels/INV_ItemDetailsViewModel.h"
+#include "Data/Types/INV_ItemActionType.h"
+#include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "UI/Widgets/INV_ItemActionButton.h"
 
 void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 {
 	bool bIsItemEmpty = SelectedItem == nullptr;
-	SetVisibility(bIsItemEmpty? ESlateVisibility::Hidden : ESlateVisibility::Visible);
-	
+	SetVisibility(bIsItemEmpty ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
+
 	if (bIsItemEmpty)
 	{
-			return;
+		return;
 	}
-	
+
 	Text_Name->SetText(SelectedItem->GetItemName());
 	Text_Description->SetText(SelectedItem->GetDescription());
 	Text_Value->SetText(FText::AsNumber(SelectedItem->GetCurrencyValue()));
@@ -34,30 +34,34 @@ void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 
 void UINV_ItemDetails::OnConsumeButtonSelected()
 {
-	if (CachedItemDetailsVM)
-	{
-		CachedItemDetailsVM->OnConsumeButtonSelected();
-	}
+	DelegatePerformItemAction(FINV_ItemActionType::Consume);
 }
 
 void UINV_ItemDetails::OnEquipButtonSelected()
 {
-	if (CachedItemDetailsVM)
+	DelegatePerformItemAction(FINV_ItemActionType::Equip);
+}
+
+void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const
+{
+	if (!CachedItemActionVM || !CachedSelectionVM)
 	{
-		CachedItemDetailsVM->OnEquipButtonSelected();
+		return;
+	}
+
+	if (UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem())
+	{
+		CachedItemActionVM->DelegatePerformAction(ActionType, SelectedItem->GetItemIdentification() );
 	}
 }
 
 void UINV_ItemDetails::OnDropButtonSelected()
 {
-	if (CachedPromptVM)
+	if (CachedItemActionVM)
 	{
-		CachedPromptVM->SetCurrentPrompt(DropPromptId);
-	}
-
-	if (CachedItemDetailsVM)
-	{
-		CachedItemDetailsVM->OnDropButtonSelected();
+		CachedItemActionVM->SetSelectedAction(FINV_ItemActionType::Drop);
+		CachedItemActionVM->DelegateShowItemActionPopup();
+		CachedItemActionVM->SetIsSingleItemQuantityAction(false);
 	}
 }
 
@@ -67,22 +71,15 @@ void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
 	CachedSelectionVM = SelectionVM;
 
-	UINV_PromptViewModel* PromptVM = UIManager->GetViewModel<UINV_PromptViewModel>();
-	MVVMView->SetViewModel("PromptViewModel", PromptVM);
-	CachedPromptVM = PromptVM;
-
-	UINV_ItemDetailsViewModel* ItemDetailsVM = UIManager->GetViewModel<UINV_ItemDetailsViewModel>();
-	MVVMView->SetViewModel("ItemDetailsViewModel", ItemDetailsVM);
-	CachedItemDetailsVM = ItemDetailsVM;
+	UINV_ItemActionViewModel* ItemActionVM = UIManager->GetViewModel<UINV_ItemActionViewModel>();
+	MVVMView->SetViewModel("ItemActionViewModel", ItemActionVM);
+	CachedItemActionVM = ItemActionVM;
 }
 
 void UINV_ItemDetails::ClearViewModelsCache()
 {
 	MVVMView->SetViewModel("SelectionViewModel", nullptr);
-	MVVMView->SetViewModel("PromptViewModel", nullptr);
-	MVVMView->SetViewModel("ItemDetailsViewModel", nullptr);
+	MVVMView->SetViewModel("ItemActionViewModel", nullptr);
 	CachedSelectionVM = nullptr;
-	CachedPromptVM = nullptr;
-	CachedItemDetailsVM = nullptr;
+	CachedItemActionVM = nullptr;
 }
-

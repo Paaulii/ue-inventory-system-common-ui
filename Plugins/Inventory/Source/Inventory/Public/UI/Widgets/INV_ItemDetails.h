@@ -7,8 +7,9 @@
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_ItemDetails.generated.h"
 
+enum class FINV_ItemActionType : uint8;
 class UINV_ItemDetailsViewModel;
-class UINV_PromptViewModel;
+class UINV_ItemActionViewModel;
 class UINV_InventoryViewModel;
 class UINV_ItemActionButton;
 class UINV_ItemViewModel;
@@ -36,9 +37,7 @@ protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 private:
-	UPROPERTY(EditInstanceOnly, Category = "Prompts")
-	FName DropPromptId;
-	
+	void DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const;
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_SelectedItem;
 	
@@ -64,8 +63,5 @@ private:
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
 	
 	UPROPERTY()
-	TObjectPtr<UINV_PromptViewModel> CachedPromptVM;
-
-	UPROPERTY()
-	TObjectPtr<UINV_ItemDetailsViewModel> CachedItemDetailsVM;
+	TObjectPtr<UINV_ItemActionViewModel> CachedItemActionVM;
 };

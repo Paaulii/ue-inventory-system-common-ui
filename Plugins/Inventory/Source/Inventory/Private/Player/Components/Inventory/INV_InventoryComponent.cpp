@@ -6,6 +6,7 @@
 #include "UIS_UIManagerSubsystem.h"
 #include "Data/INV_InventoryDataAsset.h"
 #include "Data/INV_ModalPromptTexts.h"
+#include "Data/Types/INV_ItemActionType.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/INV_PlayerController.h"
@@ -46,6 +47,11 @@ void UINV_InventoryComponent::LoadInventoryData()
 		CachedInventoryDisplayData = InventoryDisplayData;
 		OnInventoryDataChanged.ExecuteIfBound(InventoryDisplayData);
 	}
+}
+
+void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Consume Item"));
 }
 
 TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsToDisplayData(TArray<FINV_ItemData>& PlayerItemDataList) const
@@ -220,21 +226,37 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
 }
 
-FText UINV_InventoryComponent::GetPromptTextById(const FName& PromptId) const
+FText UINV_InventoryComponent::GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const
 {
-	if (!ModalPromptTextsData || !ModalPromptTextsData->Prompts.Contains(PromptId))
+	if (!ModalPromptTextsData || !ModalPromptTextsData->Prompts.Contains(ActionType))
 	{
 		return FText::GetEmpty();
 	}
 
-	return ModalPromptTextsData->Prompts[PromptId];
+	return ModalPromptTextsData->Prompts[ActionType];
 }
 
-void UINV_InventoryComponent::ShowPopup()
+void UINV_InventoryComponent::ShowPopup() const
 {
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
 		UUIS_CommonUIExtensions::PushContentToLayer(PlayerController->GetLocalPlayer(), UI::Layer::Modal, ModalClass);
+	}
+}
+
+void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionType,   const FINV_ItemIdentification& ItemId)
+{
+	switch (ActionType)
+	{
+		case FINV_ItemActionType::Drop:
+			break;
+		case FINV_ItemActionType::Consume:
+			ConsumeItem(ItemId);
+			break;
+		case FINV_ItemActionType::Equip:
+			break;
+		default:
+			break;
 	}
 }
 

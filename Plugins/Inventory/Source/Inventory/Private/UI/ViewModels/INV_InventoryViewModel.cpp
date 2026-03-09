@@ -7,7 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
-#include "UI/ViewModels/INV_PromptViewModel.h"
+#include "UI/ViewModels/INV_ItemActionViewModel.h"
 
 void UINV_InventoryViewModel::Initialize()
 {

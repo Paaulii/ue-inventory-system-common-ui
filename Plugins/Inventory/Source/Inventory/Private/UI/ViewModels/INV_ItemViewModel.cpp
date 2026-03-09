@@ -19,6 +19,9 @@ void UINV_ItemViewModel::Initialize(const FINV_ItemDisplayData& ItemData, UINV_C
 	SetConsumable(ItemData.bIsConsumable);
 	SetEquippable(ItemData.bIsEquippable);
 	SetDroppable(ItemData.bIsDroppable);
+
+	SaveDataIndex = ItemData.SaveDataIndex;
+	ItemIdentification = FINV_ItemIdentification(ItemData.Id, ItemData.CategoryId);
 }
 
 void UINV_ItemViewModel::SetItemName(const FText& Name)

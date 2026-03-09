@@ -2,7 +2,7 @@
 #include "CoreMinimal.h"
 #include "INV_ItemSaveDataTypes.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FINV_ItemIdentification
 {
 	GENERATED_BODY()

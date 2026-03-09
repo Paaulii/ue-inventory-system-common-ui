@@ -6,7 +6,7 @@
 #include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_InventoryViewModel.generated.h"
 
-class UINV_PromptViewModel;
+class UINV_ItemActionViewModel;
 struct FINV_CategoryDisplayData;
 struct FINV_InventoryDisplayData;
 class UINV_InventoryComponent;
@@ -47,5 +47,5 @@ private:
 	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
 
 	UPROPERTY()
-	TObjectPtr<UINV_PromptViewModel> CachedPromptVM;
+	TObjectPtr<UINV_ItemActionViewModel> CachedPromptVM;
 };

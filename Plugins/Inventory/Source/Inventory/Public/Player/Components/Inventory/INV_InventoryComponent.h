@@ -7,6 +7,8 @@
 #include "Data/Types/INV_InventoryDisplayTypes.h"
 #include "INV_InventoryComponent.generated.h"
 
+struct FINV_ItemIdentification;
+enum class FINV_ItemActionType : uint8;
 class UCommonActivatableWidget;
 
 class UINV_ModalPromptTexts;
@@ -26,12 +28,14 @@ public:
 	
 	void ToggleInventory();
 	void TryAddItem(FINV_ItemData& ItemData);
-	FText GetPromptTextById(const FName& PromptId) const;
-	void ShowPopup();
+	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
+	void ShowPopup() const;
+	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId);
 protected:
 	virtual void BeginPlay() override;
 	void LoadInventoryData();
 private:
+	void ConsumeItem(const FINV_ItemIdentification& ItemId);
 	void SetInventoryVisible(bool bIsVisible);
 	void RequestShowInventory();
 	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition, int16 SaveDataIndex) const;

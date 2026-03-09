@@ -6,6 +6,7 @@
 #include "INV_CategoryViewModel.h"
 #include "MVVMViewModelBase.h"
 #include "Data/Types/INV_ItemRarity.h"
+#include "Data/Types/INV_ItemSaveDataTypes.h"
 #include "INV_ItemViewModel.generated.h"
 
 UCLASS()
@@ -27,6 +28,8 @@ public:
 	bool GetEquippable() const { return Equippable;}
 	bool GetConsumable() const { return Consumable;}
 	bool GetDroppable() const { return Droppable;}
+	const FINV_ItemIdentification& GetItemIdentification() const { return ItemIdentification; }
+	int32 GetSaveIndex() const { return SaveDataIndex; }
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	FText ItemName;
@@ -80,4 +83,7 @@ private:
 	void SetConsumable(bool bState);
 	void SetEquippable(bool bState);
 	void SetDroppable(bool bState);
+
+	int32 SaveDataIndex;
+	FINV_ItemIdentification ItemIdentification;
 };

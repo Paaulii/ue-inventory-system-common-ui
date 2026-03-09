@@ -6,6 +6,8 @@
 #include "Engine/DataTable.h"
 #include "INV_ModalPromptTexts.generated.h"
 
+enum class FINV_ItemActionType : uint8;
+
 UCLASS(Blueprintable)
 class INVENTORY_API UINV_ModalPromptTexts : public UDataAsset
 {
@@ -13,5 +15,5 @@ class INVENTORY_API UINV_ModalPromptTexts : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TMap<FName, FText> Prompts;
+	TMap<FINV_ItemActionType, FText> Prompts;
 };

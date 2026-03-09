@@ -6,7 +6,7 @@
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_InventoryScreen.generated.h"
 
-class UINV_PromptViewModel;
+class UINV_ItemActionViewModel;
 class UINV_SelectionViewModel;
 class UINV_InventoryViewModel;
 

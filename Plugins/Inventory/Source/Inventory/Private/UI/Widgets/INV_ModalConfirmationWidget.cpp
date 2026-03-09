@@ -2,16 +2,34 @@
 
 
 #include "UI/Widgets/INV_ModalConfirmationWidget.h"
+
+#include "CommonTextBlock.h"
 #include "Components/Image.h"
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
-#include "UI/ViewModels/INV_PromptViewModel.h"
+#include "UI/ViewModels/INV_ItemActionViewModel.h"
 
 void UINV_ModalConfirmationWidget::VM_SelectedItemChanged(UINV_ItemViewModel* ItemVM)
 {
 	Image_Icon->SetBrushFromTexture(ItemVM->GetSmallImage());
-	// TODO: Prompt description
+}
+
+void UINV_ModalConfirmationWidget::VM_ToggleItemQuantityVisibility(bool bShouldShowQuantity)
+{
+	Text_Quantity->SetVisibility(bShouldShowQuantity? ESlateVisibility::Visible : ESlateVisibility::Collapsed);	
+}
+
+void UINV_ModalConfirmationWidget::OnConfirmAction()
+{
+	UINV_ItemViewModel* ItemViewModel = CachedSelectionVM->GetSelectedItem();
+
+	if (!ItemViewModel)
+	{
+		return;
+	}
+
+	CachedItemActionVM->DelegatePerformAction(ItemViewModel->GetItemIdentification());
 }
 
 void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
@@ -20,15 +38,15 @@ void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem* 
 	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
 	CachedSelectionVM = SelectionVM;
 
-	UINV_PromptViewModel* PromptVM = UIManager->GetViewModel<UINV_PromptViewModel>();
-	MVVMView->SetViewModel("PromptViewModel", PromptVM);
-	CachedPromptVM = PromptVM;
+	UINV_ItemActionViewModel* ItemActionVM = UIManager->GetViewModel<UINV_ItemActionViewModel>();
+	MVVMView->SetViewModel("ItemActionViewModel", ItemActionVM);
+	CachedItemActionVM = ItemActionVM;
 }
 
 void UINV_ModalConfirmationWidget::ClearViewModelsCache()
 {
 	MVVMView->SetViewModel("SelectionViewModel", nullptr);
-	MVVMView->SetViewModel("PromptViewModel", nullptr);
+	MVVMView->SetViewModel("ItemActionViewModel", nullptr);
 	CachedSelectionVM = nullptr;
-	CachedPromptVM = nullptr;
+	CachedItemActionVM = nullptr;
 }
