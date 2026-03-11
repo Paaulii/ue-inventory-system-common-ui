@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Items/INV_Item.h"
+#include "Player/INV_Character.h"
 #include "Player/Components/INV_ItemTracerComponent.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 
@@ -12,6 +13,8 @@ AINV_PlayerController::AINV_PlayerController()
 {
 	InventoryComponent = CreateDefaultSubobject<UINV_InventoryComponent>("InventoryComponent");
 	ItemTracerComponent = CreateDefaultSubobject<UINV_ItemTracerComponent>("ItemTracer");
+
+	InventoryComponent->OnDelegateApplyEffect.AddDynamic(this, &AINV_PlayerController::ApplyEffects);
 }
 
 void AINV_PlayerController::BeginPlay()
@@ -22,6 +25,8 @@ void AINV_PlayerController::BeginPlay()
 	if (IsValid(Subsystem)) {
 		Subsystem->AddMappingContext(DefaultIMC, 0);
 	}
+
+	InventoryCharacter = Cast<AINV_Character>(GetCharacter());
 }
 
 void AINV_PlayerController::SetupInputComponent()
@@ -33,7 +38,10 @@ void AINV_PlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(OpenInventoryAction, ETriggerEvent::Started, this, &AINV_PlayerController::OpenInventory);
 }
 
-
+void AINV_PlayerController::ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply)
+{
+	InventoryCharacter->ApplyEffects(EffectsToApply);
+}
 
 void AINV_PlayerController::OnInteractWithItem()
 {

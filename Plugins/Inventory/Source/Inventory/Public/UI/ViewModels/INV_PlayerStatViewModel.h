@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UI/MVVM/UIS_ViewModelBase.h"
-#include "IS_PlayerStatViewModel.generated.h"
+#include "INV_PlayerStatViewModel.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API UIS_PlayerStatViewModel : public UUIS_ViewModelBase
+class INVENTORY_API UINV_PlayerStatViewModel : public UUIS_ViewModelBase
 {
 	GENERATED_BODY()
 public:

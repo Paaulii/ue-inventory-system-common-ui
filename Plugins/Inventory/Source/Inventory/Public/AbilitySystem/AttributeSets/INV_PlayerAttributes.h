@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
-#include "IS_PlayerAttributes.generated.h"
+#include "INV_PlayerAttributes.generated.h"
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
@@ -17,39 +17,41 @@ GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
  * 
  */
 UCLASS()
-class INVENTORYSYSTEM_API UIS_PlayerAttributes : public UAttributeSet
+class INVENTORY_API UINV_PlayerAttributes : public UAttributeSet
 {
 	GENERATED_BODY()
 public:
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Health")
 	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, Health)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Health)
 	
 	UPROPERTY(BlueprintReadOnly, Category = "MaxHealth")
 	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, MaxHealth)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, MaxHealth)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Mana")
 	FGameplayAttributeData Mana;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, Mana)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Mana)
 	
 	UPROPERTY(BlueprintReadOnly, Category = "MaxMana")
 	FGameplayAttributeData MaxMana;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, MaxMana)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, MaxMana)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Armor")
 	FGameplayAttributeData Armor;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, Armor)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Armor)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Damage")
 	FGameplayAttributeData BaseAttack;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, BaseAttack)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, BaseAttack)
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Strength")
 	FGameplayAttributeData Strength;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, Strength)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Strength)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Gold")
 	FGameplayAttributeData Gold;
-	ATTRIBUTE_ACCESSORS(UIS_PlayerAttributes, Gold)
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Gold)
 };

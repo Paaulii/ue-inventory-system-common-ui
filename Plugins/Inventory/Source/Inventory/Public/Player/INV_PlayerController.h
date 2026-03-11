@@ -6,6 +6,8 @@
 #include "Player/UIS_PlayerController.h"
 #include "INV_PlayerController.generated.h"
 
+class UGameplayEffect;
+class AINV_Character;
 class UINV_ItemTracerComponent;
 class UINV_InventoryComponent;
 class UInputAction;
@@ -45,4 +47,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UINV_ItemTracerComponent> ItemTracerComponent;
+
+private:
+	UFUNCTION()
+	void ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply);
+	
+	UPROPERTY()
+	TObjectPtr<AINV_Character> InventoryCharacter;
 };

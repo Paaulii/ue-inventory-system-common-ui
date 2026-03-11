@@ -2,7 +2,6 @@
 
 
 #include "Player/IS_Character.h"
-#include "Player/IS_Character.h"
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -10,8 +9,6 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "AbilitySystemComponent.h"
-#include "AbilitySystem/AttributeSets/IS_PlayerAttributes.h"
 
 AIS_Character::AIS_Character()
 {
@@ -39,29 +36,6 @@ AIS_Character::AIS_Character()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
 	FollowCamera->bUsePawnControlRotation = false;
-
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AttributeSet = CreateDefaultSubobject<UIS_PlayerAttributes>(TEXT("AttributeSet"));
-}
-
-void AIS_Character::BeginPlay()
-{
-	Super::BeginPlay();
-
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &AIS_Character::NotifyHealthChanged);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxHealthAttribute()).AddUObject(this, &AIS_Character::NotifyMaxHealthChanged);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetManaAttribute()).AddUObject(this, &AIS_Character::NotifyManaChanged);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetManaAttribute()).AddUObject(this, &AIS_Character::NotifyMaxManaChanged);
-	}
-	AddStartupEffects();
-}
-
-UAbilitySystemComponent* AIS_Character::GetAbilitySystemComponent() const
-{
-	return AbilitySystemComponent;
 }
 
 void AIS_Character::NotifyControllerChanged()
@@ -85,27 +59,6 @@ void AIS_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AIS_Character::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AIS_Character::Look);
-	}
-}
-
-void AIS_Character::AddStartupEffects()
-{
-	if (AbilitySystemComponent == nullptr )
-	{
-		return;
-	}
-	
-	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-	EffectContext.AddSourceObject(this);
-	
-	for (auto GameplayEffect : StartupEffects)
-	{
-		FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, 1, EffectContext);
-		if (NewHandle.IsValid())
-		{
-			AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
-			// AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(GameplayEffect, nullptr);
-		}
 	}
 }
 
@@ -137,25 +90,3 @@ void AIS_Character::Look(const FInputActionValue& Value)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
-
-void AIS_Character::NotifyHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnHealthChanged.Broadcast(Data.NewValue);
-}
-
-void AIS_Character::NotifyMaxHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxHealthChanged.Broadcast(Data.NewValue);
-}
-
-void AIS_Character::NotifyMaxManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxManaChanged.Broadcast(Data.NewValue);
-}
-
-void AIS_Character::NotifyManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnManaChanged.Broadcast(Data.NewValue);
-}
-
-

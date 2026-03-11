@@ -6,7 +6,7 @@
 #include "UI/Widgets/INV_ActivatableMvvmWidget.h"
 #include "IS_HudWidget.generated.h"
 
-class UIS_PlayerStatViewModel;
+class UINV_PlayerStatViewModel;
 /**
  * 
  */
@@ -19,6 +19,6 @@ protected:
 	virtual void ClearViewModelsCache() override;
 private:
 	UPROPERTY()
-	TObjectPtr<UIS_PlayerStatViewModel> CachedPlayerStatVM;
+	TObjectPtr<UINV_PlayerStatViewModel> CachedPlayerStatVM;
 	
 };

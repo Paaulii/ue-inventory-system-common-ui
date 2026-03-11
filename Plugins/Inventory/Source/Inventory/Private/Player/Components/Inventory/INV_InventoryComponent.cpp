@@ -51,6 +51,7 @@ void UINV_InventoryComponent::LoadInventoryData()
 
 void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 SaveDataIndex, const int16 Amount)
 {
+	DelegateApplyEffects(ItemId);
 	FINV_ItemData& CachedItemData = CachedPlayerItems[SaveDataIndex];
 	CachedItemData.Quantity = CachedItemData.Quantity - Amount;
 
@@ -68,6 +69,15 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
 }
 
+void UINV_InventoryComponent::DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const
+{
+	FINV_ItemAssetDefinition* ItemAssetDef = InventoryDataAsset->GetItemDefinition(ItemId.ItemId, ItemId.CategoryId);
+
+	if (ItemAssetDef)
+	{
+		OnDelegateApplyEffect.Broadcast(ItemAssetDef->Effects);
+	}
+}
 
 TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsToDisplayData(TArray<FINV_ItemData>& PlayerItemDataList) const
 {
@@ -245,6 +255,8 @@ void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(int16 EntryIndexTo
 		
 	CachedInventoryDisplayData.UpdateItem(ItemDisplayData.GetValue());
 }
+
+
 
 FText UINV_InventoryComponent::GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const
 {

@@ -26,6 +26,9 @@ public:
 	DECLARE_DELEGATE_OneParam(FInventoryDataChanged, const FINV_InventoryDisplayData& InventoryData);
 	FInventoryDataChanged OnInventoryDataChanged;
 	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateApplyEffect, const TArray<TSubclassOf<UGameplayEffect>>&, Effects);
+	FDelegateApplyEffect OnDelegateApplyEffect;
+	
 	void ToggleInventory();
 	void TryAddItem(FINV_ItemData& ItemData);
 	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
@@ -40,6 +43,7 @@ private:
 	void RequestShowInventory();
 	void SaveInventoryData(const TArray<FINV_ItemData>& DataToSave) const;
 	void UpdateDisplayInventoryDataEntry(int16 EntryIndexToUpdate);
+	void DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const;
 	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition, int16 SaveDataIndex) const;
 	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData (TArray<FINV_ItemData>& PlayerItemDataList) const;
 	
