@@ -29,13 +29,13 @@ public:
 	void ToggleInventory();
 	void TryAddItem(FINV_ItemData& ItemData);
 	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
-	void ShowPopup() const;
-	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId);
+	void ShowItemActionPopup() const;
+	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId, const int16 SaveDataIndex);
 protected:
 	virtual void BeginPlay() override;
 	void LoadInventoryData();
 private:
-	void ConsumeItem(const FINV_ItemIdentification& ItemId);
+	void ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 SaveDataIndex, const int16 Amount = 1);
 	void SetInventoryVisible(bool bIsVisible);
 	void RequestShowInventory();
 	void SaveInventoryData(const TArray<FINV_ItemData>& DataToSave) const;

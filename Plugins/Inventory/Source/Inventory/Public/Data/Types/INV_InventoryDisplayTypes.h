@@ -21,6 +21,7 @@ struct FINV_InventoryDisplayData
 	TArray<FINV_CategoryDisplayData> Categories;
 
 	void UpdateItem(const FINV_ItemDisplayData& ItemToUpdate);
+	void RemoveItemAt(const int16 SaveDataIndex);
 };
 
 USTRUCT()

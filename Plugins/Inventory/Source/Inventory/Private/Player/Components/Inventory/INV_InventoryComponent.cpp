@@ -49,10 +49,25 @@ void UINV_InventoryComponent::LoadInventoryData()
 	}
 }
 
-void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId)
+void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 SaveDataIndex, const int16 Amount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Consume Item"));
+	FINV_ItemData& CachedItemData = CachedPlayerItems[SaveDataIndex];
+	CachedItemData.Quantity = CachedItemData.Quantity - Amount;
+
+	if (CachedItemData.Quantity <= 0)
+	{
+		CachedPlayerItems.RemoveAt(SaveDataIndex);
+		CachedInventoryDisplayData.RemoveItemAt((SaveDataIndex));
+	}
+	else
+	{
+		UpdateDisplayInventoryDataEntry(SaveDataIndex);
+	}
+	
+	SaveInventoryData(CachedPlayerItems);
+	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
 }
+
 
 TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsToDisplayData(TArray<FINV_ItemData>& PlayerItemDataList) const
 {
@@ -230,6 +245,7 @@ void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(int16 EntryIndexTo
 		
 	CachedInventoryDisplayData.UpdateItem(ItemDisplayData.GetValue());
 }
+
 FText UINV_InventoryComponent::GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const
 {
 	if (!ModalPromptTextsData || !ModalPromptTextsData->Prompts.Contains(ActionType))
@@ -240,7 +256,7 @@ FText UINV_InventoryComponent::GetPromptTextByActionType(const FINV_ItemActionTy
 	return ModalPromptTextsData->Prompts[ActionType];
 }
 
-void UINV_InventoryComponent::ShowPopup() const
+void UINV_InventoryComponent::ShowItemActionPopup() const
 {
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
@@ -248,14 +264,14 @@ void UINV_InventoryComponent::ShowPopup() const
 	}
 }
 
-void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionType,   const FINV_ItemIdentification& ItemId)
+void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionType,   const FINV_ItemIdentification& ItemId, const int16 SaveDataIndex)
 {
 	switch (ActionType)
 	{
 		case FINV_ItemActionType::Drop:
 			break;
 		case FINV_ItemActionType::Consume:
-			ConsumeItem(ItemId);
+			ConsumeItem(ItemId, SaveDataIndex);
 			break;
 		case FINV_ItemActionType::Equip:
 			break;

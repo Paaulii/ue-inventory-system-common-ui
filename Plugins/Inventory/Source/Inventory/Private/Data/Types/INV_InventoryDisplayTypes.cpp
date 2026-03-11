@@ -1,5 +1,7 @@
 ﻿#include "Data/Types/INV_InventoryDisplayTypes.h"
 
+#include "Data/Types/INV_ItemSaveDataTypes.h"
+
 void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpdate)
 {
 	for (FINV_CategoryDisplayData& Category : Categories)
@@ -9,9 +11,10 @@ void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpd
 			continue;
 		}
 
-		for (int i = 0; i < Category.Items.Num(); i++ ) 
+		for (int i = 0; i < Category.Items.Num(); i++)
 		{
-			if (Category.Items[i].Id == ItemToUpdate.Id && Category.Items[i].SaveDataIndex == ItemToUpdate.SaveDataIndex)
+			if (Category.Items[i].Id == ItemToUpdate.Id && Category.Items[i].SaveDataIndex == ItemToUpdate.
+				SaveDataIndex)
 			{
 				Category.Items[i] = ItemToUpdate;
 				return;
@@ -22,4 +25,17 @@ void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpd
 	}
 }
 
-
+void FINV_InventoryDisplayData::RemoveItemAt(const int16 SaveDataIndex)
+{
+	for (FINV_CategoryDisplayData& Category : Categories)
+	{
+		for (int i = 0; i < Category.Items.Num(); i++)
+		{
+			if (Category.Items[i].SaveDataIndex == SaveDataIndex)
+			{
+				Category.Items.RemoveAt(i);
+				return;
+			}
+		}
+	}
+}

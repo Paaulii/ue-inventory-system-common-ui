@@ -27,7 +27,7 @@ void UINV_ItemActionViewModel::SetIsSingleItemQuantityAction(bool bState)
 
 void UINV_ItemActionViewModel::DelegateShowItemActionPopup() const
 {
-	InventoryComponent->ShowPopup();
+	InventoryComponent->ShowItemActionPopup();
 }
 
 FText UINV_ItemActionViewModel::GetPromptText() const
@@ -40,12 +40,12 @@ FText UINV_ItemActionViewModel::GetPromptText() const
 	return InventoryComponent->GetPromptTextByActionType(SelectedAction);
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification,const int16 SaveDataIndex) const
 {
-	InventoryComponent->PerformAction(ActionType, ItemIdentification);
+	InventoryComponent->PerformAction(ActionType, ItemIdentification, SaveDataIndex);
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification, const int16 SaveDataIndex) const
 {
-	DelegatePerformAction(SelectedAction, ItemIdentification);
+	DelegatePerformAction(SelectedAction, ItemIdentification, SaveDataIndex);
 }
