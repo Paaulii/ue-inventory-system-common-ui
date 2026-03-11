@@ -11,7 +11,7 @@ void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpd
 
 		for (int i = 0; i < Category.Items.Num(); i++ ) 
 		{
-			if (Category.Items[0].Id == ItemToUpdate.Id && Category.Items[0].SaveDataIndex == ItemToUpdate.SaveDataIndex)
+			if (Category.Items[i].Id == ItemToUpdate.Id && Category.Items[i].SaveDataIndex == ItemToUpdate.SaveDataIndex)
 			{
 				Category.Items[i] = ItemToUpdate;
 				return;

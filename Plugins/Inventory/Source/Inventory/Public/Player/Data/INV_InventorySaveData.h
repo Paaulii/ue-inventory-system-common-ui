@@ -18,6 +18,7 @@ public:
 	int16 GetCurrencyAmount() const {return CurrencyAmount;}
 	int16 GetMaxItemsCapacity() const {return MaxItemsCapacity;}
 	void UpdateItemDataAtIndex(const FINV_ItemData& ItemData, int16 Index);
+	void SetPlayerItems(const TArray<FINV_ItemData>& PlayerItems);
 protected:
 	UPROPERTY()
 	int16 CurrencyAmount;

@@ -159,14 +159,20 @@ void UINV_InventoryComponent::RequestShowInventory()
 		}
 }
 
-void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
+void UINV_InventoryComponent::SaveInventoryData(const TArray<FINV_ItemData>& DataToSave) const
 {
-	UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
-	if (!LoadGameInstance)
+	UINV_InventorySaveData* InventorySaveData = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
+	if (!InventorySaveData)
 	{
 		return;
 	}
 	
+	InventorySaveData->SetPlayerItems(DataToSave);
+	UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);
+}
+
+void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
+{
 	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
 			ItemData.ItemIdentification.ItemId,
 			ItemData.ItemIdentification.CategoryId
@@ -174,23 +180,24 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 	
 	int ReminderQuantityToAdd = ItemData.Quantity;
 	const int MaxQuantity = ItemAssetDefinition->MaxQuantity;
-	TArray<FINV_ItemData> PlayerSavedItems = CachedPlayerItems.FilterByPredicate([&ItemData, &MaxQuantity](const FINV_ItemData& SaveItemData)
-	{
-		return  SaveItemData.ItemIdentification.ItemId == ItemData.ItemIdentification.ItemId &&
-			SaveItemData.ItemIdentification.CategoryId == ItemData.ItemIdentification.CategoryId &&
-				SaveItemData.Quantity < MaxQuantity;
-	});
 
-	TArray<int16> UpdatedIndices;
-	if (PlayerSavedItems.Num() > 0)
+	if (CachedPlayerItems.Num() > 0)
 	{
-		for (int i = 0 ; i < PlayerSavedItems.Num(); i++)
+		for (int i = 0 ; i < CachedPlayerItems.Num(); i++)
 		{
-			int16 QuantityAfterAddition = PlayerSavedItems[i].Quantity + ReminderQuantityToAdd;
+			FINV_ItemData& CurrentItemData = CachedPlayerItems[i];
+			if (CurrentItemData.ItemIdentification.ItemId != ItemData.ItemIdentification.ItemId ||
+			CurrentItemData.ItemIdentification.CategoryId != ItemData.ItemIdentification.CategoryId ||
+				CurrentItemData.Quantity >= MaxQuantity)
+			{
+				continue;
+			}
+				
+			int16 QuantityAfterAddition = CurrentItemData.Quantity + ReminderQuantityToAdd;
 			ReminderQuantityToAdd = QuantityAfterAddition - MaxQuantity;
 
-			PlayerSavedItems[i].Quantity = FMath::Clamp(QuantityAfterAddition, 0, MaxQuantity);
-			UpdatedIndices.Add(i);
+			CurrentItemData.Quantity = FMath::Clamp(QuantityAfterAddition, 0, MaxQuantity);
+			UpdateDisplayInventoryDataEntry(i);
 		}
 	}
 
@@ -204,29 +211,25 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 		}
 		
 		CachedPlayerItems.Add(FINV_ItemData(FINV_ItemIdentification(ItemData.ItemIdentification.ItemId, ItemData.ItemIdentification.CategoryId), ItemQuantity));
-		UpdatedIndices.Add(CachedPlayerItems.Num() - 1);
+		UpdateDisplayInventoryDataEntry(CachedPlayerItems.Num() - 1);
 		ReminderQuantityToAdd -= ItemQuantity;
 	}
-		
 
-	for (auto UpdatedItemIndex : UpdatedIndices)
-	{
-		FINV_ItemData& SaveItemData = CachedPlayerItems[UpdatedItemIndex];
-		TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(SaveItemData, UpdatedItemIndex);
-
-		if (!ItemDisplayData.IsSet())
-		{
-			continue;
-		}
-		
-		CachedInventoryDisplayData.UpdateItem(ItemDisplayData.GetValue());
-		LoadGameInstance->UpdateItemDataAtIndex(SaveItemData, UpdatedItemIndex);
-	}
-	
-	UGameplayStatics::SaveGameToSlot(LoadGameInstance, "SaveData", 0);
+	SaveInventoryData(CachedPlayerItems);
 	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
 }
 
+void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(int16 EntryIndexToUpdate)
+{
+	TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(CachedPlayerItems[EntryIndexToUpdate], EntryIndexToUpdate);
+
+	if (!ItemDisplayData.IsSet())
+	{
+		return;
+	}
+		
+	CachedInventoryDisplayData.UpdateItem(ItemDisplayData.GetValue());
+}
 FText UINV_InventoryComponent::GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const
 {
 	if (!ModalPromptTextsData || !ModalPromptTextsData->Prompts.Contains(ActionType))

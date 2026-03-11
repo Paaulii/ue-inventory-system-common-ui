@@ -12,3 +12,8 @@ void UINV_InventorySaveData::UpdateItemDataAtIndex(const FINV_ItemData& ItemData
 		PlayerItems.Add(ItemData);
 	}
 }
+
+void UINV_InventorySaveData::SetPlayerItems(const TArray<FINV_ItemData>& ItemsToSave) 
+{
+	PlayerItems = ItemsToSave;
+}

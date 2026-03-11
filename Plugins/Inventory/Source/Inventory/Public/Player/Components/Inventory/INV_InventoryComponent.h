@@ -38,6 +38,8 @@ private:
 	void ConsumeItem(const FINV_ItemIdentification& ItemId);
 	void SetInventoryVisible(bool bIsVisible);
 	void RequestShowInventory();
+	void SaveInventoryData(const TArray<FINV_ItemData>& DataToSave) const;
+	void UpdateDisplayInventoryDataEntry(int16 EntryIndexToUpdate);
 	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition, int16 SaveDataIndex) const;
 	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData (TArray<FINV_ItemData>& PlayerItemDataList) const;
 	
