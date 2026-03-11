@@ -201,10 +201,11 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 		if (ReminderQuantityToAdd >= MaxQuantity)
 		{
 			ItemQuantity = MaxQuantity;
-			ReminderQuantityToAdd -= MaxQuantity;
 		}
+		
 		CachedPlayerItems.Add(FINV_ItemData(FINV_ItemIdentification(ItemData.ItemIdentification.ItemId, ItemData.ItemIdentification.CategoryId), ItemQuantity));
 		UpdatedIndices.Add(CachedPlayerItems.Num() - 1);
+		ReminderQuantityToAdd -= ItemQuantity;
 	}
 		
 
