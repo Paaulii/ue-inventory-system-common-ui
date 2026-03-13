@@ -65,6 +65,11 @@ struct FINV_ItemDisplayData
 		bIsDroppable = AssetDefinition->bIsDroppable;
 	}
 	
+	bool operator==(const FINV_ItemDisplayData & Other) const
+	{
+		return ItemIdentification.UID == Other.ItemIdentification.UID;
+	}
+	
 	FINV_ItemIdentification ItemIdentification;
 	FText Name;
 	FText Description;

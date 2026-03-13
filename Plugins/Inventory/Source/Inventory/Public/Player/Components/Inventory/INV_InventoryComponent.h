@@ -33,7 +33,7 @@ public:
 	void TryAddItem(FINV_ItemData& ItemData);
 	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
 	void ShowItemActionPopup() const;
-	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId);
+	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId, const int32 Amount);
 protected:
 	virtual void BeginPlay() override;
 	void LoadInventoryData();

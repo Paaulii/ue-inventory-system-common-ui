@@ -27,6 +27,8 @@ public:
 	void SetIsSingleItemQuantityAction(bool bState);
 	void DelegateShowItemActionPopup() const;
 protected:
+	//TODO: Add Quantity
+	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	FINV_ItemActionType SelectedAction;
 

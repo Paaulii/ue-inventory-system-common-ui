@@ -12,6 +12,11 @@
 
 void UINV_ModalConfirmationWidget::VM_SelectedItemChanged(UINV_ItemViewModel* ItemVM)
 {
+	if (ItemVM == nullptr)
+	{
+		return;
+	}
+	
 	Image_Icon->SetBrushFromTexture(ItemVM->GetSmallImage());
 }
 

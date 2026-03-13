@@ -42,7 +42,8 @@ FText UINV_ItemActionViewModel::GetPromptText() const
 
 void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const
 {
-	InventoryComponent->PerformAction(ActionType, ItemIdentification);
+	// TODO: Change to Quantity when implemented
+	InventoryComponent->PerformAction(ActionType, ItemIdentification, 1);
 }
 
 void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const

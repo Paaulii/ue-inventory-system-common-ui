@@ -1,5 +1,6 @@
 ﻿#include "Data/Types/INV_InventoryDisplayTypes.h"
 
+#include "IDetailGroup.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
 
 void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpdate)

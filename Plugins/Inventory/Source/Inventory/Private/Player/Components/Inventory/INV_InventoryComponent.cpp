@@ -71,7 +71,10 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 
 	if (CachedItemData->Quantity <= 0)
 	{
-		CachedPlayerItems.Remove(*CachedItemData);
+		CachedPlayerItems.RemoveAll([ItemId](const FINV_ItemData& CurrentItem)
+		{
+			return CurrentItem.ItemIdentification.UID == ItemId.UID;
+		});
 		CachedInventoryDisplayData.RemoveItemAt(CachedItemData->ItemIdentification.UID);
 	}
 	else
@@ -338,14 +341,14 @@ void UINV_InventoryComponent::ShowItemActionPopup() const
 	}
 }
 
-void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionType,   const FINV_ItemIdentification& ItemId)
+void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemId, const int32 Amount)
 {
 	switch (ActionType)
 	{
 		case FINV_ItemActionType::Drop:
 			break;
 		case FINV_ItemActionType::Consume:
-			ConsumeItem(ItemId, ItemId.UID);
+			ConsumeItem(ItemId, Amount);
 			break;
 		case FINV_ItemActionType::Equip:
 			break;
