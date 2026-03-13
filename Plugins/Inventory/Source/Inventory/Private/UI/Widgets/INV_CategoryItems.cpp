@@ -51,11 +51,6 @@ void UINV_CategoryItems::VM_ForceFocusEvaluation(bool bHasPendingRequest)
 
 FText UINV_CategoryItems::VM_GetItemsCapacityText(UINV_ItemViewModel* ItemVM) const
 {
-	if (CachedInventoryVM == nullptr)
-	{
-		return FText::GetEmpty();
-	}
-
 	int ItemIndex = GetItemIndexForSelectedCategory();
 	int ItemsCount = CachedItemsVM.Num();
 
