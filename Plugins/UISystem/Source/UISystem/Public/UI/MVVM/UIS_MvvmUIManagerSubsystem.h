@@ -47,5 +47,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly )
 	TArray<TSubclassOf<UUIS_ViewModelBase>> ViewModelsToSpawn;
 private:
+	UPROPERTY()
 	TArray<TObjectPtr<UUIS_ViewModelBase>> ViewModels;
 };

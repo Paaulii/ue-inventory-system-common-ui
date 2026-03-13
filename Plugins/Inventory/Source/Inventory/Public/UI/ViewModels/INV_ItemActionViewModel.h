@@ -19,8 +19,8 @@ public:
 	UFUNCTION(BlueprintPure, FieldNotify)
 	FText GetPromptText() const;
 	
-	void DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification, const int16 SaveDataIndex) const;
-	void DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification, const int16 SaveDataIndex) const;
+	void DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const;
+	void DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const;
 	FINV_ItemActionType GetSelectedAction() const {return SelectedAction;}
 	bool GetIsSingleItemQuantityAction() const {return IsSingleItemQuantityAction;};
 	void SetSelectedAction(const FINV_ItemActionType& Action);

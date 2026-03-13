@@ -63,7 +63,7 @@ private:
 	 * @param ItemTile  First item tile that is currently selected 
 	 */
 	UFUNCTION()
-	void OnItemTileReady(UINV_ItemTile* ItemTile);
+	void TryFocusOnFirstTile(UINV_ItemTile* ItemTile);
 
 	void UpdateSlots(TArray<UINV_ItemViewModel*> ItemViewModels);
 	void PopulateSlots();

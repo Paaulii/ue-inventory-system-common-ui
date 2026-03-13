@@ -50,6 +50,7 @@ void UINV_InventoryViewModel::ResetCategories()
 	Categories.Empty();
 }
 
+// TODO: Refresh only item that actually was changed.
 void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray)
 {
 	ResetCategories();

@@ -66,7 +66,7 @@ void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& Acti
 
 	if (UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem())
 	{
-		CachedItemActionVM->DelegatePerformAction(ActionType, SelectedItem->GetItemIdentification(), SelectedItem->GetSaveIndex() );
+		CachedItemActionVM->DelegatePerformAction(ActionType, SelectedItem->GetItemIdentification());
 	}
 }
 

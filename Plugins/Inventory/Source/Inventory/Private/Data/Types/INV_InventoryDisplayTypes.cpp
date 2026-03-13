@@ -6,15 +6,14 @@ void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpd
 {
 	for (FINV_CategoryDisplayData& Category : Categories)
 	{
-		if (Category.Id != ItemToUpdate.CategoryId)
+		if (Category.Id != ItemToUpdate.ItemIdentification.CategoryId)
 		{
 			continue;
 		}
 
 		for (int i = 0; i < Category.Items.Num(); i++)
 		{
-			if (Category.Items[i].Id == ItemToUpdate.Id && Category.Items[i].SaveDataIndex == ItemToUpdate.
-				SaveDataIndex)
+			if (Category.Items[i].ItemIdentification.UID == ItemToUpdate.ItemIdentification.UID)
 			{
 				Category.Items[i] = ItemToUpdate;
 				return;
@@ -25,13 +24,13 @@ void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpd
 	}
 }
 
-void FINV_InventoryDisplayData::RemoveItemAt(const int16 SaveDataIndex)
+void FINV_InventoryDisplayData::RemoveItemAt(const int16 ItemUID)
 {
 	for (FINV_CategoryDisplayData& Category : Categories)
 	{
 		for (int i = 0; i < Category.Items.Num(); i++)
 		{
-			if (Category.Items[i].SaveDataIndex == SaveDataIndex)
+			if (Category.Items[i].ItemIdentification.UID == ItemUID)
 			{
 				Category.Items.RemoveAt(i);
 				return;

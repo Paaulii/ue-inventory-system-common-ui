@@ -20,23 +20,23 @@ void UINV_CategoryItems::NativeOnInitialized()
 
 void UINV_CategoryItems::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 {
-	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
-	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
-	CachedSelectionVM = SelectionVM;
-
 	UINV_InventoryViewModel* InventoryVM = UIManager->GetViewModel<UINV_InventoryViewModel>();
-	MVVMView->SetViewModel("InventoryViewModel", InventoryVM);
 	CachedInventoryVM = InventoryVM;
+	MVVMView->SetViewModel("InventoryViewModel", InventoryVM);
+	
+	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
+	CachedSelectionVM = SelectionVM;
+	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
 }
 
 void UINV_CategoryItems::ClearViewModelsCache()
 {
-	MVVMView->SetViewModel("SelectionViewModel", nullptr);
-	MVVMView->SetViewModel("InventoryViewModel", nullptr);
-	MVVMView->SetViewModel("CategoryViewModel", nullptr);
 	CachedSelectionVM = nullptr;
 	CachedCategoryVM = nullptr;
 	CachedInventoryVM = nullptr;
+	MVVMView->SetViewModel("SelectionViewModel", nullptr);
+	MVVMView->SetViewModel("InventoryViewModel", nullptr);
+	MVVMView->SetViewModel("CategoryViewModel", nullptr);
 }
 
 void UINV_CategoryItems::VM_ForceFocusEvaluation(bool bHasPendingRequest)
@@ -116,9 +116,9 @@ void UINV_CategoryItems::SelectFirstItemOnPage()
 	}
 }
 
-void UINV_CategoryItems::OnItemTileReady(UINV_ItemTile* ItemTile)
+void UINV_CategoryItems::TryFocusOnFirstTile(UINV_ItemTile* ItemTile)
 {
-	ItemTile->OnItemSelected.RemoveDynamic(this, &UINV_CategoryItems::OnItemTileReady);
+	ItemTile->OnItemSelected.RemoveDynamic(this, &UINV_CategoryItems::TryFocusOnFirstTile);
 	RequestRefreshFocus();
 }
 
@@ -145,7 +145,7 @@ void UINV_CategoryItems::PopulateSlots()
 
 		if (i == 0)
 		{
-			ItemTile->OnItemSelected.AddDynamic(this, &UINV_CategoryItems::OnItemTileReady);
+			ItemTile->OnItemSelected.AddDynamic(this, &UINV_CategoryItems::TryFocusOnFirstTile);
 		}
 	}
 }
@@ -190,6 +190,20 @@ int UINV_CategoryItems::GetItemIndexForSelectedCategory() const
 		return -1;
 	}
 
-	int ItemIndex = CachedItemsVM.Find(CachedSelectionVM->GetSelectedItem());
-	return ItemIndex;
+	UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem();
+
+	if (!SelectedItem)
+	{
+		return -1;
+	}
+	
+	for (int i = 0; i < CachedItemsVM.Num(); i++)
+	{
+		if (CachedItemsVM[i]->GetItemIdentification().UID == SelectedItem->GetItemIdentification().UID)
+		{
+			return i;
+		}
+	}
+	
+	return -1;
 }

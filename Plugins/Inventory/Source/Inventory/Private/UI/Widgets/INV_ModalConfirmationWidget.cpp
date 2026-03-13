@@ -29,7 +29,7 @@ void UINV_ModalConfirmationWidget::OnConfirmAction()
 		return;
 	}
 
-	CachedItemActionVM->DelegatePerformAction(ItemViewModel->GetItemIdentification(), ItemViewModel->GetSaveIndex());
+	CachedItemActionVM->DelegatePerformAction(ItemViewModel->GetItemIdentification());
 }
 
 void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)

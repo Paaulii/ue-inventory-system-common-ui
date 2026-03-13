@@ -62,7 +62,6 @@ public:
 
 	void SetQuantityVisible(bool bState) const;
 
-
 protected:
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
 	TObjectPtr<UWidgetAnimation> Hovered;
@@ -101,4 +100,6 @@ private:
 	bool bIsEquipped;
 	bool bIsEmpty;
 	bool bIsInteractable = true;
+
+	FWidgetAnimationDynamicEvent AnimationStartedEvent;
 };

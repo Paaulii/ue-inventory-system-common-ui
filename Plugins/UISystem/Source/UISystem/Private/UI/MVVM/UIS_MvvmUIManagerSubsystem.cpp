@@ -15,8 +15,8 @@ void UUIS_MvvmUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 
 void UUIS_MvvmUIManagerSubsystem::Deinitialize()
 {
-	Super::Deinitialize();
 	DeinitializeViewModels();
+	Super::Deinitialize();
 }
 
 bool UUIS_MvvmUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const

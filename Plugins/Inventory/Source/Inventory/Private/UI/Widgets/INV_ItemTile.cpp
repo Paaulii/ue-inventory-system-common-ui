@@ -15,9 +15,8 @@ void UINV_ItemTile::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	MVVMView = Cast<UMVVMView>(GetExtension(UMVVMView::StaticClass()));
-	FWidgetAnimationDynamicEvent AnimationEvent;
-	AnimationEvent.BindDynamic(this, &UINV_ItemTile::NotifyOnItemSelected);
-	BindToAnimationFinished(Selected, AnimationEvent);
+	AnimationStartedEvent.BindDynamic(this, &UINV_ItemTile::NotifyOnItemSelected);
+	BindToAnimationFinished(Selected, AnimationStartedEvent);
 }
 
 void UINV_ItemTile::SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionViewModel* SelectionVM)
@@ -26,11 +25,10 @@ void UINV_ItemTile::SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionView
 	
 	if (MVVMView)
 	{
-		MVVMView->SetViewModel("ItemViewModel", ItemVM);
-		MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
-
 		CachedItemVM = ItemVM;
 		CachedSelectionVM = SelectionVM;
+		MVVMView->SetViewModel("ItemViewModel", ItemVM);
+		MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
 	}
 
 	SetEmptyState(ItemVM == nullptr);

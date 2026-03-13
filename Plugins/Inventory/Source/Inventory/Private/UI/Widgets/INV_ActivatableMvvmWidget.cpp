@@ -25,10 +25,10 @@ void UINV_ActivatableMvvmWidget::NativeOnActivated()
 
 void UINV_ActivatableMvvmWidget::NativeOnDeactivated()
 {
-	Super::NativeOnDeactivated();
-
 	if (MVVMView)
 	{
 		ClearViewModelsCache();
 	}
+	
+	Super::NativeOnDeactivated();
 }

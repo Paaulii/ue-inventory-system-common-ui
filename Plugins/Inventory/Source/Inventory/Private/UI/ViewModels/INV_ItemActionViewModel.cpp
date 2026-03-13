@@ -40,12 +40,12 @@ FText UINV_ItemActionViewModel::GetPromptText() const
 	return InventoryComponent->GetPromptTextByActionType(SelectedAction);
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification,const int16 SaveDataIndex) const
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const
 {
-	InventoryComponent->PerformAction(ActionType, ItemIdentification, SaveDataIndex);
+	InventoryComponent->PerformAction(ActionType, ItemIdentification);
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification, const int16 SaveDataIndex) const
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const
 {
-	DelegatePerformAction(SelectedAction, ItemIdentification, SaveDataIndex);
+	DelegatePerformAction(SelectedAction, ItemIdentification);
 }

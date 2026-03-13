@@ -33,19 +33,23 @@ public:
 	void TryAddItem(FINV_ItemData& ItemData);
 	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
 	void ShowItemActionPopup() const;
-	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId, const int16 SaveDataIndex);
+	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId);
 protected:
 	virtual void BeginPlay() override;
 	void LoadInventoryData();
 private:
-	void ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 SaveDataIndex, const int16 Amount = 1);
+	void ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 Amount = 1);
 	void SetInventoryVisible(bool bIsVisible);
 	void RequestShowInventory();
 	void SaveInventoryData(const TArray<FINV_ItemData>& DataToSave) const;
-	void UpdateDisplayInventoryDataEntry(int16 EntryIndexToUpdate);
+	void UpdateDisplayInventoryDataEntry(const FINV_ItemData& ItemData);
 	void DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const;
-	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition, int16 SaveDataIndex) const;
+	int32 GetNextGUID() const;
+	FINV_ItemData* GetCachedItem(int16 ItemUID);
+	
+	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition) const;
 	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData (TArray<FINV_ItemData>& PlayerItemDataList) const;
+	FINV_ItemData* GetCachedItemBy(int16 ItemUID);
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TSubclassOf<UINV_InventoryScreen> InventoryClass;

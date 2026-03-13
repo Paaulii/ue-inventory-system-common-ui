@@ -2,8 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "INV_InventoryDataAssetTypes.h"
+#include "INV_ItemSaveDataTypes.h"
 #include "INV_InventoryDisplayTypes.generated.h"
 
+struct FINV_ItemIdentification;
 struct FINV_CategoryDisplayData;
 struct FINV_ItemDisplayData;
 enum class EINV_ItemRarity : uint8;
@@ -21,7 +23,7 @@ struct FINV_InventoryDisplayData
 	TArray<FINV_CategoryDisplayData> Categories;
 
 	void UpdateItem(const FINV_ItemDisplayData& ItemToUpdate);
-	void RemoveItemAt(const int16 SaveDataIndex);
+	void RemoveItemAt(const int16 ItemUID);
 };
 
 USTRUCT()
@@ -42,15 +44,13 @@ USTRUCT()
 struct FINV_ItemDisplayData
 {
 	GENERATED_BODY()
-	FINV_ItemDisplayData(): SaveDataIndex(-1), SmallImage(nullptr), LargeImage(nullptr),
+	FINV_ItemDisplayData(): ItemIdentification(), SmallImage(nullptr), LargeImage(nullptr),
 	Rarity(EINV_ItemRarity::Common), CurrencyValue(0), RequiredLevel(0), Quantity(0),MaxQuantity(0),
 	bIsConsumable(false), bIsEquippable(false),bIsDroppable(false){}
 	
-	FINV_ItemDisplayData(int16 SaveDataIndex, const FINV_ItemAssetDefinition* AssetDefinition, int32 Quantity)
+	FINV_ItemDisplayData(const FINV_ItemIdentification& ItemIdentification, const FINV_ItemAssetDefinition* AssetDefinition, int32 Quantity)
 	{
-		this->SaveDataIndex = SaveDataIndex;
-		Id = AssetDefinition->Id;
-		CategoryId = AssetDefinition->CategoryId;
+		this->ItemIdentification = ItemIdentification;
 		Name = AssetDefinition->Name;
 		Description = AssetDefinition->Description;
 		SmallImage = AssetDefinition->SmallImage;
@@ -65,9 +65,7 @@ struct FINV_ItemDisplayData
 		bIsDroppable = AssetDefinition->bIsDroppable;
 	}
 	
-	int16 SaveDataIndex;
-	FName Id;
-	FName CategoryId;
+	FINV_ItemIdentification ItemIdentification;
 	FText Name;
 	FText Description;
 	
