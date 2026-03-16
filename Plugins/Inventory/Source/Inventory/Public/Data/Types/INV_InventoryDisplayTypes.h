@@ -23,7 +23,7 @@ struct FINV_InventoryDisplayData
 	TArray<FINV_CategoryDisplayData> Categories;
 
 	void UpdateItem(const FINV_ItemDisplayData& ItemToUpdate);
-	void RemoveItemAt(const int16 ItemUID);
+	void RemoveItemAt(const int16 ItemId);
 };
 
 USTRUCT()
@@ -31,9 +31,10 @@ struct FINV_CategoryDisplayData
 {
 	GENERATED_BODY()
 	FINV_CategoryDisplayData(){}
-	FINV_CategoryDisplayData(const FName& Id, const FText& Name, const TArray<FINV_ItemDisplayData>& Items): Id(Id), CategoryName(Name), Items(Items){}
+	FINV_CategoryDisplayData(const FGameplayTag& Tag, const FText& Name, const TArray<FINV_ItemDisplayData>& Items):
+	Tag(Tag), CategoryName(Name), Items(Items){}
 
-	FName Id;
+	FGameplayTag Tag;
 	FText CategoryName;
 	TArray<FINV_ItemDisplayData> Items;
 
@@ -67,7 +68,7 @@ struct FINV_ItemDisplayData
 	
 	bool operator==(const FINV_ItemDisplayData & Other) const
 	{
-		return ItemIdentification.UID == Other.ItemIdentification.UID;
+		return ItemIdentification.Id == Other.ItemIdentification.Id;
 	}
 	
 	FINV_ItemIdentification ItemIdentification;

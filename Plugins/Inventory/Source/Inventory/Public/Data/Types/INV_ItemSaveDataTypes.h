@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "INV_ItemSaveDataTypes.generated.h"
 
 USTRUCT(BlueprintType)
@@ -8,13 +9,13 @@ struct FINV_ItemIdentification
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	int32 UID;
+	int32 Id;
 	
 	UPROPERTY(EditInstanceOnly)
-	FName ItemId;
+	FGameplayTag ItemTag;
 	
 	UPROPERTY(EditInstanceOnly)
-	FName CategoryId;
+	FGameplayTag CategoryTag;
 };
 
 USTRUCT()
@@ -30,7 +31,7 @@ struct FINV_ItemData
 
 	bool operator==(const FINV_ItemData & Other) const
 	{
-		return Other.ItemIdentification.UID == ItemIdentification.UID;
+		return Other.ItemIdentification.Id == ItemIdentification.Id;
 	}
 };
 

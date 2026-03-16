@@ -49,7 +49,7 @@ private:
 	
 	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition) const;
 	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData (TArray<FINV_ItemData>& PlayerItemDataList) const;
-	FINV_ItemData* GetCachedItemBy(int16 ItemUID);
+	FINV_ItemData* GetCachedItemBy(int16 ItemId);
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TSubclassOf<UINV_InventoryScreen> InventoryClass;

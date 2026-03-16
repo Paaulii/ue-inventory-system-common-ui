@@ -60,7 +60,7 @@ void UINV_InventoryComponent::LoadInventoryData()
 void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 Amount)
 {
 	DelegateApplyEffects(ItemId);
-	FINV_ItemData* CachedItemData = GetCachedItem(ItemId.UID);
+	FINV_ItemData* CachedItemData = GetCachedItem(ItemId.Id);
 
 	if (!CachedItemData)
 	{
@@ -73,9 +73,9 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 	{
 		CachedPlayerItems.RemoveAll([ItemId](const FINV_ItemData& CurrentItem)
 		{
-			return CurrentItem.ItemIdentification.UID == ItemId.UID;
+			return CurrentItem.ItemIdentification.Id == ItemId.Id;
 		});
-		CachedInventoryDisplayData.RemoveItemAt(CachedItemData->ItemIdentification.UID);
+		CachedInventoryDisplayData.RemoveItemAt(CachedItemData->ItemIdentification.Id);
 	}
 	else
 	{
@@ -88,7 +88,7 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 
 void UINV_InventoryComponent::DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const
 {
-	FINV_ItemAssetDefinition* ItemAssetDef = InventoryDataAsset->GetItemDefinition(ItemId.ItemId, ItemId.CategoryId);
+	FINV_ItemAssetDefinition* ItemAssetDef = InventoryDataAsset->GetItemDefinition(ItemId.ItemTag, ItemId.CategoryTag);
 
 	if (ItemAssetDef)
 	{
@@ -106,9 +106,9 @@ int32 UINV_InventoryComponent::GetNextGUID() const
 	int32 HighestUID = 0;
 	for (const FINV_ItemData& ItemData : CachedPlayerItems)
 	{
-		if (ItemData.ItemIdentification.UID > HighestUID)
+		if (ItemData.ItemIdentification.Id > HighestUID)
 		{
-			HighestUID = ItemData.ItemIdentification.UID;
+			HighestUID = ItemData.ItemIdentification.Id;
 		}
 	}
 	
@@ -119,7 +119,7 @@ FINV_ItemData* UINV_InventoryComponent::GetCachedItem(int16 ItemUID)
 {
 	for (FINV_ItemData& Item : CachedPlayerItems)
 	{
-		if (Item.ItemIdentification.UID == ItemUID)
+		if (Item.ItemIdentification.Id == ItemUID)
 		{
 			return &Item;
 		}
@@ -137,7 +137,7 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 		return CategoryDisplayDataList;
 	}
 	
-	TMap<FName, TArray<FINV_ItemDisplayData>*> ItemsPerCategory;
+	TMap<FGameplayTag, TArray<FINV_ItemDisplayData>*> ItemsPerCategory;
 	for (int i = 0; i < PlayerItemDataList.Num(); i++ ) {
 		FINV_ItemData& CachedPlayerItem = PlayerItemDataList[i];
 		TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(CachedPlayerItem);
@@ -147,13 +147,13 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 			continue;
 		}
 		
-		if (!ItemsPerCategory.Find(CachedPlayerItem.ItemIdentification.CategoryId))
+		if (!ItemsPerCategory.Find(CachedPlayerItem.ItemIdentification.CategoryTag))
 		{
 			TArray<FINV_ItemDisplayData> NewList;
-			ItemsPerCategory.Add(CachedPlayerItem.ItemIdentification.CategoryId, &NewList) ;
+			ItemsPerCategory.Add(CachedPlayerItem.ItemIdentification.CategoryTag, &NewList) ;
 		}
 		
-		TArray<FINV_ItemDisplayData>* ItemList = ItemsPerCategory[CachedPlayerItem.ItemIdentification.CategoryId];
+		TArray<FINV_ItemDisplayData>* ItemList = ItemsPerCategory[CachedPlayerItem.ItemIdentification.CategoryTag];
 		
 		ItemList->Add(ItemDisplayData.GetValue());
 	}
@@ -161,23 +161,23 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 	for (const auto& CurrentCategoryData : InventoryDataAsset->Categories)
 	{
 		TArray<FINV_ItemDisplayData> NewList;
-		if (ItemsPerCategory.Find(CurrentCategoryData.Id))
+		if (ItemsPerCategory.Find(CurrentCategoryData.CategoryTag))
 		{
-			NewList = *ItemsPerCategory[CurrentCategoryData.Id];
+			NewList = *ItemsPerCategory[CurrentCategoryData.CategoryTag];
 		}
 
-		FINV_CategoryDisplayData NewCategory = FINV_CategoryDisplayData(CurrentCategoryData.Id, CurrentCategoryData.CategoryName,NewList);
+		FINV_CategoryDisplayData NewCategory = FINV_CategoryDisplayData(CurrentCategoryData.CategoryTag, CurrentCategoryData.CategoryName,NewList);
 		CategoryDisplayDataList.Add(NewCategory);
 	}
 
 	return CategoryDisplayDataList;
 }
 
-FINV_ItemData* UINV_InventoryComponent::GetCachedItemBy(int16 ItemUID)
+FINV_ItemData* UINV_InventoryComponent::GetCachedItemBy(int16 ItemId)
 {
 	for (int i = 0; i < CachedPlayerItems.Num(); i++) 
 	{
-		if (CachedPlayerItems[i].ItemIdentification.UID == ItemUID)
+		if (CachedPlayerItems[i].ItemIdentification.Id == ItemId)
 		{
 			return &CachedPlayerItems[i];
 		}
@@ -260,9 +260,14 @@ void UINV_InventoryComponent::SaveInventoryData(const TArray<FINV_ItemData>& Dat
 void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
-			ItemData.ItemIdentification.ItemId,
-			ItemData.ItemIdentification.CategoryId
+			ItemData.ItemIdentification.ItemTag,
+			ItemData.ItemIdentification.CategoryTag
 		);
+
+	if (!ItemAssetDefinition)
+	{
+		return;
+	}
 	
 	int ReminderQuantityToAdd = ItemData.Quantity;
 	const int MaxQuantity = ItemAssetDefinition->MaxQuantity;
@@ -272,8 +277,8 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 		for (int i = 0 ; i < CachedPlayerItems.Num(); i++)
 		{
 			FINV_ItemData& CurrentItemData = CachedPlayerItems[i];
-			if (CurrentItemData.ItemIdentification.ItemId != ItemData.ItemIdentification.ItemId ||
-			CurrentItemData.ItemIdentification.CategoryId != ItemData.ItemIdentification.CategoryId ||
+			if (CurrentItemData.ItemIdentification.ItemTag != ItemData.ItemIdentification.ItemTag ||
+			CurrentItemData.ItemIdentification.CategoryTag != ItemData.ItemIdentification.CategoryTag ||
 				CurrentItemData.Quantity >= MaxQuantity)
 			{
 				continue;
@@ -297,7 +302,7 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 			ItemQuantity = MaxQuantity;
 		}
 
-		FINV_ItemData NewItemData = FINV_ItemData(FINV_ItemIdentification(NextUID, ItemData.ItemIdentification.ItemId, ItemData.ItemIdentification.CategoryId), ItemQuantity);
+		FINV_ItemData NewItemData = FINV_ItemData(FINV_ItemIdentification(NextUID, ItemData.ItemIdentification.ItemTag, ItemData.ItemIdentification.CategoryTag), ItemQuantity);
 		CachedPlayerItems.Add(NewItemData);
 		UpdateDisplayInventoryDataEntry(NewItemData);
 		ReminderQuantityToAdd -= ItemQuantity;
@@ -360,8 +365,8 @@ void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionTyp
 TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(const FINV_ItemData& ItemDefinition) const
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
-			ItemDefinition.ItemIdentification.ItemId,
-			ItemDefinition.ItemIdentification.CategoryId
+			ItemDefinition.ItemIdentification.ItemTag,
+			ItemDefinition.ItemIdentification.CategoryTag
 		);
 
 	if (ItemAssetDefinition == nullptr)

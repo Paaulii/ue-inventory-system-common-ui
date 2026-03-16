@@ -32,7 +32,8 @@ public class Inventory : ModuleRules
 				"UISystem",
 				"UMG",
 				"CommonUI",
-				"GameplayAbilities"
+				"GameplayAbilities",
+				"GameplayTags"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

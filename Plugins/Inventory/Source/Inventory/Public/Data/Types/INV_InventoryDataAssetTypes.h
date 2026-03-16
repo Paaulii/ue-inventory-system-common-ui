@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "INV_ItemRarity.h"
 #include "StructUtils/InstancedStruct.h"
 #include "INV_InventoryDataAssetTypes.generated.h"
@@ -12,10 +13,10 @@ struct FINV_ItemAssetDefinition
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Id;
+	FGameplayTag ItemTag;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName CategoryId;
+	FGameplayTag CategoryTag;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Name;
@@ -82,7 +83,7 @@ struct FINV_CategoryDefinitionData
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Id;
+	FGameplayTag CategoryTag;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText CategoryName;

@@ -194,7 +194,7 @@ int UINV_CategoryItems::GetItemIndexForSelectedCategory() const
 	
 	for (int i = 0; i < CachedItemsVM.Num(); i++)
 	{
-		if (CachedItemsVM[i]->GetItemIdentification().UID == SelectedItem->GetItemIdentification().UID)
+		if (CachedItemsVM[i]->GetItemIdentification().Id == SelectedItem->GetItemIdentification().Id)
 		{
 			return i;
 		}
