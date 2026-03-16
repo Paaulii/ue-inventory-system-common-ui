@@ -15,6 +15,10 @@ class INVENTORY_API UINV_ItemViewModel : public UMVVMViewModelBase
 	GENERATED_BODY()
 public:
 	void Initialize(const FINV_ItemDisplayData& ItemData, UINV_CategoryViewModel* CategoryVM);
+
+	UFUNCTION(BlueprintPure, FieldNotify)
+	bool IsQuantityVisible() const;
+	
 	FText GetItemName() const { return ItemName; }
 	FText GetDescription() const { return Description; }
 	UTexture2D* GetSmallImage() const { return SmallImage; }
@@ -25,6 +29,7 @@ public:
 	UINV_CategoryViewModel* GetCategory() const { return Category; }
 	int32 GetRequiredLevel() const { return RequiredLevel; }
 	int32 GetQuantity() const { return Quantity; }
+	int32 GetMaxQuantity() const { return MaxQuantity; }
 	bool GetEquippable() const { return Equippable;}
 	bool GetConsumable() const { return Consumable;}
 	bool GetDroppable() const { return Droppable;}
@@ -59,6 +64,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	int32 Quantity;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	int32 MaxQuantity;
 
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	bool Consumable;
@@ -79,6 +87,7 @@ private:
 	void SetIsEquipped(bool bState);
 	void SetRequiredLevel(int32 Level);
 	void SetQuantity(int32 Value);
+	void SetMaxQuantity(int32 Value);
 	void SetConsumable(bool bState);
 	void SetEquippable(bool bState);
 	void SetDroppable(bool bState);

@@ -16,11 +16,17 @@ void UINV_ItemViewModel::Initialize(const FINV_ItemDisplayData& ItemData, UINV_C
 	SetCategory(CategoryVM);
 	SetRequiredLevel(ItemData.RequiredLevel);
 	SetQuantity(ItemData.Quantity);
+	SetMaxQuantity(ItemData.MaxQuantity);
 	SetConsumable(ItemData.bIsConsumable);
 	SetEquippable(ItemData.bIsEquippable);
 	SetDroppable(ItemData.bIsDroppable);
 
 	ItemIdentification = ItemData.ItemIdentification;
+}
+
+bool UINV_ItemViewModel::IsQuantityVisible() const
+{
+	return MaxQuantity > 1;
 }
 
 void UINV_ItemViewModel::SetItemName(const FText& Name)
@@ -70,7 +76,18 @@ void UINV_ItemViewModel::SetRequiredLevel(int32 Level)
 
 void UINV_ItemViewModel::SetQuantity(int32 Value)
 {
-	UE_MVVM_SET_PROPERTY_VALUE(Quantity, Value);
+	if (UE_MVVM_SET_PROPERTY_VALUE(Quantity, Value))
+	{
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(IsQuantityVisible);
+	}
+}
+
+void UINV_ItemViewModel::SetMaxQuantity(int32 Value)
+{
+	if (UE_MVVM_SET_PROPERTY_VALUE(MaxQuantity, Value))
+	{
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(IsQuantityVisible);
+	}
 }
 
 void UINV_ItemViewModel::SetEquippable(bool bState)

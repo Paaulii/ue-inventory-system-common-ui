@@ -34,10 +34,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void VM_OnIsEquippedUpdated(bool bState);
+
+	/*
+	UFUNCTION(BlueprintCallable)
+	void VM_UpdateTileContent(UINV_ItemViewModel* ItemVM);
+	*/
 	
-	// UFUNCTION(BlueprintCallable)
-	// void VM_UpdateTileContent(UINV_ItemViewModel* ItemVM);
-	//
 	UFUNCTION(BlueprintCallable)
 	void SetFocusState(bool bState, bool bSkipAnimation);
 	
@@ -60,7 +62,6 @@ public:
 	
 	void SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward, bool bSkipAnimation);
 
-	void SetQuantityVisible(bool bState) const;
 
 protected:
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
@@ -77,10 +78,7 @@ protected:
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Item;
-	
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UCommonTextBlock> Text_Quantity;
-	
+
 	UPROPERTY(EditDefaultsOnly)
 	float EmptyItemBackgroundFadeValue;
 private:
