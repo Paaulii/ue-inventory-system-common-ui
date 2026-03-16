@@ -137,7 +137,7 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 		return CategoryDisplayDataList;
 	}
 	
-	TMap<FGameplayTag, TArray<FINV_ItemDisplayData>*> ItemsPerCategory;
+	TMap<FGameplayTag, TArray<FINV_ItemDisplayData>> ItemsPerCategory;
 	for (int i = 0; i < PlayerItemDataList.Num(); i++ ) {
 		FINV_ItemData& CachedPlayerItem = PlayerItemDataList[i];
 		TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(CachedPlayerItem);
@@ -147,26 +147,15 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 			continue;
 		}
 		
-		if (!ItemsPerCategory.Find(CachedPlayerItem.ItemIdentification.CategoryTag))
-		{
-			TArray<FINV_ItemDisplayData> NewList;
-			ItemsPerCategory.Add(CachedPlayerItem.ItemIdentification.CategoryTag, &NewList) ;
-		}
-		
-		TArray<FINV_ItemDisplayData>* ItemList = ItemsPerCategory[CachedPlayerItem.ItemIdentification.CategoryTag];
+		TArray<FINV_ItemDisplayData>* ItemList = &ItemsPerCategory.FindOrAdd(CachedPlayerItem.ItemIdentification.CategoryTag);
 		
 		ItemList->Add(ItemDisplayData.GetValue());
 	}
 
 	for (const auto& CurrentCategoryData : InventoryDataAsset->Categories)
 	{
-		TArray<FINV_ItemDisplayData> NewList;
-		if (ItemsPerCategory.Find(CurrentCategoryData.CategoryTag))
-		{
-			NewList = *ItemsPerCategory[CurrentCategoryData.CategoryTag];
-		}
-
-		FINV_CategoryDisplayData NewCategory = FINV_CategoryDisplayData(CurrentCategoryData.CategoryTag, CurrentCategoryData.CategoryName,NewList);
+		TArray<FINV_ItemDisplayData>* ItemList = &ItemsPerCategory.FindOrAdd(CurrentCategoryData.CategoryTag);
+		FINV_CategoryDisplayData NewCategory = FINV_CategoryDisplayData(CurrentCategoryData.CategoryTag, CurrentCategoryData.CategoryName,*ItemList);
 		CategoryDisplayDataList.Add(NewCategory);
 	}
 
