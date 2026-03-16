@@ -46,6 +46,9 @@ struct FINV_ItemAssetDefinition
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsEquippable;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="bIsEquippable"))
+	FName SocketAttachPoint {NAME_None};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsDroppable;
