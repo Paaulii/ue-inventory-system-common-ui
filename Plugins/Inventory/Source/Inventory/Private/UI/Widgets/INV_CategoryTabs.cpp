@@ -17,11 +17,6 @@ void UINV_CategoryTabs::VM_CreateTabs(const TArray<UINV_CategoryViewModel*> Cate
 	{
 		return;
 	}
-
-	if (CacheSelectionVM)
-	{
-		CacheSelectionVM->SetSelectedCategory(nullptr);
-	}
 	
 	ResetTabs();
 	CacheViewModels();
@@ -32,11 +27,6 @@ void UINV_CategoryTabs::VM_CreateTabs(const TArray<UINV_CategoryViewModel*> Cate
 		{
 			ButtonTab->Setup(CategoryViewModel, CacheSelectionVM);
 		}
-	}
-
-	if (CategoryViewModels.IsValidIndex(0))
-	{
-		CacheSelectionVM->SetSelectedCategory(CategoryViewModels[0]);
 	}
 }
 
