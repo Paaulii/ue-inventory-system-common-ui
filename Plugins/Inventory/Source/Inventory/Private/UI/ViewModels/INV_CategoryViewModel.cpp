@@ -8,7 +8,8 @@
 void UINV_CategoryViewModel::Initialize(const FINV_CategoryDisplayData& CategoryData)
 {
 	SetCategoryName(CategoryData.CategoryName);
-	SetItemArray(CategoryData.Items);
+	SetItems(CategoryData.Items);
+	Tag = CategoryData.Tag;
 }
 
 void UINV_CategoryViewModel::Deinitialize()
@@ -21,7 +22,7 @@ void UINV_CategoryViewModel::SetCategoryName(const FText& Name)
 	UE_MVVM_SET_PROPERTY_VALUE(CategoryName, Name);
 }
 
-void UINV_CategoryViewModel::SetItemArray(const TArray<FINV_ItemDisplayData>& ItemsData)
+void UINV_CategoryViewModel::SetItems(const TArray<FINV_ItemDisplayData>& ItemsData)
 {
 	CategoryItems.Empty();
 	for (const FINV_ItemDisplayData& ItemData : ItemsData)

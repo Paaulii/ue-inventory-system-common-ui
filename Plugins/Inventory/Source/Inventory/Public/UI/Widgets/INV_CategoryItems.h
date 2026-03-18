@@ -23,6 +23,7 @@ class INVENTORY_API UINV_CategoryItems : public UINV_ActivatableMvvmWidget
 	GENERATED_BODY()
 public:
 	virtual void NativeOnInitialized() override;
+	virtual void NativeOnActivated() override;
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 protected:
@@ -37,6 +38,9 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedCategoryChanged(UINV_CategoryViewModel* CategoryVM);
+	
+	UFUNCTION(BlueprintCallable)
+	void VM_RefreshFocusTarget(TArray<UINV_ItemViewModel*> ItemsVM);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UUserWidget* GetFocusTile() const;
@@ -57,14 +61,6 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UINV_InputAction> InputAction_NextPage;
 private:
-	/**
-	 * Function used for refreshing focus target when first tile is ready - when it's selection state animation is finished
-	 *
-	 * @param ItemTile  First item tile that is currently selected 
-	 */
-	UFUNCTION()
-	void TryFocusOnFirstTile(UINV_ItemTile* ItemTile);
-
 	void UpdateSlots(TArray<UINV_ItemViewModel*> ItemViewModels);
 	void PopulateSlots();
 	void UpdatePageButtonVisibility();

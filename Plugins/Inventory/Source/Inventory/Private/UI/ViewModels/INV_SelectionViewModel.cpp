@@ -9,6 +9,7 @@ void UINV_SelectionViewModel::SetSelectedCategory(UINV_CategoryViewModel* Catego
 
 	if (Category == nullptr)
 	{
+		SetSelectedItem(nullptr);
 		return;
 	}
 	
@@ -19,7 +20,7 @@ void UINV_SelectionViewModel::SetSelectedCategory(UINV_CategoryViewModel* Catego
 void UINV_SelectionViewModel::SetSelectedItem(UINV_ItemViewModel* ItemVM)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(SelectedItem, ItemVM);
-	
+
 	if (ItemVM !=  nullptr)
 	{
 		UINV_CategoryViewModel* SelectedItemCategory = SelectedItem->GetCategory();

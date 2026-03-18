@@ -15,6 +15,7 @@ void UINV_CategoryButtonTab::Setup(UINV_CategoryViewModel* CategoryVM, UINV_Sele
 void UINV_CategoryButtonTab::Deinitialize()
 {
 	SetViewModels(nullptr, nullptr);
+	bIsSelected = false;
 }
 
 void UINV_CategoryButtonTab::SetViewModels(UINV_CategoryViewModel* CategoryVM, UINV_SelectionViewModel* SelectionVM)
@@ -23,7 +24,6 @@ void UINV_CategoryButtonTab::SetViewModels(UINV_CategoryViewModel* CategoryVM, U
 	{
 		MVVMView->SetViewModel("CategoryViewModel", CategoryVM);
 		MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
-
 		CachedCategoryVM = CategoryVM;
 		CachedSelectionVM = SelectionVM;
 	}

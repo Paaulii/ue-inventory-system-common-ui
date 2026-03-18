@@ -3,7 +3,7 @@
 #include "IDetailGroup.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
 
-void FINV_InventoryDisplayData::UpdateItem(const FINV_ItemDisplayData& ItemToUpdate)
+void FINV_InventoryDisplayData::AddOrUpdateItem(const FINV_ItemDisplayData& ItemToUpdate)
 {
 	for (FINV_CategoryDisplayData& Category : Categories)
 	{
@@ -38,4 +38,17 @@ void FINV_InventoryDisplayData::RemoveItemAt(const int16 ItemId)
 			}
 		}
 	}
+}
+
+const FINV_CategoryDisplayData* FINV_InventoryDisplayData::GetCategory(const FGameplayTag& GameplayTag)
+{
+	for (const FINV_CategoryDisplayData& Category : Categories)
+	{
+		if (Category.Tag == GameplayTag)
+		{
+			return &Category;
+		}
+	}
+
+	return nullptr;
 }

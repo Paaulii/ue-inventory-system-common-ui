@@ -15,8 +15,6 @@ void UINV_ItemTile::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	MVVMView = Cast<UMVVMView>(GetExtension(UMVVMView::StaticClass()));
-	AnimationStartedEvent.BindDynamic(this, &UINV_ItemTile::NotifyOnItemSelected);
-	BindToAnimationFinished(Selected, AnimationStartedEvent);
 }
 
 void UINV_ItemTile::SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionViewModel* SelectionVM)
@@ -129,9 +127,4 @@ void UINV_ItemTile::SetVisualStateWithAnimation(UWidgetAnimation* Animation, boo
 	float AnimationPlaySpeed = !bSkipAnimation && !bPlayForward? 1.5 : 1.0;
 	
 	PlayAnimation(Animation,AnimationStartTime,1,PlayModeType,AnimationPlaySpeed);
-}
-
-void UINV_ItemTile::NotifyOnItemSelected()
-{
-	OnItemSelected.Broadcast(this);
 }

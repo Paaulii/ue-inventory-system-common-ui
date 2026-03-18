@@ -22,8 +22,9 @@ struct FINV_InventoryDisplayData
 	int32 MaxItemsCapacity;
 	TArray<FINV_CategoryDisplayData> Categories;
 
-	void UpdateItem(const FINV_ItemDisplayData& ItemToUpdate);
+	void AddOrUpdateItem(const FINV_ItemDisplayData& ItemToUpdate);
 	void RemoveItemAt(const int16 ItemId);
+	const FINV_CategoryDisplayData* GetCategory(const FGameplayTag& GameplayTag);
 };
 
 USTRUCT()

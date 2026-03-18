@@ -6,6 +6,7 @@
 #include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_InventoryViewModel.generated.h"
 
+struct FGameplayTag;
 class UINV_ItemActionViewModel;
 struct FINV_CategoryDisplayData;
 struct FINV_InventoryDisplayData;
@@ -19,12 +20,6 @@ class INVENTORY_API UINV_InventoryViewModel : public UUIS_ViewModelBase
 public:
 	virtual void Initialize() override;
 	virtual void Deinitialize() override;
-	
-	UFUNCTION()
-	void RebuildInventory(const FINV_InventoryDisplayData& InventoryData);
-	void ResetCategories();
-	void InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray);
-	
 
 	float GetCurrencyAmount() const { return CurrencyAmount; }
 	int GetMaxItemsCapacity() const { return MaxItemsCapacity; }
@@ -40,6 +35,14 @@ protected:
 	TArray<UINV_CategoryViewModel*> Categories;
 	
 private:
+	UFUNCTION()
+	void RebuildInventory(const FINV_InventoryDisplayData& InventoryData);
+	
+	UFUNCTION()
+	void UpdateCategoryData(const FINV_CategoryDisplayData& CategoryData);
+	
+	void ResetCategories();
+	void InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray);
 	void SetCurrencyAmount(float Value);
 	void SetMaxItemsCapacity(int Value);
 

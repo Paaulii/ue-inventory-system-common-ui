@@ -17,7 +17,8 @@ void UINV_InventoryViewModel::Initialize()
 		InventoryComponent = PlayerController->FindComponentByClass<UINV_InventoryComponent>();
 		if (InventoryComponent)
 		{
-			InventoryComponent->OnInventoryDataChanged.BindUObject(this, &UINV_InventoryViewModel::RebuildInventory);
+			InventoryComponent->OnInventoryDataParsed.BindUObject(this, &UINV_InventoryViewModel::RebuildInventory);
+			InventoryComponent->OnCategoryItemsChanged.BindUObject(this, &UINV_InventoryViewModel::UpdateCategoryData);
 		}
 	}
 }
@@ -30,7 +31,8 @@ void UINV_InventoryViewModel::Deinitialize()
 		return;
 	}
 
-	InventoryComponent->OnInventoryDataChanged.Unbind();
+	InventoryComponent->OnInventoryDataParsed.Unbind();
+	InventoryComponent->OnCategoryItemsChanged.Unbind();
 }
 
 void UINV_InventoryViewModel::RebuildInventory(const FINV_InventoryDisplayData& InventoryData)
@@ -38,6 +40,18 @@ void UINV_InventoryViewModel::RebuildInventory(const FINV_InventoryDisplayData& 
 	SetCurrencyAmount(InventoryData.CurrencyAmount);
 	SetMaxItemsCapacity(InventoryData.MaxItemsCapacity);
 	InitializeCategoryVM(InventoryData.Categories);
+}
+
+void UINV_InventoryViewModel::UpdateCategoryData(const FINV_CategoryDisplayData& CategoryData)
+{
+	for (UINV_CategoryViewModel* CategoryVM : Categories)
+	{
+		if (CategoryVM->GetCategoryTag() == CategoryData.Tag)
+		{
+			CategoryVM->SetItems(CategoryData.Items);
+			break;
+		}
+	}
 }
 
 void UINV_InventoryViewModel::ResetCategories()
@@ -50,7 +64,6 @@ void UINV_InventoryViewModel::ResetCategories()
 	Categories.Empty();
 }
 
-// TODO: Refresh only item that actually was changed.
 void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray)
 {
 	ResetCategories();

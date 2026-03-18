@@ -26,15 +26,15 @@ void UINV_InventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	OwningController = Cast<AINV_PlayerController>(GetOwner());
-	// UINV_InventorySaveData* InventorySaveData = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
-	// if (!InventorySaveData)
-	// {
-	// 	return;
-	// }
-	//
-	// TArray<FINV_ItemData> Items;
-	// InventorySaveData->SetPlayerItems(Items);
-	// UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);
+	/*UINV_InventorySaveData* InventorySaveData = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
+	if (!InventorySaveData)
+	{
+		return;
+	}
+	
+	TArray<FINV_ItemData> Items;
+	InventorySaveData->SetPlayerItems(Items);
+	UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);*/
 	LoadInventoryData();
 }
 
@@ -53,7 +53,7 @@ void UINV_InventoryComponent::LoadInventoryData()
 		);
 		
 		CachedInventoryDisplayData = InventoryDisplayData;
-		OnInventoryDataChanged.ExecuteIfBound(InventoryDisplayData);
+		OnInventoryDataParsed.ExecuteIfBound(InventoryDisplayData);
 	}
 }
 
@@ -83,7 +83,11 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 	}
 	
 	SaveInventoryData(CachedPlayerItems);
-	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
+
+	if (const FINV_CategoryDisplayData* CategoryDisplayData = CachedInventoryDisplayData.GetCategory(CachedItemData->ItemIdentification.CategoryTag))
+	{
+		OnCategoryItemsChanged.ExecuteIfBound(*CategoryDisplayData);
+	}
 }
 
 void UINV_InventoryComponent::DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const
@@ -246,7 +250,7 @@ void UINV_InventoryComponent::SaveInventoryData(const TArray<FINV_ItemData>& Dat
 	UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);
 }
 
-void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
+void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
 			ItemData.ItemIdentification.ItemTag,
@@ -299,7 +303,11 @@ void UINV_InventoryComponent::TryAddItem(FINV_ItemData& ItemData)
 	}
 
 	SaveInventoryData(CachedPlayerItems);
-	OnInventoryDataChanged.ExecuteIfBound(CachedInventoryDisplayData);
+	
+	if (const FINV_CategoryDisplayData* CategoryDisplayData = CachedInventoryDisplayData.GetCategory(ItemData.ItemIdentification.CategoryTag))
+	{
+		OnCategoryItemsChanged.ExecuteIfBound(*CategoryDisplayData);
+	}
 }
 
 void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(const FINV_ItemData& ItemData)
@@ -312,7 +320,7 @@ void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(const FINV_ItemDat
 		return;
 	}
 		
-	CachedInventoryDisplayData.UpdateItem(ItemDisplayData.GetValue());
+	CachedInventoryDisplayData.AddOrUpdateItem(ItemDisplayData.GetValue());
 }
 
 

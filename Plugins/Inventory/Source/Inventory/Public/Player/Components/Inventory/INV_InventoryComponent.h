@@ -23,14 +23,17 @@ class INVENTORY_API UINV_InventoryComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	DECLARE_DELEGATE_OneParam(FInventoryDataChanged, const FINV_InventoryDisplayData& InventoryData);
-	FInventoryDataChanged OnInventoryDataChanged;
+	DECLARE_DELEGATE_OneParam(FInventoryDataChanged, const FINV_CategoryDisplayData& CategoryDisplayData);
+	FInventoryDataChanged OnCategoryItemsChanged;
+	
+	DECLARE_DELEGATE_OneParam(FInventoryDataParsed, const FINV_InventoryDisplayData& InventoryData);
+	FInventoryDataParsed OnInventoryDataParsed;
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateApplyEffect, const TArray<TSubclassOf<UGameplayEffect>>&, Effects);
 	FDelegateApplyEffect OnDelegateApplyEffect;
 	
 	void ToggleInventory();
-	void TryAddItem(FINV_ItemData& ItemData);
+	void TryAddItem(const FINV_ItemData& ItemData);
 	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
 	void ShowItemActionPopup() const;
 	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId, const int32 Amount);

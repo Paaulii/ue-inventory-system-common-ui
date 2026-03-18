@@ -21,9 +21,6 @@ class INVENTORY_API UINV_ItemTile : public UCommonButtonBase
 {
 	GENERATED_BODY()
 public:
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemReady, UINV_ItemTile*, Item);
-	FOnItemReady OnItemSelected;
-	
 	virtual void NativeOnInitialized() override;
 	
 	UFUNCTION(BlueprintCallable)
@@ -35,11 +32,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void VM_OnIsEquippedUpdated(bool bState);
 
-	/*
-	UFUNCTION(BlueprintCallable)
-	void VM_UpdateTileContent(UINV_ItemViewModel* ItemVM);
-	*/
-	
 	UFUNCTION(BlueprintCallable)
 	void SetFocusState(bool bState, bool bSkipAnimation);
 	
@@ -61,8 +53,6 @@ public:
 	void SetEquippedState(bool bState, bool bSkipAnimation);
 	
 	void SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward, bool bSkipAnimation);
-
-
 protected:
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
 	TObjectPtr<UWidgetAnimation> Hovered;
@@ -82,9 +72,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float EmptyItemBackgroundFadeValue;
 private:
-	UFUNCTION()
-	void NotifyOnItemSelected();
-	
 	UPROPERTY()
 	TObjectPtr<UINV_ItemViewModel> CachedItemVM;
 	
@@ -98,6 +85,4 @@ private:
 	bool bIsEquipped;
 	bool bIsEmpty;
 	bool bIsInteractable = true;
-
-	FWidgetAnimationDynamicEvent AnimationStartedEvent;
 };
