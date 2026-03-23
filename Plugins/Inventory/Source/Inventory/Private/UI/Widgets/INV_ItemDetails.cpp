@@ -53,7 +53,7 @@ void UINV_ItemDetails::HandleItemActionPressed(const FINV_ItemActionType& Action
 	{
 		CachedItemActionVM->SetSelectedAction(ActionType);
 		CachedItemActionVM->DelegateShowItemActionPopup();
-		CachedItemActionVM->SetIsSingleItemQuantityAction(false);
+		CachedItemActionVM->SetIsSingleItemQuantityAction(true);
 	}
 }
 
