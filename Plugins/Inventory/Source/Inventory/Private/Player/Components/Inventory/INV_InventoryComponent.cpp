@@ -40,20 +40,44 @@ void UINV_InventoryComponent::BeginPlay()
 
 void UINV_InventoryComponent::LoadInventoryData()
 {
-	if (UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0)))
+	UINV_InventorySaveData* LoadGameInstance = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
+
+	int32 CurrencyAmount = 0;
+	int32 MaxItemsCapacity = DefaultInventoryCapacity;
+	
+	if (LoadGameInstance)
 	{
 		CachedPlayerItems = LoadGameInstance->GetInventoryItems();
-		
-		TArray<FINV_CategoryDisplayData> CategoryDisplayDataArray = TranslatePlayerItemsToDisplayData(CachedPlayerItems);
+		EquippedItems = LoadGameInstance->GetEquippedItems();
+		CurrencyAmount = LoadGameInstance->GetCurrencyAmount();
+		MaxItemsCapacity = LoadGameInstance->GetMaxItemsCapacity();
+	}
+	else
+	{
+		UINV_InventorySaveData* InventorySaveData = NewObject<UINV_InventorySaveData>();
+		InventorySaveData->SetInventorySaveData(CurrencyAmount,MaxItemsCapacity, CachedPlayerItems, EquippedItems);
+		UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);
+	}
+	
+	TArray<FINV_CategoryDisplayData> CategoryDisplayDataArray = TranslatePlayerItemsToDisplayData();
 
-		FINV_InventoryDisplayData InventoryDisplayData = FINV_InventoryDisplayData(
-			LoadGameInstance->GetCurrencyAmount(),
-			LoadGameInstance->GetMaxItemsCapacity(),
-			CategoryDisplayDataArray
-		);
-		
-		CachedInventoryDisplayData = InventoryDisplayData;
-		OnInventoryDataParsed.ExecuteIfBound(InventoryDisplayData);
+	FINV_InventoryDisplayData InventoryDisplayData = FINV_InventoryDisplayData(
+		CurrencyAmount,
+		MaxItemsCapacity,
+		CategoryDisplayDataArray
+	);
+	
+	CachedInventoryDisplayData = InventoryDisplayData;
+	OnInventoryDataParsed.ExecuteIfBound(InventoryDisplayData);
+
+	NotifyItemsEquipped();
+}
+
+void UINV_InventoryComponent::NotifyItemsEquipped()
+{
+	for (FINV_ItemIdentification& ItemToEquip : EquippedItems)
+	{
+		OnItemEquipped.ExecuteIfBound(ItemToEquip);
 	}
 }
 
@@ -89,6 +113,7 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 		OnCategoryItemsChanged.ExecuteIfBound(*CategoryDisplayData);
 	}
 }
+
 
 void UINV_InventoryComponent::DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const
 {
@@ -132,7 +157,7 @@ FINV_ItemData* UINV_InventoryComponent::GetCachedItem(int16 ItemUID)
 	return nullptr;
 }
 
-TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsToDisplayData(TArray<FINV_ItemData>& PlayerItemDataList) const
+TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsToDisplayData()
 {
 	TArray<FINV_CategoryDisplayData> CategoryDisplayDataList;
 	
@@ -142,8 +167,8 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 	}
 	
 	TMap<FGameplayTag, TArray<FINV_ItemDisplayData>> ItemsPerCategory;
-	for (int i = 0; i < PlayerItemDataList.Num(); i++ ) {
-		FINV_ItemData& CachedPlayerItem = PlayerItemDataList[i];
+	for (int i = 0; i < CachedPlayerItems.Num(); i++ ) {
+		FINV_ItemData CachedPlayerItem = CachedPlayerItems[i];
 		TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(CachedPlayerItem);
 
 		if (!ItemDisplayData.IsSet())
@@ -250,6 +275,18 @@ void UINV_InventoryComponent::SaveInventoryData(const TArray<FINV_ItemData>& Dat
 	UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);
 }
 
+void UINV_InventoryComponent::SaveEquipPlayerItems(const TArray<FINV_ItemIdentification>& EquippedItemsToSave) const
+{
+	UINV_InventorySaveData* InventorySaveData = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
+	if (!InventorySaveData)
+	{
+		return;
+	}
+	
+	InventorySaveData->SetEquippedItems(EquippedItemsToSave);
+	UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);
+}
+
 void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
@@ -303,12 +340,61 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 	}
 
 	SaveInventoryData(CachedPlayerItems);
-	
 	if (const FINV_CategoryDisplayData* CategoryDisplayData = CachedInventoryDisplayData.GetCategory(ItemData.ItemIdentification.CategoryTag))
 	{
 		OnCategoryItemsChanged.ExecuteIfBound(*CategoryDisplayData);
 	}
 }
+
+void UINV_InventoryComponent::EquipItem(const FINV_ItemIdentification& ItemIdentification)
+{
+	FINV_ItemAssetDefinition* ItemToEquipAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemIdentification.ItemTag,ItemIdentification.CategoryTag);
+	int32 ItemToUnequipIndex = EquippedItems.IndexOfByPredicate([this, &ItemToEquipAssetDefinition](const FINV_ItemIdentification& EquippedItem){
+		FINV_ItemAssetDefinition* EquippedItemAssedDefinition = InventoryDataAsset->GetItemDefinition(
+			EquippedItem.ItemTag,
+			EquippedItem.CategoryTag
+		);
+		
+		return ItemToEquipAssetDefinition->EquipType == EquippedItemAssedDefinition->EquipType;
+	});
+	
+	if (ItemToUnequipIndex >= 0)
+	{
+		UnequipItemAt(ItemToUnequipIndex);
+	}
+	
+	EquippedItems.Add(ItemIdentification);
+	OnItemEquipped.ExecuteIfBound(ItemIdentification);
+	// TODO: Add GAS effects
+	SaveEquipPlayerItems(EquippedItems);
+}
+
+void UINV_InventoryComponent::TryUnequipItem(const FINV_ItemIdentification& ItemIdentification)
+{
+	int32 ItemToUnequipIndex = EquippedItems.IndexOfByPredicate([this, &ItemIdentification](const FINV_ItemIdentification& EquippedItem){
+		return EquippedItem.Id == ItemIdentification.Id;
+	});
+	
+	if (ItemToUnequipIndex >= 0)
+	{
+		UnequipItemAt(ItemToUnequipIndex);
+		SaveEquipPlayerItems(EquippedItems);
+	}
+}
+
+void UINV_InventoryComponent::UnequipItemAt(const int32 IndexToUnequip)
+{
+	if (IndexToUnequip > EquippedItems.Num())
+	{
+		return;
+	}
+	
+	OnItemUnequipped.ExecuteIfBound(EquippedItems[IndexToUnequip]);
+	EquippedItems.RemoveAt(IndexToUnequip);
+	// TODO: Revoke GAS effects
+}
+
+
 
 void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(const FINV_ItemData& ItemData)
 {
@@ -353,6 +439,10 @@ void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionTyp
 			ConsumeItem(ItemId, Amount);
 			break;
 		case FINV_ItemActionType::Equip:
+			EquipItem(ItemId);
+			break;
+		case FINV_ItemActionType::Unequip:
+			TryUnequipItem(ItemId);
 			break;
 		default:
 			break;

@@ -17,3 +17,16 @@ void UINV_InventorySaveData::SetPlayerItems(const TArray<FINV_ItemData>& ItemsTo
 {
 	PlayerItems = ItemsToSave;
 }
+
+void UINV_InventorySaveData::SetEquippedItems(const TArray<FINV_ItemIdentification>& EquippedItemsToSave)
+{
+	EquippedItems = EquippedItemsToSave;
+}
+
+void UINV_InventorySaveData::SetInventorySaveData(int32 PlayerCurrency, int16 ItemsCapacity, const TArray<FINV_ItemData>& Owned, const TArray<FINV_ItemIdentification>& Equipped)
+{
+	CurrencyAmount = PlayerCurrency;
+	MaxItemsCapacity = ItemsCapacity;
+	SetPlayerItems(Owned);
+	SetEquippedItems(Equipped);
+}

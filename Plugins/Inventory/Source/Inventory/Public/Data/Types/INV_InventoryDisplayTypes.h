@@ -46,10 +46,7 @@ USTRUCT()
 struct FINV_ItemDisplayData
 {
 	GENERATED_BODY()
-	FINV_ItemDisplayData(): ItemIdentification(), SmallImage(nullptr), LargeImage(nullptr),
-	Rarity(EINV_ItemRarity::Common), CurrencyValue(0), RequiredLevel(0), Quantity(0),MaxQuantity(0),
-	bIsConsumable(false), bIsEquippable(false),bIsDroppable(false){}
-	
+	FINV_ItemDisplayData(){}
 	FINV_ItemDisplayData(const FINV_ItemIdentification& ItemIdentification, const FINV_ItemAssetDefinition* AssetDefinition, int32 Quantity)
 	{
 		this->ItemIdentification = ItemIdentification;
@@ -65,30 +62,34 @@ struct FINV_ItemDisplayData
 		bIsConsumable = AssetDefinition->bIsConsumable;
 		bIsEquippable = AssetDefinition->bIsEquippable;
 		bIsDroppable = AssetDefinition->bIsDroppable;
+		EquipType = AssetDefinition->EquipType;
 	}
 	
 	bool operator==(const FINV_ItemDisplayData & Other) const
 	{
 		return ItemIdentification.Id == Other.ItemIdentification.Id;
 	}
-	
-	FINV_ItemIdentification ItemIdentification;
-	FText Name;
-	FText Description;
-	
-	UPROPERTY()
-	UTexture2D* SmallImage;
+
+	FINV_ItemIdentification ItemIdentification {};
+	FText Name {};
+	FText Description {};
 	
 	UPROPERTY()
-	UTexture2D* LargeImage;
+	UTexture2D* SmallImage {nullptr};
 	
-	EINV_ItemRarity Rarity;
-	int32 CurrencyValue;
-	int32 RequiredLevel;
-	int32 Quantity;
-	int32 MaxQuantity;
+	UPROPERTY()
+	UTexture2D* LargeImage {nullptr};
 	
-	bool bIsConsumable;
-	bool bIsEquippable;
-	bool bIsDroppable;
+	EINV_ItemRarity Rarity {EINV_ItemRarity::Common};
+	EINV_ItemEquipType EquipType {EINV_ItemEquipType::None};
+	
+	int32 CurrencyValue {0};
+	int32 RequiredLevel {0};
+	int32 Quantity {0};
+	int32 MaxQuantity {0};
+	
+	bool bIsConsumable {false};
+	bool bIsEquippable {false};
+	bool bIsDroppable {false};
+	bool bIsEquipped {false};
 };

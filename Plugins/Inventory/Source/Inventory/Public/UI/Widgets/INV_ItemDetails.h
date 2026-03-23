@@ -7,6 +7,7 @@
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_ItemDetails.generated.h"
 
+class UINV_EquipmentViewModel;
 enum class FINV_ItemActionType : uint8;
 class UINV_ItemDetailsViewModel;
 class UINV_ItemActionViewModel;
@@ -24,15 +25,23 @@ class INVENTORY_API UINV_ItemDetails : public UINV_ActivatableMvvmWidget
 public:
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem);
-
+	
+	UFUNCTION(BlueprintCallable)
+	void VM_OnEquipItemStateChange(const UINV_ItemViewModel* Item);
+	
 	UFUNCTION(BlueprintCallable)
 	void OnConsumeButtonSelected();
 
 	UFUNCTION(BlueprintCallable)
 	void OnEquipButtonSelected();
-
+	
+	UFUNCTION(BlueprintCallable)
+	void OnUnequipButtonSelected();
+	
 	UFUNCTION(BlueprintCallable)
 	void OnDropButtonSelected();
+
+	void ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const;
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
@@ -59,11 +68,14 @@ private:
 	TObjectPtr<UINV_ItemActionButton> Button_Equip;
 	
 	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UINV_ItemActionButton> Button_Unequip;
+	
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UINV_ItemActionButton> Button_Drop;
 	
 	UPROPERTY()
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
-	
+
 	UPROPERTY()
 	TObjectPtr<UINV_ItemActionViewModel> CachedItemActionVM;
 };

@@ -9,7 +9,12 @@
 void UINV_InventoryScreen::NativeOnActivated()
 {
 	Super::NativeOnActivated();
-	CachedSelectionVM->SetSelectedCategory(CachedInventoryVM->GetCategories()[0]);
+
+	TArray<UINV_CategoryViewModel*> Categories = CachedInventoryVM->GetCategories();
+	if (Categories.Num() > 0)
+	{
+		CachedSelectionVM->SetSelectedCategory(CachedInventoryVM->GetCategories()[0]);
+	}
 }
 
 void UINV_InventoryScreen::NativeOnDeactivated()

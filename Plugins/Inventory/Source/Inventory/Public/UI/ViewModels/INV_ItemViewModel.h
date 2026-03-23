@@ -25,7 +25,6 @@ public:
 	UTexture2D* GetLargeImage() const { return LargeImage; }
 	EINV_ItemRarity GetRarity() const { return Rarity; }
 	int32 GetCurrencyValue() const { return CurrencyValue; }
-	bool GetIsEquipped() const { return IsEquipped; }
 	UINV_CategoryViewModel* GetCategory() const { return Category; }
 	int32 GetRequiredLevel() const { return RequiredLevel; }
 	int32 GetQuantity() const { return Quantity; }
@@ -33,7 +32,10 @@ public:
 	bool GetEquippable() const { return Equippable;}
 	bool GetConsumable() const { return Consumable;}
 	bool GetDroppable() const { return Droppable;}
+	bool GetIsEquipped() const { return IsEquipped; }
 	const FINV_ItemIdentification& GetItemIdentification() const { return ItemIdentification; }
+	
+	void SetIsEquipped(bool bState);
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	FText ItemName;
@@ -52,9 +54,6 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	int32 CurrencyValue;
-	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	bool IsEquipped;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	TObjectPtr<UINV_CategoryViewModel> Category;
@@ -76,6 +75,10 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	bool Droppable;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
+	bool IsEquipped;
+	
 private:
 	void SetItemName(const FText& Name);
 	void SetDescription(const FText& NewDescription);
@@ -84,7 +87,6 @@ private:
 	void SetRarity(const EINV_ItemRarity& ItemRarity);
 	void SetCurrencyValue(const int32 Currency);
 	void SetCategory(UINV_CategoryViewModel* CategoryVM);
-	void SetIsEquipped(bool bState);
 	void SetRequiredLevel(int32 Level);
 	void SetQuantity(int32 Value);
 	void SetMaxQuantity(int32 Value);

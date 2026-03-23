@@ -2,9 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "INV_ItemEquipType.h"
 #include "INV_ItemRarity.h"
 #include "StructUtils/InstancedStruct.h"
 #include "INV_InventoryDataAssetTypes.generated.h"
+enum class EINV_ItemEquipType : uint8;
 class UGameplayEffect;
 
 USTRUCT(BlueprintType)
@@ -50,7 +52,10 @@ struct FINV_ItemAssetDefinition
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="bIsEquippable"))
 	FName SocketAttachPoint {NAME_None};
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="bIsEquippable"))
+	EINV_ItemEquipType EquipType {EINV_ItemEquipType::None};
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsDroppable;
 	

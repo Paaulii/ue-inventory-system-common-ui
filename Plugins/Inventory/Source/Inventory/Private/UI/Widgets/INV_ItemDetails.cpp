@@ -4,12 +4,12 @@
 #include "UI/Widgets/INV_ItemDetails.h"
 
 #include "Components/Image.h"
+#include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
 #include "CommonTextBlock.h"
 #include "Data/Types/INV_ItemActionType.h"
-#include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "UI/Widgets/INV_ItemActionButton.h"
 
 void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
@@ -26,10 +26,34 @@ void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 	Text_Description->SetText(SelectedItem->GetDescription());
 	Text_Value->SetText(FText::AsNumber(SelectedItem->GetCurrencyValue()));
 	Image_SelectedItem->SetBrushFromTexture(SelectedItem->GetLargeImage());
-
 	Button_Consume->SetButtonVisibility(SelectedItem->GetConsumable());
-	Button_Equip->SetButtonVisibility(SelectedItem->GetEquippable());
 	Button_Drop->SetButtonVisibility(SelectedItem->GetDroppable());
+	ToggleEquipButtonState(*SelectedItem);
+}
+
+void UINV_ItemDetails::ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const
+{
+	bool bShouldEquipButtonVisible = SelectedItem.GetEquippable() && !SelectedItem.GetIsEquipped();
+	Button_Equip->SetButtonVisibility(bShouldEquipButtonVisible);
+
+	bool bShouldUnEquipButtonVisible = SelectedItem.GetEquippable() && !bShouldEquipButtonVisible;
+	Button_Unequip->SetButtonVisibility(bShouldUnEquipButtonVisible);
+}
+
+void UINV_ItemDetails::VM_OnEquipItemStateChange(const UINV_ItemViewModel* Item)
+{
+	UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem();
+
+	if (!SelectedItem)
+	{
+		return;
+	}
+
+	
+	if (Item == SelectedItem)
+	{
+		ToggleEquipButtonState(*SelectedItem);
+	}
 }
 
 void UINV_ItemDetails::OnConsumeButtonSelected()
@@ -45,6 +69,11 @@ void UINV_ItemDetails::OnDropButtonSelected()
 void UINV_ItemDetails::OnEquipButtonSelected()
 {
 	DelegatePerformItemAction(FINV_ItemActionType::Equip);
+}
+
+void UINV_ItemDetails::OnUnequipButtonSelected()
+{
+	DelegatePerformItemAction(FINV_ItemActionType::Unequip);
 }
 
 void UINV_ItemDetails::HandleItemActionPressed(const FINV_ItemActionType& ActionType) const
@@ -70,13 +99,12 @@ void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& Acti
 	}
 }
 
-
 void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 {
 	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
 	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
 	CachedSelectionVM = SelectionVM;
-
+	
 	UINV_ItemActionViewModel* ItemActionVM = UIManager->GetViewModel<UINV_ItemActionViewModel>();
 	MVVMView->SetViewModel("ItemActionViewModel", ItemActionVM);
 	CachedItemActionVM = ItemActionVM;
@@ -89,4 +117,3 @@ void UINV_ItemDetails::ClearViewModelsCache()
 	CachedSelectionVM = nullptr;
 	CachedItemActionVM = nullptr;
 }
-

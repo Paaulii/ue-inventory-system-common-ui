@@ -12,7 +12,7 @@ void UINV_ItemViewModel::Initialize(const FINV_ItemDisplayData& ItemData, UINV_C
 	SetLargeImage(ItemData.LargeImage);
 	SetRarity(ItemData.Rarity);
 	SetCurrencyValue(ItemData.CurrencyValue);
-	SetIsEquipped(false);
+	SetIsEquipped(ItemData.bIsEquipped);
 	SetCategory(CategoryVM);
 	SetRequiredLevel(ItemData.RequiredLevel);
 	SetQuantity(ItemData.Quantity);

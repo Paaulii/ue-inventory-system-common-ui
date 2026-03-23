@@ -7,6 +7,7 @@
 #include "Data/Types/INV_InventoryDisplayTypes.h"
 #include "INV_InventoryComponent.generated.h"
 
+class UINV_InventorySaveData;
 struct FINV_ItemIdentification;
 enum class FINV_ItemActionType : uint8;
 class UCommonActivatableWidget;
@@ -29,6 +30,10 @@ public:
 	DECLARE_DELEGATE_OneParam(FInventoryDataParsed, const FINV_InventoryDisplayData& InventoryData);
 	FInventoryDataParsed OnInventoryDataParsed;
 	
+	DECLARE_DELEGATE_OneParam(FItemEquipStateChanged, const FINV_ItemIdentification& ItemIdentification);
+	FItemEquipStateChanged OnItemEquipped;
+	FItemEquipStateChanged OnItemUnequipped;
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateApplyEffect, const TArray<TSubclassOf<UGameplayEffect>>&, Effects);
 	FDelegateApplyEffect OnDelegateApplyEffect;
 	
@@ -41,18 +46,27 @@ protected:
 	virtual void BeginPlay() override;
 	void LoadInventoryData();
 private:
+	void NotifyItemsEquipped();
 	void ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 Amount = 1);
+	void EquipItem(const FINV_ItemIdentification& ItemIdentification );
+	void TryUnequipItem(const FINV_ItemIdentification& ItemIdentification );
+	void UnequipItemAt(const int32 IndexToUnequip);
 	void SetInventoryVisible(bool bIsVisible);
 	void RequestShowInventory();
 	void SaveInventoryData(const TArray<FINV_ItemData>& DataToSave) const;
+	void SaveEquipPlayerItems(const TArray<FINV_ItemIdentification>& EquippedItemsToSave) const;
 	void UpdateDisplayInventoryDataEntry(const FINV_ItemData& ItemData);
 	void DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const;
 	int32 GetNextGUID() const;
 	FINV_ItemData* GetCachedItem(int16 ItemUID);
 	
 	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition) const;
-	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData (TArray<FINV_ItemData>& PlayerItemDataList) const;
+	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData ();
 	FINV_ItemData* GetCachedItemBy(int16 ItemId);
+
+	// TODO: Move it to a separate DataAssets for Inventory Settings
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory| Settings")
+	int32 DefaultInventoryCapacity;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TSubclassOf<UINV_InventoryScreen> InventoryClass;
@@ -68,8 +82,9 @@ private:
 	
 	TWeakObjectPtr<AINV_PlayerController> OwningController;
 	
-	TArray<FINV_ItemData> CachedPlayerItems;
-	FINV_InventoryDisplayData CachedInventoryDisplayData;
+	TArray<FINV_ItemData> CachedPlayerItems {};
+	TArray<FINV_ItemIdentification> EquippedItems {};
+	FINV_InventoryDisplayData CachedInventoryDisplayData {};
 	
 	bool bIsBindToInventoryOnDeactivated;
 	bool bInventoryMenuOpen;
