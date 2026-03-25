@@ -30,12 +30,14 @@ public:
 	FPlayerStatChange OnMaxHealthChanged;
 	FPlayerStatChange OnManaChanged;
 	FPlayerStatChange OnMaxManaChanged;
+	FPlayerStatChange OnBaseAttackChanged;
 protected:
 	virtual void BeginPlay() override;
 	void NotifyHealthChanged(const FOnAttributeChangeData& Data) const;
 	void NotifyMaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void NotifyManaChanged(const FOnAttributeChangeData& Data) const;
 	void NotifyMaxManaChanged(const FOnAttributeChangeData& Data) const;
+	void NotifyBaseAttackChanged(const FOnAttributeChangeData& Data) const;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayEffect>> StartupEffects;

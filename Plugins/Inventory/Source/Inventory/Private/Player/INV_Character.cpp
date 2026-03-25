@@ -24,6 +24,7 @@ void AINV_Character::BeginPlay()
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxHealthAttribute()).AddUObject(this, &AINV_Character::NotifyMaxHealthChanged);
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetManaAttribute()).AddUObject(this, &AINV_Character::NotifyManaChanged);
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxManaAttribute()).AddUObject(this, &AINV_Character::NotifyMaxManaChanged);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetBaseAttackAttribute()).AddUObject(this, &AINV_Character::NotifyBaseAttackChanged);
 	}
 	
 	ApplyEffects(StartupEffects);
@@ -68,6 +69,12 @@ void AINV_Character::NotifyMaxHealthChanged(const FOnAttributeChangeData& Data) 
 void AINV_Character::NotifyMaxManaChanged(const FOnAttributeChangeData& Data) const
 {
 	OnMaxManaChanged.Broadcast(Data.NewValue);
+}
+
+void AINV_Character::NotifyBaseAttackChanged(const FOnAttributeChangeData& Data) const
+{
+	UE_LOG(LogTemp, Warning, TEXT("BASE ATTACK: %f"), Data.NewValue)
+	OnBaseAttackChanged.Broadcast(Data.NewValue);
 }
 
 void AINV_Character::NotifyManaChanged(const FOnAttributeChangeData& Data) const

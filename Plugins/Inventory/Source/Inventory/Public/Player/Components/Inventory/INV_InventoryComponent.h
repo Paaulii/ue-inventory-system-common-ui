@@ -42,13 +42,14 @@ public:
 	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
 	void ShowItemActionPopup() const;
 	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId, const int32 Amount);
+	void LoadInventoryData();
 protected:
 	virtual void BeginPlay() override;
-	void LoadInventoryData();
 private:
-	void NotifyItemsEquipped();
+	void EquipItems();
 	void ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 Amount = 1);
-	void EquipItem(const FINV_ItemIdentification& ItemIdentification );
+	void TryEquipItem(const FINV_ItemIdentification& ItemIdentification);
+	void EquipItem(const FINV_ItemIdentification& ItemIdentification) const;
 	void TryUnequipItem(const FINV_ItemIdentification& ItemIdentification );
 	void UnequipItemAt(const int32 IndexToUnequip);
 	void SetInventoryVisible(bool bIsVisible);

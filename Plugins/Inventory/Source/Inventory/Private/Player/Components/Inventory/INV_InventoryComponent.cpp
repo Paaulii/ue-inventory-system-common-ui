@@ -3,7 +3,6 @@
 
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 
-#include "UIS_UIManagerSubsystem.h"
 #include "Data/INV_InventoryDataAsset.h"
 #include "Data/INV_ModalPromptTexts.h"
 #include "Data/Types/INV_ItemActionType.h"
@@ -13,7 +12,6 @@
 #include "Player/Data/INV_InventorySaveData.h"
 #include "UI/UIS_CommonUIExtensions.h"
 #include "UI/UIS_CommonUILayerTags.h"
-#include "UI/UIS_GameUIPolicy.h"
 #include "UI/UIS_PrimaryGameLayout.h"
 #include "UI/Widgets/INV_InventoryScreen.h"
 
@@ -26,16 +24,6 @@ void UINV_InventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	OwningController = Cast<AINV_PlayerController>(GetOwner());
-	/*UINV_InventorySaveData* InventorySaveData = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
-	if (!InventorySaveData)
-	{
-		return;
-	}
-	
-	TArray<FINV_ItemData> Items;
-	InventorySaveData->SetPlayerItems(Items);
-	UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);*/
-	LoadInventoryData();
 }
 
 void UINV_InventoryComponent::LoadInventoryData()
@@ -70,14 +58,14 @@ void UINV_InventoryComponent::LoadInventoryData()
 	CachedInventoryDisplayData = InventoryDisplayData;
 	OnInventoryDataParsed.ExecuteIfBound(InventoryDisplayData);
 
-	NotifyItemsEquipped();
+	EquipItems();
 }
 
-void UINV_InventoryComponent::NotifyItemsEquipped()
+void UINV_InventoryComponent::EquipItems()
 {
 	for (FINV_ItemIdentification& ItemToEquip : EquippedItems)
 	{
-		OnItemEquipped.ExecuteIfBound(ItemToEquip);
+		EquipItem(ItemToEquip);
 	}
 }
 
@@ -327,7 +315,7 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 	}
 }
 
-void UINV_InventoryComponent::EquipItem(const FINV_ItemIdentification& ItemIdentification)
+void UINV_InventoryComponent::TryEquipItem(const FINV_ItemIdentification& ItemIdentification)
 {
 	FINV_ItemAssetDefinition* ItemToEquipAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemIdentification.ItemTag,ItemIdentification.CategoryTag);
 	int32 ItemToUnequipIndex = EquippedItems.IndexOfByPredicate([this, &ItemToEquipAssetDefinition](const FINV_ItemIdentification& EquippedItem){
@@ -345,9 +333,15 @@ void UINV_InventoryComponent::EquipItem(const FINV_ItemIdentification& ItemIdent
 	}
 	
 	EquippedItems.Add(ItemIdentification);
-	OnItemEquipped.ExecuteIfBound(ItemIdentification);
-	// TODO: Add GAS effects
+	EquipItem(ItemIdentification);
 	SaveEquipPlayerItems(EquippedItems);
+}
+
+void UINV_InventoryComponent::EquipItem(const FINV_ItemIdentification& ItemIdentification) const
+{
+	FINV_ItemAssetDefinition* ItemToEquipAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemIdentification.ItemTag,ItemIdentification.CategoryTag);
+	OnItemEquipped.ExecuteIfBound(ItemIdentification);
+	OnDelegateApplyEffect.Broadcast(ItemToEquipAssetDefinition->Effects);
 }
 
 void UINV_InventoryComponent::TryUnequipItem(const FINV_ItemIdentification& ItemIdentification)
@@ -420,7 +414,7 @@ void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionTyp
 			ConsumeItem(ItemId, Amount);
 			break;
 		case FINV_ItemActionType::Equip:
-			EquipItem(ItemId);
+			TryEquipItem(ItemId);
 			break;
 		case FINV_ItemActionType::Unequip:
 			TryUnequipItem(ItemId);

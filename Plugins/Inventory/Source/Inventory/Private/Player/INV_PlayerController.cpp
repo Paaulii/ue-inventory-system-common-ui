@@ -27,6 +27,7 @@ void AINV_PlayerController::BeginPlay()
 	}
 
 	InventoryCharacter = Cast<AINV_Character>(GetCharacter());
+	InventoryComponent->LoadInventoryData();
 }
 
 void AINV_PlayerController::SetupInputComponent()
@@ -40,7 +41,10 @@ void AINV_PlayerController::SetupInputComponent()
 
 void AINV_PlayerController::ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply)
 {
-	InventoryCharacter->ApplyEffects(EffectsToApply);
+	if (InventoryCharacter)
+	{
+		InventoryCharacter->ApplyEffects(EffectsToApply);
+	}
 }
 
 void AINV_PlayerController::OnInteractWithItem()
