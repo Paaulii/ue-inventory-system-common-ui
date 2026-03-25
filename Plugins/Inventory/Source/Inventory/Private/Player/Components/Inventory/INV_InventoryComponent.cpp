@@ -229,27 +229,8 @@ void UINV_InventoryComponent::SetInventoryVisible(bool bIsVisible)
 
 void UINV_InventoryComponent::RequestShowInventory()
 {
-	UUIS_UIManagerSubsystem* UIManager = OwningController->GetGameInstance()->GetSubsystem<UUIS_UIManagerSubsystem>();
-
-	if (!UIManager)
-	{
-		return;
-	}
-
-	UUIS_GameUIPolicy* Policy = UIManager->GetCurrentUIPolicy();
-	if (!Policy)
-	{
-		return;
-	}
-
-	UUIS_PrimaryGameLayout* RootLayout = Policy->GetRootLayout();
-	if (!RootLayout)
-	{
-		return;
-	}
-
-	UCommonActivatableWidget* WidgetToActivate = RootLayout->PushWidgetToLayerStack(UI::Layer::GameMenu, InventoryClass);
-
+	UCommonActivatableWidget* WidgetToActivate = UUIS_CommonUIExtensions::PushContentToLayer(OwningController->GetLocalPlayer(), UI::Layer::GameMenu, InventoryClass);
+	
 	if (!bIsBindToInventoryOnDeactivated)
 		if (UINV_InventoryScreen* InventoryScreen = Cast<UINV_InventoryScreen>(WidgetToActivate))
 		{
