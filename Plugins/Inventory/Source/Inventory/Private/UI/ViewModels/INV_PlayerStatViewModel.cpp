@@ -13,25 +13,13 @@ void UINV_PlayerStatViewModel::Initialize()
 	{
 		if (AINV_Character* Character = Cast<AINV_Character>(PlayerController->GetCharacter()))
 		{
-			Character->OnHealthChanged.AddWeakLambda(this, [this](int32 Value)
-			{
-				SetCurrentHealth(Value);
-			});
-
-			Character->OnMaxHealthChanged.AddWeakLambda(this, [this](int32 Value)
-			{
-				SetMaxHealth(Value);
-			});
-
-			Character->OnManaChanged.AddWeakLambda(this, [this](int32 Value)
-			{
-				SetCurrentMana(Value);
-			});
-
-			Character->OnMaxManaChanged.AddWeakLambda(this, [this](int32 Value)
-			{
-				SetMaxMana(Value);
-			});
+			Character->OnHealthChanged.AddUObject(this, &UINV_PlayerStatViewModel::SetCurrentHealth);
+			Character->OnMaxHealthChanged.AddUObject(this, &UINV_PlayerStatViewModel::SetMaxHealth);
+			Character->OnManaChanged.AddUObject(this, &UINV_PlayerStatViewModel::SetCurrentMana);
+			Character->OnMaxManaChanged.AddUObject(this, &UINV_PlayerStatViewModel::SetMaxMana);
+			Character->OnArmorChanged.AddUObject(this, &UINV_PlayerStatViewModel::SetArmor);
+			Character->OnBaseAttackChanged.AddUObject(this, &UINV_PlayerStatViewModel::SetBaseAttack);
+			Character->OnMagicPowerChanged.AddUObject(this, &UINV_PlayerStatViewModel::SetMagicPower);
 		}
 	}
 }
@@ -86,4 +74,19 @@ void UINV_PlayerStatViewModel::SetMaxMana(int32 Value)
 	{
 		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetManaPercent);
 	}
+}
+
+void UINV_PlayerStatViewModel::SetArmor(int32 Value)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(Armor, Value);
+}
+
+void UINV_PlayerStatViewModel::SetBaseAttack(int32 Value)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(BaseAttack, Value);
+}
+
+void UINV_PlayerStatViewModel::SetMagicPower(int32 Value)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(MagicPower, Value);
 }

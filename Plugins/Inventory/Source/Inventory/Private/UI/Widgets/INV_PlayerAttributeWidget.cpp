@@ -6,6 +6,11 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 
+void UINV_PlayerAttributeWidget::VM_SetAttributeValue(const FText& Value)
+{
+	Text_StatValue->SetText(Value);
+}
+
 void UINV_PlayerAttributeWidget::NativePreConstruct()
 {
 	Super::NativePreConstruct();

@@ -4,6 +4,7 @@
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "UI/ViewModels/INV_InventoryViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
+#include "UI/ViewModels/INV_PlayerStatViewModel.h"
 #include "View/MVVMView.h"
 
 void UINV_InventoryScreen::NativeOnActivated()
@@ -32,13 +33,19 @@ void UINV_InventoryScreen::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManage
 	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
 	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
 	CachedSelectionVM = SelectionVM;
+
+	UINV_PlayerStatViewModel* PlayerStatVM = UIManager->GetViewModel<UINV_PlayerStatViewModel>();
+	MVVMView->SetViewModel("PlayerStatViewModel", PlayerStatVM);
+	CachedPlayerStatVM = PlayerStatVM;
 }
 
 void UINV_InventoryScreen::ClearViewModelsCache()
 {
 	MVVMView->SetViewModel("InventoryViewModel", nullptr);
 	MVVMView->SetViewModel("SelectionViewModel", nullptr);
+	MVVMView->SetViewModel("PlayerStatViewModel", nullptr);
 
 	CachedInventoryVM = nullptr;
 	CachedSelectionVM = nullptr;
+	CachedPlayerStatVM = nullptr;
 }

@@ -6,6 +6,7 @@
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_InventoryScreen.generated.h"
 
+class UINV_PlayerStatViewModel;
 class UINV_ItemActionViewModel;
 class UINV_SelectionViewModel;
 class UINV_InventoryViewModel;
@@ -25,4 +26,7 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
+
+	UPROPERTY()
+	TObjectPtr<UINV_PlayerStatViewModel> CachedPlayerStatVM;
 };

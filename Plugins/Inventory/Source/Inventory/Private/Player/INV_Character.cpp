@@ -25,6 +25,8 @@ void AINV_Character::BeginPlay()
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetManaAttribute()).AddUObject(this, &AINV_Character::NotifyManaChanged);
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxManaAttribute()).AddUObject(this, &AINV_Character::NotifyMaxManaChanged);
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetBaseAttackAttribute()).AddUObject(this, &AINV_Character::NotifyBaseAttackChanged);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetArmorAttribute()).AddUObject(this, &AINV_Character::NotifyArmorChanged);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMagicPowerAttribute()).AddUObject(this, &AINV_Character::NotifyMagicPowerChanged);
 	}
 	
 	ApplyEffects(StartupEffects);
@@ -86,6 +88,16 @@ void AINV_Character::NotifyMaxManaChanged(const FOnAttributeChangeData& Data) co
 void AINV_Character::NotifyBaseAttackChanged(const FOnAttributeChangeData& Data) const
 {
 	OnBaseAttackChanged.Broadcast(Data.NewValue);
+}
+
+void AINV_Character::NotifyArmorChanged(const FOnAttributeChangeData& Data) const
+{
+	OnArmorChanged.Broadcast(Data.NewValue);
+}
+
+void AINV_Character::NotifyMagicPowerChanged(const FOnAttributeChangeData& Data) const
+{
+	OnMagicPowerChanged.Broadcast(Data.NewValue);
 }
 
 void AINV_Character::NotifyManaChanged(const FOnAttributeChangeData& Data) const

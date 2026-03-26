@@ -32,6 +32,8 @@ public:
 	FPlayerStatChange OnManaChanged;
 	FPlayerStatChange OnMaxManaChanged;
 	FPlayerStatChange OnBaseAttackChanged;
+	FPlayerStatChange OnArmorChanged;
+	FPlayerStatChange OnMagicPowerChanged;
 protected:
 	virtual void BeginPlay() override;
 	void NotifyHealthChanged(const FOnAttributeChangeData& Data) const;
@@ -39,6 +41,8 @@ protected:
 	void NotifyManaChanged(const FOnAttributeChangeData& Data) const;
 	void NotifyMaxManaChanged(const FOnAttributeChangeData& Data) const;
 	void NotifyBaseAttackChanged(const FOnAttributeChangeData& Data) const;
+	void NotifyArmorChanged(const FOnAttributeChangeData& Data) const;
+	void NotifyMagicPowerChanged(const FOnAttributeChangeData& Data) const;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayEffect>> StartupEffects;

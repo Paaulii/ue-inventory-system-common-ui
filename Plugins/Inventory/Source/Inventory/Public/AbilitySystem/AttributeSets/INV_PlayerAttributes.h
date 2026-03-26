@@ -43,15 +43,11 @@ public:
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Armor)
 
-	UPROPERTY(BlueprintReadOnly, Category = "Damage")
+	UPROPERTY(BlueprintReadOnly, Category = "BaseAttack")
 	FGameplayAttributeData BaseAttack;
 	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, BaseAttack)
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Strength")
-	FGameplayAttributeData Strength;
-	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Strength)
-
-	UPROPERTY(BlueprintReadOnly, Category = "Gold")
-	FGameplayAttributeData Gold;
-	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, Gold)
+	UPROPERTY(BlueprintReadOnly, Category = "Magic")
+	FGameplayAttributeData MagicPower;
+	ATTRIBUTE_ACCESSORS(UINV_PlayerAttributes, MagicPower)
 };
