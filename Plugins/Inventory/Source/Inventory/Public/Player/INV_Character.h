@@ -21,8 +21,9 @@ class INVENTORY_API AINV_Character : public ACharacter, public IAbilitySystemInt
 public:
 	AINV_Character();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	void ApplyEffects(TArray<TSubclassOf<UGameplayEffect>> EffectsToApply) const;
-
+	void ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply) const;
+	void RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToRevoke) const;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 

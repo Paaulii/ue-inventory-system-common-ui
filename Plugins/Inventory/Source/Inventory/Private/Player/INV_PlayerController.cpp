@@ -15,6 +15,7 @@ AINV_PlayerController::AINV_PlayerController()
 	ItemTracerComponent = CreateDefaultSubobject<UINV_ItemTracerComponent>("ItemTracer");
 
 	InventoryComponent->OnDelegateApplyEffect.AddDynamic(this, &AINV_PlayerController::ApplyEffects);
+	InventoryComponent->OnDelegateRevokeEffect.AddDynamic(this, &AINV_PlayerController::RevokeEffects);
 }
 
 void AINV_PlayerController::BeginPlay()
@@ -47,9 +48,16 @@ void AINV_PlayerController::ApplyEffects(const TArray<TSubclassOf<UGameplayEffec
 	}
 }
 
+void AINV_PlayerController::RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToRevoke)
+{
+	if (InventoryCharacter)
+	{
+		InventoryCharacter->RevokeEffects(EffectsToRevoke);
+	}
+}
+
 void AINV_PlayerController::OnInteractWithItem()
 {
-	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
 	TObjectPtr<AActor> HoveredActor = ItemTracerComponent->GetHoveredActor();
 	if (!IsValid(HoveredActor))
 	{
@@ -69,7 +77,6 @@ void AINV_PlayerController::OpenInventory()
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Open Inventory"));
 	
 	InventoryComponent->ToggleInventory();
 }

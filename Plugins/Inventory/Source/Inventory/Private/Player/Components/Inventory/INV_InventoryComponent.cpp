@@ -363,10 +363,12 @@ void UINV_InventoryComponent::UnequipItemAt(const int32 IndexToUnequip)
 	{
 		return;
 	}
-	
-	OnItemUnequipped.ExecuteIfBound(EquippedItems[IndexToUnequip]);
+
+	const FINV_ItemIdentification ItemId = EquippedItems[IndexToUnequip];
+	FINV_ItemAssetDefinition* ItemToUnequipAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemId.ItemTag,ItemId.CategoryTag);
+	OnItemUnequipped.ExecuteIfBound(ItemId);
 	EquippedItems.RemoveAt(IndexToUnequip);
-	// TODO: Revoke GAS effects
+	OnDelegateRevokeEffect.Broadcast(ItemToUnequipAssetDefinition->Effects);
 }
 
 

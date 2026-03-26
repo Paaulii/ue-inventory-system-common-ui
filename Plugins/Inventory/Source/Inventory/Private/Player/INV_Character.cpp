@@ -35,7 +35,7 @@ UAbilitySystemComponent* AINV_Character::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-void AINV_Character::ApplyEffects(TArray<TSubclassOf<UGameplayEffect>> EffectsToApply) const
+void AINV_Character::ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply) const
 {
 	if (AbilitySystemComponent == nullptr )
 	{
@@ -51,8 +51,20 @@ void AINV_Character::ApplyEffects(TArray<TSubclassOf<UGameplayEffect>> EffectsTo
 		if (NewHandle.IsValid())
 		{
 			AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
-			// AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(GameplayEffect, nullptr);
 		}
+	}
+}
+
+void AINV_Character::RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToRevoke) const
+{
+	if (AbilitySystemComponent == nullptr )
+	{
+		return;
+	}
+
+	for (auto GameplayEffect : EffectsToRevoke)
+	{
+		AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(GameplayEffect, AbilitySystemComponent);
 	}
 }
 
@@ -73,7 +85,6 @@ void AINV_Character::NotifyMaxManaChanged(const FOnAttributeChangeData& Data) co
 
 void AINV_Character::NotifyBaseAttackChanged(const FOnAttributeChangeData& Data) const
 {
-	UE_LOG(LogTemp, Warning, TEXT("BASE ATTACK: %f"), Data.NewValue)
 	OnBaseAttackChanged.Broadcast(Data.NewValue);
 }
 

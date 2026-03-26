@@ -51,6 +51,9 @@ protected:
 private:
 	UFUNCTION()
 	void ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply);
+
+	UFUNCTION()
+	void RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToRevoke);
 	
 	UPROPERTY()
 	TObjectPtr<AINV_Character> InventoryCharacter;

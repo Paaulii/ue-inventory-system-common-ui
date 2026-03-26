@@ -34,8 +34,9 @@ public:
 	FItemEquipStateChanged OnItemEquipped;
 	FItemEquipStateChanged OnItemUnequipped;
 	
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateApplyEffect, const TArray<TSubclassOf<UGameplayEffect>>&, Effects);
-	FDelegateApplyEffect OnDelegateApplyEffect;
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateModifyEffects, const TArray<TSubclassOf<UGameplayEffect>>&, Effects);
+	FDelegateModifyEffects OnDelegateApplyEffect;
+	FDelegateModifyEffects OnDelegateRevokeEffect;
 	
 	void ToggleInventory();
 	void TryAddItem(const FINV_ItemData& ItemData);
