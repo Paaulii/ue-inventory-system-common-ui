@@ -1,12 +1,11 @@
-### Project is still in progress
-# Invenotry System 🎒
-
+# Inventory System 🎒
+###### Last update: 26.03.2026
 An inventory system implements MVVM pattern and was created using Common UI, it handles navigation for both gamepad and keyboard/mouse input.  Inventory System uses Gameplay Ability System for making actions on items, such as consume, equip.
 Gamepad                    |  Keyboard                  
 :-------------------------:|:-------------------------:
 <img width="1909" height="987" alt="image" src="https://github.com/user-attachments/assets/ac17e178-2a88-4a4d-a042-e827925d3a59" /> | <img width="1907" height="988" alt="image" src="https://github.com/user-attachments/assets/70d67d05-835f-4e27-8f3d-4ad35192f6d1" /> 
 
-The project currently is still in progress but it has already implemented several features such as:
+The project currently is **still in progress** but it has already implemented several features such as:
 - Easy to extend and mantain data array with item's definitions. This is the place where we can specify what Gameplay Effects item has.
 <img width="1910" height="840" alt="image" src="https://github.com/user-attachments/assets/e37ec1b8-2484-496b-a6d8-ed9a040d7011" />
 
@@ -55,9 +54,6 @@ Consume                    |  Equip                    |  Unequip
 
 - Pixel RPG Icons - [https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-remaster-free-109565](https://kickpixel.itch.io/50fantasyicons)
 
-- Pixel Art Platformer - Village Props by Cainos - https://assetstore.unity.com/packages/2d/environments/pixel-art-platformer-village-props-166114
-
-- Puzzle stage & settings GUI Pack by Chocoball - https://assetstore.unity.com/packages/2d/gui/puzzle-stage-settings-gui-pack-147389
 
 #### Fonts:
 - Caslon Antique is licensed under the 1001Fonts Free For Commercial Use License (FFC) - [https://www.1001fonts.com/caslon-antique-font.html#license](https://www.1001fonts.com/caslon-antique-font.html)
