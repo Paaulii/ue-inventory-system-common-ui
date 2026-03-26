@@ -20,6 +20,7 @@ void UINV_ItemViewModel::Initialize(const FINV_ItemDisplayData& ItemData, UINV_C
 	SetConsumable(ItemData.bIsConsumable);
 	SetEquippable(ItemData.bIsEquippable);
 	SetDroppable(ItemData.bIsDroppable);
+	SetEquipType(ItemData.EquipType);
 
 	ItemIdentification = ItemData.ItemIdentification;
 }
@@ -103,4 +104,9 @@ void UINV_ItemViewModel::SetConsumable(bool bState)
 void UINV_ItemViewModel::SetDroppable(bool bState)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Droppable, bState);
+}
+
+void UINV_ItemViewModel::SetEquipType(EINV_ItemEquipType Type)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(EquipType, Type);
 }

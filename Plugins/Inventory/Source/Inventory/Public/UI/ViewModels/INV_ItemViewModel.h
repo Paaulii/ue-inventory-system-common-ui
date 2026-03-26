@@ -5,9 +5,12 @@
 #include "CoreMinimal.h"
 #include "INV_CategoryViewModel.h"
 #include "MVVMViewModelBase.h"
+#include "Data/Types/INV_ItemEquipType.h"
 #include "Data/Types/INV_ItemRarity.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
 #include "INV_ItemViewModel.generated.h"
+
+enum class EINV_ItemEquipType : uint8;
 
 UCLASS()
 class INVENTORY_API UINV_ItemViewModel : public UMVVMViewModelBase
@@ -33,6 +36,7 @@ public:
 	bool GetConsumable() const { return Consumable;}
 	bool GetDroppable() const { return Droppable;}
 	bool GetIsEquipped() const { return IsEquipped; }
+	EINV_ItemEquipType GetEquipType() const { return EquipType; }
 	const FINV_ItemIdentification& GetItemIdentification() const { return ItemIdentification; }
 	
 	void SetIsEquipped(bool bState);
@@ -78,6 +82,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	bool IsEquipped;
+
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	EINV_ItemEquipType EquipType { EINV_ItemEquipType::None };
 	
 private:
 	void SetItemName(const FText& Name);
@@ -93,6 +100,7 @@ private:
 	void SetConsumable(bool bState);
 	void SetEquippable(bool bState);
 	void SetDroppable(bool bState);
+	void SetEquipType(EINV_ItemEquipType Type);
 
 	FINV_ItemIdentification ItemIdentification;
 };
