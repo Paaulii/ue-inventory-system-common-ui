@@ -61,6 +61,16 @@ void UINV_InventoryComponent::LoadInventoryData()
 	EquipItems();
 }
 
+FINV_ItemAssetDefinition* UINV_InventoryComponent::GetItemAssetDefinition(const FINV_ItemIdentification& ItemId) const
+{
+	return InventoryDataAsset->GetItemDefinition(ItemId.ItemTag, ItemId.CategoryTag);
+}
+
+TInstancedStruct<FINV_ItemAssetDefinition>* UINV_InventoryComponent::GetInstancedItemAssetDefinition(const FINV_ItemIdentification& ItemId) const
+{
+	return InventoryDataAsset->GetInstancedItemDefinition(ItemId.ItemTag, ItemId.CategoryTag);
+}
+
 void UINV_InventoryComponent::EquipItems()
 {
 	for (FINV_ItemIdentification& ItemToEquip : EquippedItems)
@@ -105,7 +115,7 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 
 void UINV_InventoryComponent::DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const
 {
-	FINV_ItemAssetDefinition* ItemAssetDef = InventoryDataAsset->GetItemDefinition(ItemId.ItemTag, ItemId.CategoryTag);
+	FINV_ItemAssetDefinition* ItemAssetDef = GetItemAssetDefinition(ItemId);
 
 	if (ItemAssetDef)
 	{
@@ -258,10 +268,7 @@ void UINV_InventoryComponent::SaveEquipPlayerItems(const TArray<FINV_ItemIdentif
 
 void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 {
-	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
-			ItemData.ItemIdentification.ItemTag,
-			ItemData.ItemIdentification.CategoryTag
-		);
+	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemData.ItemIdentification);
 
 	if (!ItemAssetDefinition)
 	{
@@ -317,12 +324,9 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 
 void UINV_InventoryComponent::TryEquipItem(const FINV_ItemIdentification& ItemIdentification)
 {
-	FINV_ItemAssetDefinition* ItemToEquipAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemIdentification.ItemTag,ItemIdentification.CategoryTag);
-	int32 ItemToUnequipIndex = EquippedItems.IndexOfByPredicate([this, &ItemToEquipAssetDefinition](const FINV_ItemIdentification& EquippedItem){
-		FINV_ItemAssetDefinition* EquippedItemAssedDefinition = InventoryDataAsset->GetItemDefinition(
-			EquippedItem.ItemTag,
-			EquippedItem.CategoryTag
-		);
+	FINV_ItemAssetDefinition* ItemToEquipAssetDefinition = GetItemAssetDefinition(ItemIdentification);
+	int32 ItemToUnequipIndex = EquippedItems.IndexOfByPredicate([this, &ItemToEquipAssetDefinition](const FINV_ItemIdentification& EquippedItemId){
+		FINV_ItemAssetDefinition* EquippedItemAssedDefinition =  GetItemAssetDefinition(EquippedItemId);
 		
 		return ItemToEquipAssetDefinition->EquipType == EquippedItemAssedDefinition->EquipType;
 	});
@@ -339,8 +343,8 @@ void UINV_InventoryComponent::TryEquipItem(const FINV_ItemIdentification& ItemId
 
 void UINV_InventoryComponent::EquipItem(const FINV_ItemIdentification& ItemIdentification) const
 {
-	FINV_ItemAssetDefinition* ItemToEquipAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemIdentification.ItemTag,ItemIdentification.CategoryTag);
-	OnItemEquipped.ExecuteIfBound(ItemIdentification);
+	FINV_ItemAssetDefinition* ItemToEquipAssetDefinition = GetItemAssetDefinition(ItemIdentification);
+	OnItemEquipped.Broadcast(ItemIdentification);
 	OnDelegateApplyEffect.Broadcast(ItemToEquipAssetDefinition->Effects);
 }
 
@@ -365,8 +369,8 @@ void UINV_InventoryComponent::UnequipItemAt(const int32 IndexToUnequip)
 	}
 
 	const FINV_ItemIdentification ItemId = EquippedItems[IndexToUnequip];
-	FINV_ItemAssetDefinition* ItemToUnequipAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemId.ItemTag,ItemId.CategoryTag);
-	OnItemUnequipped.ExecuteIfBound(ItemId);
+	FINV_ItemAssetDefinition* ItemToUnequipAssetDefinition = GetItemAssetDefinition(ItemId);
+	OnItemUnequipped.Broadcast(ItemId);
 	EquippedItems.RemoveAt(IndexToUnequip);
 	OnDelegateRevokeEffect.Broadcast(ItemToUnequipAssetDefinition->Effects);
 }
@@ -428,10 +432,7 @@ void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionTyp
 
 TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(const FINV_ItemData& ItemDefinition) const
 {
-	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(
-			ItemDefinition.ItemIdentification.ItemTag,
-			ItemDefinition.ItemIdentification.CategoryTag
-		);
+	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemDefinition.ItemIdentification);
 
 	if (ItemAssetDefinition == nullptr)
 	{

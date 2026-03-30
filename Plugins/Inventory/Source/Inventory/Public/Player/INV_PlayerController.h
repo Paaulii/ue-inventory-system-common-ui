@@ -6,6 +6,7 @@
 #include "Player/UIS_PlayerController.h"
 #include "INV_PlayerController.generated.h"
 
+class UINV_EquipmentComponent;
 class UGameplayEffect;
 class AINV_Character;
 class UINV_ItemTracerComponent;
@@ -44,6 +45,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UINV_EquipmentComponent> EquipmentComponent;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UINV_ItemTracerComponent> ItemTracerComponent;

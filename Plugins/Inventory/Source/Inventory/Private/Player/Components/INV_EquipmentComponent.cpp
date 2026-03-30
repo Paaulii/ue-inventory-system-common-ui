@@ -1,0 +1,134 @@
+﻿// Copyright Paulina Hałatek, All Rights Reserved.
+
+
+#include "Player/Components/INV_EquipmentComponent.h"
+#include "Player/Components/Inventory/INV_InventoryComponent.h"
+#include "Utils/INV_InventoryStatics.h"
+#include "Data/Types/INV_ItemSaveDataTypes.h"
+#include "GameFramework/Character.h"
+#include "Items/INV_SkeletalEquippedItem.h"
+#include "Items/INV_StaticEquippedItem.h"
+#include "Items/Interaction/INV_Equippable.h"
+
+UINV_EquipmentComponent::UINV_EquipmentComponent()
+{
+	PrimaryComponentTick.bCanEverTick = false;
+}
+
+void UINV_EquipmentComponent::Initialize(APlayerController* Controller, USkeletalMeshComponent* Mesh)
+{
+	if (Controller)
+	{
+		OwningPlayerController = Controller;
+
+		if (Mesh)
+		{
+			SetOwningMesh(Mesh);
+		}
+		else if (ACharacter* OwnerCharacter = Cast<ACharacter>(OwningPlayerController->GetCharacter()))
+		{
+			SetOwningMesh(OwnerCharacter->GetMesh());
+		}
+
+		OwningPlayerController->OnPossessedPawnChanged.AddDynamic(this, &ThisClass::ResetOwningMesh);
+	}
+
+	BindToInventoryComponentEquipEvents();
+}
+
+void UINV_EquipmentComponent::SetOwningMesh(USkeletalMeshComponent* Mesh)
+{
+	OwningSkeletalMesh = Mesh;
+}
+
+AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification& ItemId)
+{
+	if (UWorld* World = GetWorld())
+	{
+		TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition = InventoryComponent->GetInstancedItemAssetDefinition(ItemId);
+
+		if (!ItemAssetDefinition)
+		{
+			return nullptr;
+		}
+		
+		AActor* SpawnedEquippedItem = nullptr;
+
+		if (ItemAssetDefinition->GetScriptStruct() == FSkeletalItemData::StaticStruct() && SkeletalEquippedItemClass)
+		{
+			SpawnedEquippedItem = World->SpawnActor(SkeletalEquippedItemClass.Get());
+		}
+		else if (ItemAssetDefinition->GetScriptStruct() == FStaticItemData::StaticStruct() && StaticEquippedItemClass)
+		{
+			SpawnedEquippedItem = World->SpawnActor(StaticEquippedItemClass.Get());
+		}
+
+		if (!SpawnedEquippedItem)
+		{
+			return nullptr;
+		}
+		
+		if (IINV_Equippable* EquippableItem = Cast<IINV_Equippable>(SpawnedEquippedItem))
+		{
+			EquippableItem->SetMesh(ItemAssetDefinition);
+			EquippedItems.Add(ItemId.Id, SpawnedEquippedItem);
+			SpawnedEquippedItem->AttachToComponent(OwningSkeletalMesh, FAttachmentTransformRules:: SnapToTargetNotIncludingScale, ItemAssetDefinition->Get().SocketAttachPoint);
+			return SpawnedEquippedItem;
+		}
+	}
+
+	return nullptr;
+}
+
+void UINV_EquipmentComponent::BindToInventoryComponentEquipEvents()
+{
+	InventoryComponent = UINV_InventoryStatics::GetInventoryComponent(OwningPlayerController.Get());
+
+	if (!InventoryComponent.IsValid())
+	{
+		return;
+	}
+
+	if (!InventoryComponent->OnItemEquipped.IsAlreadyBound(this, &UINV_EquipmentComponent::OnItemEquipped))
+	{
+		InventoryComponent->OnItemEquipped.AddDynamic(this, &UINV_EquipmentComponent::OnItemEquipped);
+	}
+
+	if (!InventoryComponent->OnItemUnequipped.IsAlreadyBound(this, &UINV_EquipmentComponent::OnItemUnequipped))
+	{
+		InventoryComponent->OnItemUnequipped.AddDynamic(this, &UINV_EquipmentComponent::OnItemUnequipped);
+	}
+}
+
+
+void UINV_EquipmentComponent::OnItemEquipped(const FINV_ItemIdentification& EquippedItem)
+{
+	if (AActor* AttachedItem = SpawnEquippedItem(EquippedItem))
+	{
+		OnItemAttached.Broadcast(AttachedItem);
+	}
+}
+
+void UINV_EquipmentComponent::OnItemUnequipped(const FINV_ItemIdentification& UnequippedItem)
+{
+	if (!EquippedItems.Contains(UnequippedItem.Id))
+	{
+		return;
+	}
+	
+	if (AActor* SpawnedItem = EquippedItems[UnequippedItem.Id])
+	{
+		OnItemDetached.Broadcast(SpawnedItem);
+		SpawnedItem->Destroy();
+		EquippedItems.Remove(UnequippedItem.Id);
+	}
+}
+
+void UINV_EquipmentComponent::ResetOwningMesh(APawn* OldPawn, APawn* NewPawn)
+{
+	if (ACharacter* OwnerCharacter = Cast<ACharacter>(NewPawn))
+	{
+		SetOwningMesh(OwnerCharacter->GetMesh());
+	}
+}
+

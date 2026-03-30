@@ -42,6 +42,11 @@ void UINV_ItemDetails::ToggleEquipButtonState(const UINV_ItemViewModel& Selected
 
 void UINV_ItemDetails::VM_OnEquipItemStateChange(const UINV_ItemViewModel* Item)
 {
+	if (!CachedSelectionVM)
+	{
+		return;
+	}
+	
 	UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem();
 
 	if (!SelectedItem)

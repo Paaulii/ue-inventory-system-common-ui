@@ -30,7 +30,7 @@ public:
 	DECLARE_DELEGATE_OneParam(FInventoryDataParsed, const FINV_InventoryDisplayData& InventoryData);
 	FInventoryDataParsed OnInventoryDataParsed;
 	
-	DECLARE_DELEGATE_OneParam(FItemEquipStateChanged, const FINV_ItemIdentification& ItemIdentification);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemEquipStateChanged, const FINV_ItemIdentification&, ItemIdentification);
 	FItemEquipStateChanged OnItemEquipped;
 	FItemEquipStateChanged OnItemUnequipped;
 	
@@ -44,6 +44,9 @@ public:
 	void ShowItemActionPopup() const;
 	void PerformAction(const FINV_ItemActionType& ActionType,  const FINV_ItemIdentification& ItemId, const int32 Amount);
 	void LoadInventoryData();
+
+	FINV_ItemAssetDefinition* GetItemAssetDefinition(const FINV_ItemIdentification& ItemId) const;
+	TInstancedStruct<FINV_ItemAssetDefinition>* GetInstancedItemAssetDefinition(const FINV_ItemIdentification& ItemId) const;
 protected:
 	virtual void BeginPlay() override;
 private:

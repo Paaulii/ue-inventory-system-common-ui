@@ -17,8 +17,8 @@ void UINV_InventoryViewModel::Initialize()
 		{
 			InventoryComponent->OnInventoryDataParsed.BindUObject(this, &UINV_InventoryViewModel::RebuildInventory);
 			InventoryComponent->OnCategoryItemsChanged.BindUObject(this, &UINV_InventoryViewModel::UpdateCategoryData);
-			InventoryComponent->OnItemEquipped.BindUObject(this, &UINV_InventoryViewModel::HandleItemEquipped);
-			InventoryComponent->OnItemUnequipped.BindUObject(this, &UINV_InventoryViewModel::HandleItemUnequipped);
+			InventoryComponent->OnItemEquipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemEquipped);
+			InventoryComponent->OnItemUnequipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemUnequipped);
 		}
 	}
 
@@ -35,8 +35,8 @@ void UINV_InventoryViewModel::Deinitialize()
 
 	InventoryComponent->OnInventoryDataParsed.Unbind();
 	InventoryComponent->OnCategoryItemsChanged.Unbind();
-	InventoryComponent->OnItemEquipped.Unbind();
-	InventoryComponent->OnItemUnequipped.Unbind();
+	InventoryComponent->OnItemEquipped.RemoveDynamic(this, &UINV_InventoryViewModel::HandleItemEquipped);
+	InventoryComponent->OnItemUnequipped.RemoveDynamic(this, &UINV_InventoryViewModel::HandleItemUnequipped);
 }
 
 void UINV_InventoryViewModel::RebuildInventory(const FINV_InventoryDisplayData& InventoryData)

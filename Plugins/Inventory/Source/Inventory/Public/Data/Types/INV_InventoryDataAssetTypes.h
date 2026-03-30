@@ -61,7 +61,7 @@ struct FINV_ItemAssetDefinition
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UMaterial* Material;
-
+	
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<UGameplayEffect>> Effects;
 };

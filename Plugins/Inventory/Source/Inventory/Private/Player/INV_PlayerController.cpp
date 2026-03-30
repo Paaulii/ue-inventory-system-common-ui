@@ -6,12 +6,14 @@
 #include "EnhancedInputSubsystems.h"
 #include "Items/INV_Item.h"
 #include "Player/INV_Character.h"
+#include "Player/Components/INV_EquipmentComponent.h"
 #include "Player/Components/INV_ItemTracerComponent.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 
 AINV_PlayerController::AINV_PlayerController()
 {
 	InventoryComponent = CreateDefaultSubobject<UINV_InventoryComponent>("InventoryComponent");
+	EquipmentComponent = CreateDefaultSubobject<UINV_EquipmentComponent>("EquipmentComponent");
 	ItemTracerComponent = CreateDefaultSubobject<UINV_ItemTracerComponent>("ItemTracer");
 
 	InventoryComponent->OnDelegateApplyEffect.AddDynamic(this, &AINV_PlayerController::ApplyEffects);
@@ -26,6 +28,8 @@ void AINV_PlayerController::BeginPlay()
 	if (IsValid(Subsystem)) {
 		Subsystem->AddMappingContext(DefaultIMC, 0);
 	}
+	
+	EquipmentComponent->Initialize(this, nullptr);
 
 	InventoryCharacter = Cast<AINV_Character>(GetCharacter());
 	InventoryComponent->LoadInventoryData();
