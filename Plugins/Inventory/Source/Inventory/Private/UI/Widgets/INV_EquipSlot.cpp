@@ -13,14 +13,25 @@ void UINV_EquipSlot::NativePreConstruct()
 	Image_Slot->SetBrushFromTexture(EmptySlotImage);
 }
 
-void UINV_EquipSlot::VM_SetSlotImage(UINV_ItemViewModel* ItemVM)
+void UINV_EquipSlot::VM_ItemEquipStateChange(UINV_ItemViewModel* ItemVM)
 {
-	if (ItemVM == nullptr )
+	if (ItemVM == nullptr || ItemVM->GetEquipType() != EquipType )
 	{
 		return;
 	}
 
-	bool bMatchEquipType =  ItemVM->GetEquipType() == EquipType;
+	UTexture2D* SlotImage = ItemVM->GetIsEquipped() ? ItemVM->GetSmallImage() : EmptySlotImage;
+	Image_Slot->SetBrushFromTexture(SlotImage);
+}
 
-	Image_Slot->SetBrushFromTexture(bMatchEquipType && ItemVM->GetIsEquipped() ? ItemVM->GetSmallImage() : EmptySlotImage);
+void UINV_EquipSlot::VM_EquippedItemsChanged(TArray<UINV_ItemViewModel*> EquippedItems)
+{
+	for (auto EquippedItem : EquippedItems)
+	{
+		if (EquippedItem->GetEquipType() == EquipType )
+		{
+			VM_ItemEquipStateChange(EquippedItem);
+			return;
+		};
+	}
 }

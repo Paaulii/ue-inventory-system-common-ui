@@ -21,7 +21,11 @@ public:
 	virtual void NativePreConstruct() override;
 	
 	UFUNCTION(BlueprintCallable)
-	void VM_SetSlotImage(UINV_ItemViewModel* ItemVM);
+	void VM_ItemEquipStateChange(UINV_ItemViewModel* ItemVM);
+
+	UFUNCTION(BlueprintCallable)
+	void VM_EquippedItemsChanged(TArray<UINV_ItemViewModel*> EquippedItems);
+
 protected:
 	UPROPERTY(EditInstanceOnly, Category="SlotProperties")
 	EINV_ItemEquipType EquipType;

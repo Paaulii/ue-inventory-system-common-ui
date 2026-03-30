@@ -5,6 +5,6 @@ enum class EINV_ItemEquipType : uint8
 {
 	None,
 	Helmet,
-	Cape,
+	Cloak,
 	Weapon
 };
