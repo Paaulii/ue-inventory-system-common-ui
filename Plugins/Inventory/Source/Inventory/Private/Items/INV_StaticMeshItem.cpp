@@ -11,15 +11,18 @@ AINV_StaticMeshItem::AINV_StaticMeshItem()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 }
 
-void AINV_StaticMeshItem::ChangeMesh(TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition)
+void AINV_StaticMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition)
 {
-	if (ItemAssetDefinition->GetScriptStruct() == FStaticItemData::StaticStruct())
+	if (ItemAssetDefinition->StaticMesh)
 	{
-		const FStaticItemData& Data = ItemAssetDefinition->Get<FStaticItemData>();
-		
 		if (UStaticMeshComponent* StaticMeshComponent = Cast<UStaticMeshComponent>(MeshComponent))
 		{
-			StaticMeshComponent->SetStaticMesh(Data.StaticMesh);
+			StaticMeshComponent->SetStaticMesh(ItemAssetDefinition->StaticMesh);
+
+			if (ItemAssetDefinition->Material)
+			{
+				StaticMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
+			}
 		}
 	}
 }

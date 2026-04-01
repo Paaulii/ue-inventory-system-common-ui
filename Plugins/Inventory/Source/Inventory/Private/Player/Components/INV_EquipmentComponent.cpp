@@ -45,7 +45,7 @@ AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification
 {
 	if (UWorld* World = GetWorld())
 	{
-		TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition = InventoryComponent->GetInstancedItemAssetDefinition(ItemId);
+		FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryComponent->GetItemAssetDefinition(ItemId);
 
 		if (!ItemAssetDefinition)
 		{
@@ -54,11 +54,11 @@ AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification
 		
 		AActor* SpawnedEquippedItem = nullptr;
 
-		if (ItemAssetDefinition->GetScriptStruct() == FSkeletalItemData::StaticStruct() && SkeletalEquippedItemClass)
+		if (ItemAssetDefinition->SkeletalMesh && SkeletalEquippedItemClass)
 		{
 			SpawnedEquippedItem = World->SpawnActor(SkeletalEquippedItemClass.Get());
 		}
-		else if (ItemAssetDefinition->GetScriptStruct() == FStaticItemData::StaticStruct() && StaticEquippedItemClass)
+		else if (ItemAssetDefinition->StaticMesh && StaticEquippedItemClass)
 		{
 			SpawnedEquippedItem = World->SpawnActor(StaticEquippedItemClass.Get());
 		}
@@ -72,7 +72,7 @@ AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification
 		{
 			EquippableItem->SetMesh(ItemAssetDefinition);
 			EquippedItems.Add(ItemId.Id, SpawnedEquippedItem);
-			SpawnedEquippedItem->AttachToComponent(OwningSkeletalMesh, FAttachmentTransformRules:: SnapToTargetNotIncludingScale, ItemAssetDefinition->Get().SocketAttachPoint);
+			SpawnedEquippedItem->AttachToComponent(OwningSkeletalMesh, FAttachmentTransformRules:: SnapToTargetNotIncludingScale, ItemAssetDefinition->SocketAttachPoint);
 			return SpawnedEquippedItem;
 		}
 	}

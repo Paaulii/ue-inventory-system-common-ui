@@ -14,7 +14,7 @@ class INVENTORY_API AINV_StaticEquippedItem : public AActor, public IINV_Equippa
 
 public:
 	AINV_StaticEquippedItem();
-	virtual void SetMesh(const TInstancedStruct<FINV_ItemAssetDefinition>* ItemDefinition) const override;
+	virtual void SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const override;
 private:
 	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;

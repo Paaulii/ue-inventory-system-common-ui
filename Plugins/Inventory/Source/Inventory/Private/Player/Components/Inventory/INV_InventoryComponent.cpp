@@ -66,11 +66,6 @@ FINV_ItemAssetDefinition* UINV_InventoryComponent::GetItemAssetDefinition(const 
 	return InventoryDataAsset->GetItemDefinition(ItemId.ItemTag, ItemId.CategoryTag);
 }
 
-TInstancedStruct<FINV_ItemAssetDefinition>* UINV_InventoryComponent::GetInstancedItemAssetDefinition(const FINV_ItemIdentification& ItemId) const
-{
-	return InventoryDataAsset->GetInstancedItemDefinition(ItemId.ItemTag, ItemId.CategoryTag);
-}
-
 void UINV_InventoryComponent::EquipItems()
 {
 	for (FINV_ItemIdentification& ItemToEquip : EquippedItems)

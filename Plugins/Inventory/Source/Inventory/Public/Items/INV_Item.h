@@ -25,7 +25,7 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void Highlight_Implementation() override;
 	virtual void UnHighlight_Implementation() override;
-	virtual void ChangeMesh(TInstancedStruct<FINV_ItemAssetDefinition>*  ItemAssetDefinition) PURE_VIRTUAL(AINVItem::ChangeMesh, );;
+	virtual void ChangeMesh(const FINV_ItemAssetDefinition*  ItemAssetDefinition) PURE_VIRTUAL(AINVItem::ChangeMesh, );;
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 #endif
@@ -33,6 +33,7 @@ public:
 	void SetupMesh();
 	void PickUp();
 	FINV_ItemData& GetItemDefinition() { return ItemDefinition; };
+	void SetItemDefinition(const FINV_ItemData& ItemData);
 protected:
 	UPROPERTY(EditInstanceOnly, Category= "Item Definition")
 	FINV_ItemData ItemDefinition;

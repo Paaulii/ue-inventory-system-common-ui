@@ -54,8 +54,8 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 
 void AINV_Item::SetupMesh()
 {
-	TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition = InventoryDataAsset->GetInstancedItemDefinition(
-		ItemDefinition.ItemIdentification.ItemTag, ItemDefinition.ItemIdentification.CategoryTag);
+	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemDefinition.ItemIdentification.ItemTag,
+		ItemDefinition.ItemIdentification.CategoryTag);
 
 	if (!ItemAssetDefinition)
 	{
@@ -68,6 +68,11 @@ void AINV_Item::SetupMesh()
 void AINV_Item::PickUp()
 {
 	Destroy();
+}
+
+void AINV_Item::SetItemDefinition(const FINV_ItemData& ItemData)
+{
+	ItemDefinition = ItemData;
 }
 
 void AINV_Item::Setup()

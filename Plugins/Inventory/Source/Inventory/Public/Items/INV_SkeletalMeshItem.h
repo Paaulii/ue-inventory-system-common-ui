@@ -13,5 +13,6 @@ class INVENTORY_API AINV_SkeletalMeshItem : public AINV_Item
 
 public:
 	AINV_SkeletalMeshItem();
-	virtual void ChangeMesh(TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition) override;
+	
+	virtual void ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition) override;
 };

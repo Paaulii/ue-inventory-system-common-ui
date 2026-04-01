@@ -16,7 +16,7 @@ class INVENTORY_API AINV_SkeletalEquippedItem : public AActor, public IINV_Equip
 
 public:
 	AINV_SkeletalEquippedItem();
-	virtual void SetMesh(const TInstancedStruct<FINV_ItemAssetDefinition>* ItemDefinition) const override;
+	virtual void SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const override;
 private:
 	UPROPERTY()
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;

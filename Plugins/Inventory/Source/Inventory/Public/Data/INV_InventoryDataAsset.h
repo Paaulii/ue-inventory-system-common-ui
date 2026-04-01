@@ -7,9 +7,6 @@
 #include "Engine/DataAsset.h"
 #include "INV_InventoryDataAsset.generated.h"
 
-/**
- * 
- */
 UCLASS(Blueprintable)
 class INVENTORY_API UINV_InventoryDataAsset : public UDataAsset
 {
@@ -18,9 +15,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FINV_CategoryDefinitionData> Categories;
 
-	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
-	TArray<TInstancedStruct<FINV_ItemAssetDefinition>> Items;
+	UPROPERTY(EditAnywhere)
+	TArray<FINV_ItemAssetDefinition> Items;
 
 	FINV_ItemAssetDefinition* GetItemDefinition(const FGameplayTag& ItemTag, const FGameplayTag& CategoryTag);
-	TInstancedStruct<FINV_ItemAssetDefinition>* GetInstancedItemDefinition(const FGameplayTag& ItemTag, const FGameplayTag& CategoryTag);
 };

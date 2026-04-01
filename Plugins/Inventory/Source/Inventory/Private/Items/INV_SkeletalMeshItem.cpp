@@ -12,15 +12,18 @@ AINV_SkeletalMeshItem::AINV_SkeletalMeshItem()
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMesh");
 }
 
-void AINV_SkeletalMeshItem::ChangeMesh(TInstancedStruct<FINV_ItemAssetDefinition>* ItemAssetDefinition)
+void AINV_SkeletalMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition)
 {
-	if (ItemAssetDefinition->GetScriptStruct() == FSkeletalItemData::StaticStruct())
+	if (ItemAssetDefinition->SkeletalMesh)
 	{
-		const FSkeletalItemData& Data = ItemAssetDefinition->Get<FSkeletalItemData>();
 		if (USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(MeshComponent))
 		{
-			SkeletalMeshComponent->SetSkeletalMesh(Data.SkeletalMesh);
-			SkeletalMeshComponent->SetMaterial(0, Data.Material);
+			SkeletalMeshComponent->SetSkeletalMesh(ItemAssetDefinition->SkeletalMesh);
+
+			if (ItemAssetDefinition->Material)
+			{
+				SkeletalMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
+			}
 		}
 	}
 }

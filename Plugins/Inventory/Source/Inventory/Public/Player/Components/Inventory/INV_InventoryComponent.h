@@ -46,7 +46,6 @@ public:
 	void LoadInventoryData();
 
 	FINV_ItemAssetDefinition* GetItemAssetDefinition(const FINV_ItemIdentification& ItemId) const;
-	TInstancedStruct<FINV_ItemAssetDefinition>* GetInstancedItemAssetDefinition(const FINV_ItemIdentification& ItemId) const;
 protected:
 	virtual void BeginPlay() override;
 private:

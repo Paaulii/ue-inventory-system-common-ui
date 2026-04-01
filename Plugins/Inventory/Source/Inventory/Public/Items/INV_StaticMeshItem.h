@@ -13,5 +13,5 @@ class INVENTORY_API AINV_StaticMeshItem : public AINV_Item
 
 public:
 	AINV_StaticMeshItem();
-	virtual void ChangeMesh(TInstancedStruct<FINV_ItemAssetDefinition>*  ItemAssetDefinition) override;
+	virtual void ChangeMesh(const FINV_ItemAssetDefinition*  ItemAssetDefinition) override;
 };

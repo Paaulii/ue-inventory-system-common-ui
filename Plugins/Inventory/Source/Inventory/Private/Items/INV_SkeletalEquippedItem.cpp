@@ -13,13 +13,16 @@ AINV_SkeletalEquippedItem::AINV_SkeletalEquippedItem()
 	SetActorEnableCollision(false);
 }
 
-void AINV_SkeletalEquippedItem::SetMesh(const TInstancedStruct<FINV_ItemAssetDefinition>* ItemDefinition) const
+void AINV_SkeletalEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const
 {
-	if (ItemDefinition->GetScriptStruct() == FSkeletalItemData::StaticStruct())
+	if (ItemDefinition->SkeletalMesh)
 	{
-		const FSkeletalItemData& Data = ItemDefinition->Get<FSkeletalItemData>();
-		SkeletalMeshComponent->SetSkeletalMesh(Data.SkeletalMesh);
-		SkeletalMeshComponent->SetMaterial(0, Data.Material);
+		SkeletalMeshComponent->SetSkeletalMesh(ItemDefinition->SkeletalMesh);
+
+		if (ItemDefinition->Material)
+		{
+			SkeletalMeshComponent->SetMaterial(0, ItemDefinition->Material);
+		}
 	}
 }
 

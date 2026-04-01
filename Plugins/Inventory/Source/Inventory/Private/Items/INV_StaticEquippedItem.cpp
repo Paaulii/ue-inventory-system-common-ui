@@ -5,8 +5,6 @@
 
 #include "Data/Types/INV_InventoryDataAssetTypes.h"
 
-
-// Sets default values
 AINV_StaticEquippedItem::AINV_StaticEquippedItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -14,11 +12,15 @@ AINV_StaticEquippedItem::AINV_StaticEquippedItem()
 	SetActorEnableCollision(false);
 }
 
-void AINV_StaticEquippedItem::SetMesh(const TInstancedStruct<FINV_ItemAssetDefinition>* ItemDefinition) const
+void AINV_StaticEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const
 {
-	if (ItemDefinition->GetScriptStruct() == FStaticItemData::StaticStruct())
+	if (ItemDefinition->StaticMesh)
 	{
-		const FStaticItemData& Data = ItemDefinition->Get<FStaticItemData>();
-		StaticMeshComponent->SetStaticMesh(Data.StaticMesh);
+		StaticMeshComponent->SetStaticMesh(ItemDefinition->StaticMesh);
+
+		if (ItemDefinition->Material)
+		{
+			StaticMeshComponent->SetMaterial(0, ItemDefinition->Material);
+		}
 	}
 }
