@@ -1,5 +1,5 @@
 # Inventory System 🎒
-###### Last update: 30.03.2026
+###### Last update: 02.04.2026
 An inventory system implements MVVM pattern and was created using Common UI, it handles navigation for both gamepad and keyboard/mouse input.  Inventory System uses Gameplay Ability System for making actions on items, such as consume, equip.
 Gamepad                    |  Keyboard                  
 :-------------------------:|:-------------------------:
@@ -15,8 +15,16 @@ Consumable                 |  Weapons                  |  Armor
 :-------------------------:|:-------------------------:|:-------------------------:
 <img width="1902" height="987" alt="image" src="https://github.com/user-attachments/assets/92f6265e-ccfe-42d2-b070-1cca64a2a0fb" />  | <img width="1908" height="985" alt="image" src="https://github.com/user-attachments/assets/d1637af2-6e63-4309-8ebf-79fa4d6fa296" /> | <img width="1911" height="980" alt="image" src="https://github.com/user-attachments/assets/c132c4af-5c4b-4e47-8fd6-a9df7087ddfb" />
 
+- Pagination
+
+⚠️ Ability to extend player's inventory size in progress
+First page                 |  Second Page               
+:-------------------------:|:-------------------------:
+d<img width="1910" height="984" alt="image" src="https://github.com/user-attachments/assets/8c81b5fa-2a2d-4f32-947d-bd247749884b" /> | <img width="1905" height="993" alt="image" src="https://github.com/user-attachments/assets/781b168d-6090-4ca1-9cff-f850f9863582" />
+
 - Consuming items
 
+⚠️ Selecting item's amount to consume in progress
 Before                     |  Confirmation window      |  After
 :-------------------------:|:-------------------------:|:-------------------------:
 <img width="1915" height="989" alt="image" src="https://github.com/user-attachments/assets/da5386bd-67f2-4734-b9df-62acdfec530b" /> | <img width="1909" height="984" alt="image" src="https://github.com/user-attachments/assets/e79d8f0b-5d82-4aef-8d33-6e28457d155c" /> | <img width="1913" height="992" alt="image" src="https://github.com/user-attachments/assets/326a277d-d6ea-487b-ba39-bbf71dfe172c" />
@@ -28,6 +36,21 @@ Before                     |  After
 <img width="1905" height="985" alt="image" src="https://github.com/user-attachments/assets/45e02765-5e5b-4d92-bdfc-53c92d0c8528" /> | <img width="1899" height="985" alt="image" src="https://github.com/user-attachments/assets/1358cb55-1d27-45fb-b564-cc5cb7832c93" />
 
  <img width="1903" height="988" alt="image" src="https://github.com/user-attachments/assets/92bf5410-71d8-4ccb-985d-94d0a6aadd29" />
+ 
+- Dropping items with defined range
+
+⚠️ Selecting item's amount to drop in progress
+
+Confirmation widget        |  Unequipping dropped item | Spawning item in defined range 
+:-------------------------:|:-------------------------:|:-------------------------:
+<img width="1908" height="987" alt="image" src="https://github.com/user-attachments/assets/d7584cdc-70f9-4322-8e3d-cff789c903e5" /> | <img width="1912" height="989" alt="image" src="https://github.com/user-attachments/assets/e65c4b10-b214-4cd9-8dae-a01d79bc97ae" /> | <img width="1908" height="987" alt="image" src="https://github.com/user-attachments/assets/7a85f5c0-e578-41ed-9a68-df4ab7aad4ad" />
+
+- Selling items
+
+⚠️ Selecting item's amount to sell in progress
+Before                     |  Confirmation widget      | After
+:-------------------------:|:-------------------------:|:-------------------------:
+<img width="1914" height="991" alt="image" src="https://github.com/user-attachments/assets/50f4fb20-8397-4a97-a854-5752cfa80606" /> | <img width="1910" height="990" alt="image" src="https://github.com/user-attachments/assets/815199c4-f84c-4ddb-a07c-a1d4193c15aa" /> | <img width="1908" height="991" alt="image" src="https://github.com/user-attachments/assets/33ede16f-a704-4978-ae20-3b1bdbcf14a9" />
 
 - Different action buttons depending on item's type and state
 
@@ -39,7 +62,6 @@ Consume                    |  Equip                    |  Unequip
 <img width="1909" height="984" alt="image" src="https://github.com/user-attachments/assets/e79d8f0b-5d82-4aef-8d33-6e28457d155c" />
 
 ### Plans for the future:
-- Support dropping items
 - Extend confirmation widget to have a slider to allow player to choose how many consumable items want to consume or how many items want to drop.
 - Create Pick-up notification widget.
 - Create popup error message when consuming isn't available - when player has max health or mana.
