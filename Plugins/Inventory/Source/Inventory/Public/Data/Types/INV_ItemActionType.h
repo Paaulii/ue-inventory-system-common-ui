@@ -6,5 +6,6 @@ enum class FINV_ItemActionType : uint8
 	Drop,
 	Consume,
 	Equip,
-	Unequip
+	Unequip,
+	Sell
 };

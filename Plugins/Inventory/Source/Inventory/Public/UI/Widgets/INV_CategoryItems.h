@@ -23,7 +23,6 @@ class INVENTORY_API UINV_CategoryItems : public UINV_ActivatableMvvmWidget
 	GENERATED_BODY()
 public:
 	virtual void NativeOnInitialized() override;
-	virtual void NativeOnActivated() override;
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
 	virtual void ClearViewModelsCache() override;
 protected:
@@ -34,7 +33,7 @@ protected:
 	FText VM_GetItemsCapacityText(UINV_ItemViewModel* ItemVM) const;
 	
 	UFUNCTION(BlueprintCallable)
-	void VM_CategoryItemsChanged(TArray<UINV_ItemViewModel*> ItemsVM);
+	void VM_CategoryItemsChanged(const TArray<UINV_ItemViewModel*>& ItemsVM);
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedCategoryChanged(UINV_CategoryViewModel* CategoryVM);

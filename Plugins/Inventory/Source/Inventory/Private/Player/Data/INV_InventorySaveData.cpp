@@ -30,3 +30,8 @@ void UINV_InventorySaveData::SetInventorySaveData(int32 PlayerCurrency, int16 It
 	SetPlayerItems(Owned);
 	SetEquippedItems(Equipped);
 }
+
+void UINV_InventorySaveData::SetCurrencyAmount(int32 Amount)
+{
+	CurrencyAmount = Amount;
+}

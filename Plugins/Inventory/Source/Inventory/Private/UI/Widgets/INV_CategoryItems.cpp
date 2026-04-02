@@ -2,7 +2,6 @@
 
 
 #include "UI/Widgets/INV_CategoryItems.h"
-
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
@@ -18,18 +17,12 @@ void UINV_CategoryItems::NativeOnInitialized()
 	PopulateSlots();
 }
 
-void UINV_CategoryItems::NativeOnActivated()
-{
-	Super::NativeOnActivated();
-	// RequestRefreshFocus();
-}
-
 void UINV_CategoryItems::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
 {
 	UINV_InventoryViewModel* InventoryVM = UIManager->GetViewModel<UINV_InventoryViewModel>();
 	CachedInventoryVM = InventoryVM;
 	MVVMView->SetViewModel("InventoryViewModel", InventoryVM);
-	
+
 	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
 	CachedSelectionVM = SelectionVM;
 	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
@@ -101,20 +94,20 @@ void UINV_CategoryItems::ChangePage(int PageOffset)
 		CurrentPage = PageNumber;
 		VM_CategoryItemsChanged(CachedItemsVM);
 
-		// Item needs to be re-selected manually, because if player selects first item and changes page the ItemTile is still the same,
+		/*// Item needs to be re-selected manually, because if player selects first item and changes page the ItemTile is still the same,
 		// it's still focused, so it won't invoke selecting item by itself,
 		// which means first item on the new page won't be selected
-		SelectFirstItemOnPage();
+		SelectFirstItemOnPage();*/
 	}
 }
 
 void UINV_CategoryItems::SelectFirstItemOnPage()
 {
 	int FirstItemOnPageIndex = CurrentPage * MaxDynamicEntryBoxCapacity;
-	if (CachedItemsVM.IsValidIndex(FirstItemOnPageIndex))
-	{
-		CachedSelectionVM->SetSelectedItem(CachedItemsVM[FirstItemOnPageIndex]);
-	}
+	UINV_ItemViewModel* SelectedItem = FirstItemOnPageIndex < CachedItemsVM.Num()
+		                                   ? CachedItemsVM[FirstItemOnPageIndex]
+		                                   : nullptr;
+	CachedSelectionVM->SetSelectedItem(SelectedItem);
 }
 
 void UINV_CategoryItems::UpdateSlots(TArray<UINV_ItemViewModel*> ItemViewModels)
@@ -126,6 +119,19 @@ void UINV_CategoryItems::UpdateSlots(TArray<UINV_ItemViewModel*> ItemViewModels)
 
 		UINV_ItemViewModel* ItemVM = CurrentIndex < ItemViewModels.Num() ? ItemViewModels[CurrentIndex] : nullptr;
 		ItemTiles[i]->SetViewModels(ItemVM, ItemVM != nullptr ? CachedSelectionVM : nullptr);
+	}
+
+	if (CachedSelectionVM && CachedSelectionVM->GetSelectedItem())
+	{
+		UINV_ItemViewModel** ItemVM = ItemViewModels.FindByPredicate([this](const UINV_ItemViewModel* ItemVM)
+		{
+			return ItemVM->GetItemIdentification().Id == CachedSelectionVM->GetSelectedItem()->GetItemIdentification().Id;
+		});
+
+		if (!ItemVM)
+		{
+			SelectFirstItemOnPage();
+		}
 	}
 
 	RequestRefreshFocus();
@@ -148,8 +154,9 @@ void UINV_CategoryItems::UpdatePageButtonVisibility()
 	InputAction_PreviousPage->SetVisibility(CurrentPage == 0 ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
 }
 
-void UINV_CategoryItems::VM_CategoryItemsChanged(TArray<UINV_ItemViewModel*> ItemViewModels)
+void UINV_CategoryItems::VM_CategoryItemsChanged(const TArray<UINV_ItemViewModel*>& ItemViewModels)
 {
+	CachedItemsVM = ItemViewModels;
 	PageCount = FMath::FloorToInt(static_cast<float>(ItemViewModels.Num() / MaxDynamicEntryBoxCapacity));
 	UpdatePageButtonVisibility();
 	UpdateSlots(ItemViewModels);
@@ -159,10 +166,6 @@ void UINV_CategoryItems::VM_SelectedCategoryChanged(UINV_CategoryViewModel* Cate
 {
 	CurrentPage = 0;
 	CachedCategoryVM = CategoryVM;
-	if (CategoryVM)
-	{
-		CachedItemsVM = CategoryVM->GetCategoryItems();
-	}
 	MVVMView->SetViewModel("CategoryViewModel", CategoryVM);
 }
 
@@ -191,7 +194,7 @@ int UINV_CategoryItems::GetItemIndexForSelectedCategory() const
 	{
 		return -1;
 	}
-	
+
 	for (int i = 0; i < CachedItemsVM.Num(); i++)
 	{
 		if (CachedItemsVM[i]->GetItemIdentification().Id == SelectedItem->GetItemIdentification().Id)
@@ -199,6 +202,6 @@ int UINV_CategoryItems::GetItemIndexForSelectedCategory() const
 			return i;
 		}
 	}
-	
+
 	return -1;
 }

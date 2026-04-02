@@ -32,6 +32,9 @@ public:
 	DECLARE_DELEGATE_OneParam(FInventoryDataParsed, const FINV_InventoryDisplayData& InventoryData);
 	FInventoryDataParsed OnInventoryDataParsed;
 	
+	DECLARE_DELEGATE_OneParam(FCurrencyChanged, const int32 Value);
+	FCurrencyChanged OnCurrencyChanged;
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemEquipStateChanged, const FINV_ItemIdentification&, ItemIdentification);
 	FItemEquipStateChanged OnItemEquipped;
 	FItemEquipStateChanged OnItemUnequipped;
@@ -39,7 +42,7 @@ public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateModifyEffects, const TArray<TSubclassOf<UGameplayEffect>>&, Effects);
 	FDelegateModifyEffects OnDelegateApplyEffect;
 	FDelegateModifyEffects OnDelegateRevokeEffect;
-	
+
 	void ToggleInventory();
 	void TryAddItem(const FINV_ItemData& ItemData);
 	FText GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
@@ -59,6 +62,7 @@ private:
 	void EquipItem(const FINV_ItemIdentification& ItemIdentification) const;
 	void TryUnequipItem(const FINV_ItemIdentification& ItemIdentification );
 	void UnequipItemAt(const int32 IndexToUnequip);
+	void SellItem(const FINV_ItemIdentification& ItemId, const int16 Amount = 1);
 	void SetInventoryVisible(bool bIsVisible);
 	void RequestShowInventory();
 	void SaveInventoryData(const TArray<FINV_ItemData>& DataToSave) const;

@@ -22,6 +22,7 @@ public:
 	void SetPlayerItems(const TArray<FINV_ItemData>& PlayerItems);
 	void SetEquippedItems(const TArray<FINV_ItemIdentification>& EquippedItemsToSave);
 	void SetInventorySaveData(int32 PlayerCurrency, int16 ItemsCapacity, const TArray<FINV_ItemData>& OwnedItems, const TArray<FINV_ItemIdentification>& Equipped );
+	void SetCurrencyAmount(int32 Amount);
 protected:
 	UPROPERTY()
 	int32 CurrencyAmount;

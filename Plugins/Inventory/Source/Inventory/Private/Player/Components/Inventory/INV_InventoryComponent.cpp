@@ -361,6 +361,7 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 		{
 			ItemQuantity = MaxQuantity;
 		}
+		
 
 		FINV_ItemData NewItemData = FINV_ItemData(FINV_ItemIdentification(NextUID, ItemData.ItemIdentification.ItemTag, ItemData.ItemIdentification.CategoryTag), ItemQuantity);
 		CachedPlayerItems.Add(NewItemData);
@@ -429,11 +430,36 @@ void UINV_InventoryComponent::UnequipItemAt(const int32 IndexToUnequip)
 	OnDelegateRevokeEffect.Broadcast(ItemToUnequipAssetDefinition->Effects);
 }
 
+void UINV_InventoryComponent::SellItem(const FINV_ItemIdentification& ItemId, const int16 Amount)
+{
+	TryUnequipItem(ItemId);
+	
+	if (!DecreaseItemQuantity(ItemId, Amount))
+	{
+		return;
+	}
+	
+	if (FINV_ItemAssetDefinition* ItemDefinition = GetItemAssetDefinition(ItemId))
+	{
+		int SellValue = ItemDefinition->CurrencyValue * Amount;
+		
+		UINV_InventorySaveData* InventorySaveData = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot("SaveData", 0));
+		if (!InventorySaveData)
+		{
+			return;
+		}
+
+		CachedInventoryDisplayData.SetCurrencyAmount(CachedInventoryDisplayData.CurrencyAmount + SellValue);
+		InventorySaveData->SetCurrencyAmount(CachedInventoryDisplayData.CurrencyAmount);
+		UGameplayStatics::SaveGameToSlot(InventorySaveData, "SaveData", 0);
+
+		OnCurrencyChanged.ExecuteIfBound(CachedInventoryDisplayData.CurrencyAmount);
+	}
+}
 
 
 void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(const FINV_ItemData& ItemData)
 {
-	
 	TOptional<FINV_ItemDisplayData> ItemDisplayData = CreateItemDisplayData(ItemData);
 
 	if (!ItemDisplayData.IsSet())
@@ -479,6 +505,9 @@ void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionTyp
 			break;
 		case FINV_ItemActionType::Unequip:
 			TryUnequipItem(ItemId);
+			break;
+		case FINV_ItemActionType::Sell:
+			SellItem(ItemId, Amount);
 			break;
 		default:
 			break;

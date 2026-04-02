@@ -56,6 +56,9 @@ private:
 	
 	UFUNCTION()
 	void HandleItemUnequipped(const FINV_ItemIdentification& ItemIdentification);
+	
+	UFUNCTION()
+	void HandleCurrencyChanged(const int32 Value);
 
 	void ResetCategories();
 	void InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray);

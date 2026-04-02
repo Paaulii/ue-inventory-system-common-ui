@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "CommonButtonBase.h"
-#include "CommonLoadGuard.h"
 #include "INV_ItemTile.generated.h"
 
 class UCommonTextBlock;
@@ -13,9 +12,7 @@ class UINV_SelectionViewModel;
 class UINV_ItemViewModel;
 class UCommonLazyImage;
 class UImage;
-/**
- * 
- */
+
 UCLASS()
 class INVENTORY_API UINV_ItemTile : public UCommonButtonBase
 {

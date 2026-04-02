@@ -81,6 +81,11 @@ void UINV_ItemDetails::OnUnequipButtonSelected()
 	DelegatePerformItemAction(FINV_ItemActionType::Unequip);
 }
 
+void UINV_ItemDetails::OnSellButtonSelected()
+{
+	HandleItemActionPressed(FINV_ItemActionType::Sell);
+}
+
 void UINV_ItemDetails::HandleItemActionPressed(const FINV_ItemActionType& ActionType) const
 {
 	if (CachedItemActionVM)

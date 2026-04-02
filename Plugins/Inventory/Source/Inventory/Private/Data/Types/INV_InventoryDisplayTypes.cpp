@@ -1,6 +1,11 @@
 ﻿#include "Data/Types/INV_InventoryDisplayTypes.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
 
+void FINV_InventoryDisplayData::SetCurrencyAmount(const int32 Amount)
+{
+	CurrencyAmount = Amount;
+}
+
 void FINV_InventoryDisplayData::AddOrUpdateItem(const FINV_ItemDisplayData& ItemToUpdate)
 {
 	for (FINV_CategoryDisplayData& Category : Categories)

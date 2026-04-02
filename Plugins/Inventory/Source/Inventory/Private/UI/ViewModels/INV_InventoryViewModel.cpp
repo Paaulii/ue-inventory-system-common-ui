@@ -17,6 +17,7 @@ void UINV_InventoryViewModel::Initialize()
 		{
 			InventoryComponent->OnInventoryDataParsed.BindUObject(this, &UINV_InventoryViewModel::RebuildInventory);
 			InventoryComponent->OnCategoryItemsChanged.BindUObject(this, &UINV_InventoryViewModel::UpdateCategoryData);
+			InventoryComponent->OnCurrencyChanged.BindUObject(this, &UINV_InventoryViewModel::HandleCurrencyChanged);
 			InventoryComponent->OnItemEquipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemEquipped);
 			InventoryComponent->OnItemUnequipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemUnequipped);
 		}
@@ -35,6 +36,7 @@ void UINV_InventoryViewModel::Deinitialize()
 
 	InventoryComponent->OnInventoryDataParsed.Unbind();
 	InventoryComponent->OnCategoryItemsChanged.Unbind();
+	InventoryComponent->OnCurrencyChanged.Unbind();
 	InventoryComponent->OnItemEquipped.RemoveDynamic(this, &UINV_InventoryViewModel::HandleItemEquipped);
 	InventoryComponent->OnItemUnequipped.RemoveDynamic(this, &UINV_InventoryViewModel::HandleItemUnequipped);
 }
@@ -72,6 +74,11 @@ void UINV_InventoryViewModel::HandleItemUnequipped(const FINV_ItemIdentification
 	{
 		Equipment->OnUnequipItem(*FoundItem);
 	}
+}
+
+void UINV_InventoryViewModel::HandleCurrencyChanged(const int32 Value)
+{
+	SetCurrencyAmount(Value);
 }
 
 void UINV_InventoryViewModel::ResetCategories()

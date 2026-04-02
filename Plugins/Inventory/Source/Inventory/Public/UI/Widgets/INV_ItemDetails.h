@@ -40,6 +40,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void OnDropButtonSelected();
+	
+	UFUNCTION(BlueprintCallable)
+	void OnSellButtonSelected();
 
 	void ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const;
 protected:
