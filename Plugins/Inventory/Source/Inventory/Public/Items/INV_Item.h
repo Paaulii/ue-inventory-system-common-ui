@@ -30,13 +30,12 @@ public:
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 #endif
 	
-	void SetupMesh();
 	void PickUp();
-	FINV_ItemData& GetItemDefinition() { return ItemDefinition; };
-	void SetItemDefinition(const FINV_ItemData& ItemData);
+	FINV_ItemData& GetItemDefinition() { return ItemData; };
+	void Initialize(const FINV_ItemData& Data);
 protected:
-	UPROPERTY(EditInstanceOnly, Category= "Item Definition")
-	FINV_ItemData ItemDefinition;
+	UPROPERTY(EditInstanceOnly, Category= "Inventory")
+	FINV_ItemData ItemData;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory" )
 	TObjectPtr<UINV_InventoryDataAsset> InventoryDataAsset;
@@ -48,6 +47,8 @@ protected:
 	TObjectPtr<UMeshComponent> MeshComponent;
 private:
 	void Setup();
+	void SetupMesh();
+	
 	UPROPERTY()
 	TObjectPtr<URotatingMovementComponent> RotatingComponent;
 };

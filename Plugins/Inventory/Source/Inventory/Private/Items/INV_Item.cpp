@@ -42,9 +42,9 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 	FName PropertyName = (PropertyChangedEvent.MemberProperty != NULL)
 		                     ? PropertyChangedEvent.MemberProperty->GetFName()
 		                     : NAME_None;
-	if (PropertyName == GET_MEMBER_NAME_CHECKED(AINV_Item, ItemDefinition))
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(AINV_Item, ItemData))
 	{
-		if (ItemDefinition.ItemIdentification.ItemTag.IsValid() && ItemDefinition.ItemIdentification.CategoryTag.IsValid())
+		if (ItemData.ItemIdentification.ItemTag.IsValid() && ItemData.ItemIdentification.CategoryTag.IsValid())
 		{
 			SetupMesh();
 		}
@@ -54,8 +54,8 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 
 void AINV_Item::SetupMesh()
 {
-	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemDefinition.ItemIdentification.ItemTag,
-		ItemDefinition.ItemIdentification.CategoryTag);
+	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemData.ItemIdentification.ItemTag,
+		ItemData.ItemIdentification.CategoryTag);
 
 	if (!ItemAssetDefinition)
 	{
@@ -70,9 +70,10 @@ void AINV_Item::PickUp()
 	Destroy();
 }
 
-void AINV_Item::SetItemDefinition(const FINV_ItemData& ItemData)
+void AINV_Item::Initialize(const FINV_ItemData& Data)
 {
-	ItemDefinition = ItemData;
+	ItemData = Data;
+	Setup();
 }
 
 void AINV_Item::Setup()

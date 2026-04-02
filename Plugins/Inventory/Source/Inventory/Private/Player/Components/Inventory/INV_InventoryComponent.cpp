@@ -7,6 +7,9 @@
 #include "Data/INV_ModalPromptTexts.h"
 #include "Data/Types/INV_ItemActionType.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
+#include "Items/INV_Item.h"
+#include "Items/INV_SkeletalMeshItem.h"
+#include "Items/INV_StaticMeshItem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/INV_PlayerController.h"
 #include "Player/Data/INV_InventorySaveData.h"
@@ -24,6 +27,54 @@ void UINV_InventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	OwningController = Cast<AINV_PlayerController>(GetOwner());
+}
+
+void UINV_InventoryComponent::DropItem(const FINV_ItemIdentification& ItemId, const int16 Amount)
+{
+	if (OwningController == nullptr)
+	{
+		return;
+	}
+	
+	TryUnequipItem(ItemId);
+	
+	if (!DecreaseItemQuantity(ItemId, Amount))
+	{
+		return;
+	}
+	
+	FINV_ItemAssetDefinition* ItemAssetDef = GetItemAssetDefinition(ItemId);
+	
+	if (!ItemAssetDef->SkeletalMesh && !ItemAssetDef->StaticMesh)
+	{
+		return;
+	}
+	
+	if (UWorld* World = GetWorld() )
+	{
+		TSubclassOf<AINV_Item> ItemClass = ItemAssetDef->SkeletalMesh ? SkeletalMeshItemClass : StaticMeshItemClass;
+		
+		float Alpha = FMath::FRand() * PI * 2.0f;
+		float Cos = FMath::Cos(Alpha);
+		float Sin = FMath::Sin(Alpha);
+		float X = Cos * DropItemRadius * FMath::FRand();
+		float Y = Sin * DropItemRadius * FMath::FRand();
+
+		FVector RandomPointInRadius = FVector(X, Y, DropItemHeight);
+		FVector PlayerLocation = OwningController->GetPawn()->GetActorLocation();
+		FVector DropItemLocation = FVector(PlayerLocation.X + RandomPointInRadius.X, PlayerLocation.Y + RandomPointInRadius.Y,  RandomPointInRadius.Z);
+		AActor* SpawnedItem = World->SpawnActor(ItemClass, &DropItemLocation);
+
+		if (!SpawnedItem)
+		{
+			return;
+		}
+		
+		if (AINV_Item* Item = Cast<AINV_Item>(SpawnedItem))
+		{
+			Item->Initialize(FINV_ItemData(ItemId, Amount));
+		}
+	}
 }
 
 void UINV_InventoryComponent::LoadInventoryData()
@@ -77,11 +128,16 @@ void UINV_InventoryComponent::EquipItems()
 void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 Amount)
 {
 	DelegateApplyEffects(ItemId);
+	DecreaseItemQuantity(ItemId, Amount);
+}
+
+bool UINV_InventoryComponent::DecreaseItemQuantity(const FINV_ItemIdentification& ItemId, const int16 Amount)
+{
 	FINV_ItemData* CachedItemData = GetCachedItem(ItemId.Id);
 
 	if (!CachedItemData)
 	{
-		return;
+		return false;
 	}
 	
 	CachedItemData->Quantity = CachedItemData->Quantity - Amount;
@@ -100,11 +156,13 @@ void UINV_InventoryComponent::ConsumeItem(const FINV_ItemIdentification& ItemId,
 	}
 	
 	SaveInventoryData(CachedPlayerItems);
-
 	if (const FINV_CategoryDisplayData* CategoryDisplayData = CachedInventoryDisplayData.GetCategory(CachedItemData->ItemIdentification.CategoryTag))
 	{
 		OnCategoryItemsChanged.ExecuteIfBound(*CategoryDisplayData);
+		return true;
 	}
+
+	return false;
 }
 
 
@@ -410,6 +468,7 @@ void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionTyp
 	switch (ActionType)
 	{
 		case FINV_ItemActionType::Drop:
+			DropItem(ItemId, Amount);
 			break;
 		case FINV_ItemActionType::Consume:
 			ConsumeItem(ItemId, Amount);

@@ -7,6 +7,8 @@
 #include "Data/Types/INV_InventoryDisplayTypes.h"
 #include "INV_InventoryComponent.generated.h"
 
+class AINV_StaticMeshItem;
+class AINV_SkeletalMeshItem;
 class UINV_InventorySaveData;
 struct FINV_ItemIdentification;
 enum class FINV_ItemActionType : uint8;
@@ -49,8 +51,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 private:
+	void DropItem(const FINV_ItemIdentification& ItemId, const int16 Amount = 1);
 	void EquipItems();
 	void ConsumeItem(const FINV_ItemIdentification& ItemId, const int16 Amount = 1);
+	bool DecreaseItemQuantity(const FINV_ItemIdentification& ItemId, const int16 Amount);
 	void TryEquipItem(const FINV_ItemIdentification& ItemIdentification);
 	void EquipItem(const FINV_ItemIdentification& ItemIdentification) const;
 	void TryUnequipItem(const FINV_ItemIdentification& ItemIdentification );
@@ -68,15 +72,28 @@ private:
 	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData ();
 	FINV_ItemData* GetCachedItemBy(int16 ItemId);
 
-	// TODO: Move it to a separate DataAssets for Inventory Settings
-	UPROPERTY(EditDefaultsOnly, Category = "Inventory| Settings")
-	int32 DefaultInventoryCapacity;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TSubclassOf<UINV_InventoryScreen> InventoryClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory" )
 	TObjectPtr<UINV_InventoryDataAsset> InventoryDataAsset;
+	
+	// TODO: Move it to a separate DataAssets for Inventory Settings
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory | Settings")
+	int32 DefaultInventoryCapacity;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory | Dropping Items" )
+	TSubclassOf<AINV_SkeletalMeshItem> SkeletalMeshItemClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory | Dropping Items" )
+	TSubclassOf<AINV_StaticMeshItem> StaticMeshItemClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory | Dropping Items" )
+	float DropItemRadius;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory | Dropping Items" )
+	float DropItemHeight;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory/Modal" )
 	TObjectPtr<UINV_ModalPromptTexts> ModalPromptTextsData;
