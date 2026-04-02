@@ -20,7 +20,7 @@ Consumable                 |  Weapons                  |  Armor
 ⚠️ Ability to extend player's inventory size in progress
 First page                 |  Second Page               
 :-------------------------:|:-------------------------:
-d<img width="1910" height="984" alt="image" src="https://github.com/user-attachments/assets/8c81b5fa-2a2d-4f32-947d-bd247749884b" /> | <img width="1905" height="993" alt="image" src="https://github.com/user-attachments/assets/781b168d-6090-4ca1-9cff-f850f9863582" />
+<img width="1910" height="984" alt="image" src="https://github.com/user-attachments/assets/8c81b5fa-2a2d-4f32-947d-bd247749884b" /> | <img width="1905" height="993" alt="image" src="https://github.com/user-attachments/assets/781b168d-6090-4ca1-9cff-f850f9863582" />
 
 - Consuming items
 
