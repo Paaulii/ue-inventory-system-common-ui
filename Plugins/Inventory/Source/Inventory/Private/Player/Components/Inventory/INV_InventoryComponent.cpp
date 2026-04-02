@@ -148,7 +148,8 @@ bool UINV_InventoryComponent::DecreaseItemQuantity(const FINV_ItemIdentification
 		{
 			return CurrentItem.ItemIdentification.Id == ItemId.Id;
 		});
-		CachedInventoryDisplayData.RemoveItemAt(CachedItemData->ItemIdentification.Id);
+		
+		CachedInventoryDisplayData.RemoveItemAt(ItemId.Id);
 	}
 	else
 	{
