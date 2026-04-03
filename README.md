@@ -1,5 +1,5 @@
 # Inventory System 🎒
-###### Last update: 02.04.2026
+###### Last update: 03.04.2026
 An inventory system implements MVVM pattern and was created using Common UI, it handles navigation for both gamepad and keyboard/mouse input.  Inventory System uses Gameplay Ability System for making actions on items, such as consume, equip.
 Gamepad                    |  Keyboard                  
 :-------------------------:|:-------------------------:
@@ -79,6 +79,7 @@ I took an inspiration for UI layout and separation of data stored in ViewModels 
 
 - Pixel RPG Icons - [https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-remaster-free-109565](https://kickpixel.itch.io/50fantasyicons)
 
+- GUI Parts - PONETI - https://www.fab.com/pl/listings/695e149d-93e3-42bb-b021-4f1bbf6eac2a
 
 #### Fonts:
 - Caslon Antique is licensed under the 1001Fonts Free For Commercial Use License (FFC) - [https://www.1001fonts.com/caslon-antique-font.html#license](https://www.1001fonts.com/caslon-antique-font.html)
