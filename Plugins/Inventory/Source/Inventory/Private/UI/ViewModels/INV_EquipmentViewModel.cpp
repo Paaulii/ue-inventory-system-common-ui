@@ -1,12 +1,9 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/ViewModels/INV_EquipmentViewModel.h"
+﻿#include "UI/ViewModels/INV_EquipmentViewModel.h"
 #include "UI/ViewModels/INV_ItemViewModel.h"
 
 void UINV_EquipmentViewModel::OnEquipItem(UINV_ItemViewModel& EquippedItem)
 {
-	EquippedItem.SetIsEquipped(true);
+	EquippedItem.SetbIsEquipped(true);
 	EquippedItems.Add(&EquippedItem);
 	SetLastEquippedItem(&EquippedItem);
 	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(EquippedItems);
@@ -21,9 +18,9 @@ void UINV_EquipmentViewModel::OnUnequipItem(UINV_ItemViewModel& UnequippedItem)
 
 	if (ItemToDeleteIndex >= 0)
 	{
-		UnequippedItem.SetIsEquipped(false);
+		UnequippedItem.SetbIsEquipped(false);
 		SetLastUnequippedItem(&UnequippedItem);
-		EquippedItems.RemoveAt(ItemToDeleteIndex);
+		EquippedItems.RemoveAtSwap(ItemToDeleteIndex);
 		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(EquippedItems);
 	}
 }

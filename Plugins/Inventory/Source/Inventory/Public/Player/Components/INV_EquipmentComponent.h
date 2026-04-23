@@ -1,17 +1,13 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#pragma once
 
-#pragma once
-
-#include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Player/INV_ProxyMesh.h"
+#include "CoreMinimal.h"
 #include "INV_EquipmentComponent.generated.h"
 
-
-class AINV_StaticEquippedItem;
 class AINV_SkeletalEquippedItem;
-struct FINV_ItemIdentification;
+class AINV_StaticEquippedItem;
 class UINV_InventoryComponent;
+struct FINV_ItemIdentification;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INVENTORY_API UINV_EquipmentComponent : public UActorComponent
@@ -19,17 +15,15 @@ class INVENTORY_API UINV_EquipmentComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemEquipStateChanged, AActor*, Item);
-	FItemEquipStateChanged OnItemAttached;
-	FItemEquipStateChanged OnItemDetached;
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FINV_ItemEquipStateChanged, AActor*, Item);
+	FINV_ItemEquipStateChanged OnItemAttached;
+	FINV_ItemEquipStateChanged OnItemDetached;
 	
 	UINV_EquipmentComponent();
-	void BindToInventoryComponentEquipEvents();
-	void Initialize(APlayerController* Controller, USkeletalMeshComponent* Mesh );
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void Initialize(APlayerController* Controller, USkeletalMeshComponent* Mesh);
 	void SetOwningMesh(USkeletalMeshComponent* Mesh);
 private:
-	AActor* SpawnEquippedItem(const FINV_ItemIdentification& ItemId);
-	
 	UFUNCTION()
 	void OnItemEquipped(const FINV_ItemIdentification& EquippedItem);
 	
@@ -39,18 +33,21 @@ private:
 	UFUNCTION()
 	void ResetOwningMesh(APawn* OldPawn, APawn* NewPawn);
 	
-	UPROPERTY()
-	TMap<int32, AActor*> EquippedItems;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AINV_SkeletalEquippedItem> SkeletalEquippedItemClass;
-	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AINV_StaticEquippedItem> StaticEquippedItemClass;
-
-	TWeakObjectPtr<UINV_InventoryComponent> InventoryComponent;
-	TWeakObjectPtr<APlayerController> OwningPlayerController;
+	void BindToInventoryComponentEquipEvents();
+	AActor* SpawnEquippedItem(const FINV_ItemIdentification& ItemId);
 	
 	UPROPERTY()
-	TObjectPtr<USkeletalMeshComponent> OwningSkeletalMesh;
+	TMap<int32, AActor*> EquippedItems = {};
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AINV_SkeletalEquippedItem> SkeletalEquippedItemClass = {};
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AINV_StaticEquippedItem> StaticEquippedItemClass = {};
+
+	UPROPERTY()
+	TObjectPtr<USkeletalMeshComponent> OwningSkeletalMesh = nullptr;
+	
+	TWeakObjectPtr<UINV_InventoryComponent> InventoryComponent = nullptr;
+	TWeakObjectPtr<APlayerController> OwningPlayerController = nullptr;
 };

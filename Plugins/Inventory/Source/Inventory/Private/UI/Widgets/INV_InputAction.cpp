@@ -1,7 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/Widgets/INV_InputAction.h"
+﻿#include "UI/Widgets/INV_InputAction.h"
 #include "CommonActionWidget.h"
 
 void UINV_InputAction::NativePreConstruct()

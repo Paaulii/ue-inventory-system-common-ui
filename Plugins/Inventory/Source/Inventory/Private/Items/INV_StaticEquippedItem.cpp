@@ -1,14 +1,10 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Items/INV_StaticEquippedItem.h"
-
+﻿#include "Items/INV_StaticEquippedItem.h"
 #include "Data/Types/INV_InventoryDataAssetTypes.h"
 
 AINV_StaticEquippedItem::AINV_StaticEquippedItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	SetActorEnableCollision(false);
 }
 

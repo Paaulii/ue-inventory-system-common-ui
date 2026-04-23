@@ -1,7 +1,6 @@
-// Paulina Hałatek All Rights Reserved
 #include "UI/UIS_PrimaryGameLayout.h"
 
-void UUIS_PrimaryGameLayout::RegisterLayer(FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* LayerWidget)
+void UUIS_PrimaryGameLayout::RegisterLayer(const FGameplayTag LayerTag, UCommonActivatableWidgetContainerBase* LayerWidget)
 {
 	if (!IsDesignTime())
 	{
@@ -9,7 +8,7 @@ void UUIS_PrimaryGameLayout::RegisterLayer(FGameplayTag LayerTag, UCommonActivat
 	}
 }
 
-UCommonActivatableWidgetContainerBase* UUIS_PrimaryGameLayout::GetLayerWidget(FGameplayTag LayerName) const
+UCommonActivatableWidgetContainerBase* UUIS_PrimaryGameLayout::GetLayerWidget(const FGameplayTag& LayerName) const
 {
 	if (Layers.Num() <= 0)
 	{

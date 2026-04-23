@@ -1,6 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
@@ -17,9 +15,6 @@ class INVENTORY_API IINV_Highlightable
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintNativeEvent, Category = "Inventory")
-	void Highlight();
-
-	UFUNCTION(BlueprintNativeEvent, Category = "Inventory")
-	void UnHighlight();
+	virtual void Highlight() = 0;
+	virtual void Unhighlight() = 0;
 };

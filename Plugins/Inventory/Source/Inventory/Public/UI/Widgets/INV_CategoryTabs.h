@@ -1,41 +1,36 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#pragma once
 
-#pragma once
-
-#include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "CoreMinimal.h"
 #include "INV_CategoryTabs.generated.h"
 
-class UINV_InventoryViewModel;
+class UDynamicEntryBox;
 class UINV_CategoryViewModel;
+class UINV_InventoryViewModel;
 class UINV_SelectionViewModel;
 struct FINV_CategoryDefinitionData;
-class UDynamicEntryBox;
-/**
- * 
- */
+
 UCLASS()
 class INVENTORY_API UINV_CategoryTabs : public UUserWidget
 {
 	GENERATED_BODY()
-public:
+private:
 	UFUNCTION(BlueprintCallable)
 	void VM_CreateTabs(const TArray<UINV_CategoryViewModel*> CategoryViewModels);
 
 	UFUNCTION(BlueprintCallable)
-	void ChangeCategory(const int Offset) const;
+	void ChangeCategory(const int32 Offset) const;
 
-	void SelectTab(const int Index) const;
-	void ResetTabs() const;
 	void CacheViewModels();
-	
+	void SelectTab(const int32 Index) const;
+	void ResetTabs() const;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UDynamicEntryBox> TabButtons;
+	TObjectPtr<UDynamicEntryBox> TabButtons = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UINV_InventoryViewModel> CacheInventoryVM;
+	TObjectPtr<UINV_InventoryViewModel> CacheInventoryVM = nullptr;
 	
 	UPROPERTY()
-	TObjectPtr<UINV_SelectionViewModel> CacheSelectionVM;
+	TObjectPtr<UINV_SelectionViewModel> CacheSelectionVM = nullptr;
 };

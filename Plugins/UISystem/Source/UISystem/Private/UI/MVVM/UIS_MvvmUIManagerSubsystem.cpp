@@ -1,8 +1,4 @@
-﻿// // Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
-
+﻿#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "Player/UIS_LocalPlayer.h"
 #include "Player/UIS_PlayerController.h"
 #include "UI/MVVM/UIS_ViewModelBase.h"
@@ -17,33 +13,6 @@ void UUIS_MvvmUIManagerSubsystem::Deinitialize()
 {
 	DeinitializeViewModels();
 	Super::Deinitialize();
-}
-
-bool UUIS_MvvmUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
-{
-	return this->GetClass()->IsInBlueprint() && Super::ShouldCreateSubsystem(Outer);
-}
-
-void UUIS_MvvmUIManagerSubsystem::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer)
-{
-	Super::NotifyPlayerAdded(LocalPlayer);
-
-	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(
-		this, [this](UUIS_LocalPlayer* LocalPlayer, APlayerController* PlayerController)
-		{
-			if (AUIS_PlayerController* Controller = Cast<AUIS_PlayerController>(PlayerController))
-			{
-				Controller->OnPawnPossessed.AddUObject(this, &UUIS_MvvmUIManagerSubsystem::OnPawnPossessed);
-			}
-		});
-}
-
-void UUIS_MvvmUIManagerSubsystem::OnPawnPossessed()
-{
-	for (auto ViewModel : ViewModels)
-	{
-		ViewModel->Initialize();
-	};
 }
 
 void UUIS_MvvmUIManagerSubsystem::InitializeViewModels()
@@ -66,4 +35,31 @@ void UUIS_MvvmUIManagerSubsystem::DeinitializeViewModels()
 	}
 
 	ViewModels.Empty();
+}
+
+bool UUIS_MvvmUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
+{
+	return this->GetClass()->IsInBlueprint() && Super::ShouldCreateSubsystem(Outer);
+}
+
+void UUIS_MvvmUIManagerSubsystem::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer)
+{
+	Super::NotifyPlayerAdded(LocalPlayer);
+
+	LocalPlayer->OnPlayerControllerSet.AddWeakLambda(
+		this, [this](UUIS_LocalPlayer* LocalPlayer, APlayerController* PlayerController)
+		{
+			if (AUIS_PlayerController* Controller = Cast<AUIS_PlayerController>(PlayerController))
+			{
+				Controller->OnPossessedPawnChanged.AddDynamic(this, &UUIS_MvvmUIManagerSubsystem::OnPawnPossessed);
+			}
+		});
+}
+
+void UUIS_MvvmUIManagerSubsystem::OnPawnPossessed(APawn* OldPawn, APawn* NewPawn)
+{
+	for (auto ViewModel : ViewModels)
+	{
+		ViewModel->Initialize();
+	};
 }

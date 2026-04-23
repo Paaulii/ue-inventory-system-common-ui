@@ -1,8 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Player/Components/INV_ItemTracerComponent.h"
-
+﻿#include "Player/Components/INV_ItemTracerComponent.h"
 #include "Items/Interaction/INV_Highlightable.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/INV_PlayerController.h"
@@ -18,6 +14,12 @@ void UINV_ItemTracerComponent::BeginPlay()
 	Owner = Cast<AINV_PlayerController>(GetOwner());
 }
 
+void UINV_ItemTracerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	TraceForItem();
+}
+
 void UINV_ItemTracerComponent::TraceForItem()
 {
 	if (!IsValid(GEngine) || !IsValid(GEngine->GameViewport))
@@ -27,7 +29,7 @@ void UINV_ItemTracerComponent::TraceForItem()
 
 	FVector2D ViewportSize;
 	GEngine->GameViewport->GetViewportSize(ViewportSize);
-	const FVector2D ViewportCenter = ViewportSize / 2.f;
+	const FVector2D ViewportCenter = ViewportSize / 2.0f;
 
 	FVector TraceStart;
 	FVector Forward;
@@ -50,21 +52,13 @@ void UINV_ItemTracerComponent::TraceForItem()
 		return;
 	}
 
-	if (ThisActor && ThisActor->Implements<UINV_Highlightable>())
+	if (IINV_Highlightable* ItemToHighlight = Cast<IINV_Highlightable>(ThisActor))
 	{
-		IINV_Highlightable::Execute_Highlight(ThisActor);
+		ItemToHighlight->Highlight();
 	}
 
-	if (LastActor && LastActor->Implements<UINV_Highlightable>())
+	if (IINV_Highlightable* LastHighlightedItem = Cast<IINV_Highlightable>(LastActor))
 	{
-		IINV_Highlightable::Execute_UnHighlight(LastActor);
+		LastHighlightedItem->Unhighlight();
 	}
 }
-
-void UINV_ItemTracerComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                             FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	TraceForItem();
-}
-

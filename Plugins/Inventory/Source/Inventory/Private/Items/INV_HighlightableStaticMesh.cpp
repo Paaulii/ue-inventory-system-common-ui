@@ -1,14 +1,11 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#include "Items/INV_HighlightableStaticMesh.h"
 
-
-#include "Items/INV_HighlightableStaticMesh.h"
-
-void UINV_HighlightableStaticMesh::Highlight_Implementation()
+void UINV_HighlightableStaticMesh::Highlight()
 {
 	SetOverlayMaterial(HighlightMaterial);
 }
 
-void UINV_HighlightableStaticMesh::UnHighlight_Implementation()
+void UINV_HighlightableStaticMesh::Unhighlight()
 {
 	SetOverlayMaterial(nullptr);
 }

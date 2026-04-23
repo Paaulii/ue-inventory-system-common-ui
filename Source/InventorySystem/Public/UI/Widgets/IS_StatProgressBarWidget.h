@@ -1,16 +1,12 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#pragma once
 
-#pragma once
-
-#include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "CoreMinimal.h"
 #include "IS_StatProgressBarWidget.generated.h"
 
 class UImage;
 class UProgressBar;
-/**
- * 
- */
+
 UCLASS()
 class INVENTORYSYSTEM_API UIS_StatProgressBarWidget : public UUserWidget
 {
@@ -18,19 +14,20 @@ class INVENTORYSYSTEM_API UIS_StatProgressBarWidget : public UUserWidget
 
 public:
 	virtual void NativePreConstruct() override;
-	
+
+private:
 	UFUNCTION(BlueprintCallable)
 	void VM_SetProgressBarFillAmount(float FillValue);
-protected:
-	UPROPERTY(EditAnywhere)
-	UTexture2D* Icon;
 
 	UPROPERTY(EditAnywhere)
-	FLinearColor FillColor;
-private:
+	FLinearColor FillColor = {};
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UTexture2D> Icon = nullptr;
+	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UImage> Image_StatIcon;
+	TObjectPtr<UImage> StatIconImage = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UProgressBar> ProgressBar;
+	TObjectPtr<UProgressBar> ProgressBar = nullptr;
 };

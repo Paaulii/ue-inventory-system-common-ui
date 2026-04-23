@@ -1,6 +1,3 @@
-// Copyright Paulina Hałatek, All Rights Reserved.
-
-
 #include "UI/Widgets/INV_CategoryButtonTab.h"
 #include "Animation/WidgetAnimation.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
@@ -22,8 +19,8 @@ void UINV_CategoryButtonTab::SetViewModels(UINV_CategoryViewModel* CategoryVM, U
 {
 	if (UMVVMView* MVVMView = Cast<UMVVMView>(GetExtension(UMVVMView::StaticClass())))
 	{
-		MVVMView->SetViewModel("CategoryViewModel", CategoryVM);
-		MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
+		MVVMView->SetViewModel(FName("CategoryViewModel"), CategoryVM);
+		MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);
 		CachedCategoryVM = CategoryVM;
 		CachedSelectionVM = SelectionVM;
 	}

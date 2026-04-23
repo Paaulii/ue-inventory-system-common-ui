@@ -1,13 +1,11 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "INV_ProxyMesh.generated.h"
 
-class USpringArmComponent;
 class UINV_EquipmentComponent;
+class USpringArmComponent;
 
 UCLASS()
 class INVENTORY_API AINV_ProxyMesh : public AActor
@@ -16,8 +14,8 @@ class INVENTORY_API AINV_ProxyMesh : public AActor
 
 public:
 	AINV_ProxyMesh();
-protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
 	UFUNCTION()
 	void SetupMesh(APawn* OldPawn, APawn* NewPawn);
@@ -31,16 +29,16 @@ private:
 	void WaitForPawnPossession();
 	
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UINV_EquipmentComponent> EquipmentComponent;
+	TObjectPtr<UINV_EquipmentComponent> EquipmentComponent = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<USpringArmComponent> SpringArmComponent;
+	TObjectPtr<USpringArmComponent> SpringArmComponent = nullptr;
 	
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<USceneCaptureComponent2D> SceneCaptureComponent;
+	TObjectPtr<USceneCaptureComponent2D> SceneCaptureComponent = nullptr;
 		
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<USkeletalMeshComponent> Mesh;
+	TObjectPtr<USkeletalMeshComponent> Mesh = nullptr;
 	
-	TWeakObjectPtr<USkeletalMeshComponent> SourceMesh;
+	TWeakObjectPtr<USkeletalMeshComponent> SourceMesh = nullptr;
 };

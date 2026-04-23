@@ -1,25 +1,12 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/ViewModels/INV_CategoryViewModel.h"
+﻿#include "UI/ViewModels/INV_CategoryViewModel.h"
 #include "Data/Types/INV_InventoryDisplayTypes.h"
 #include "UI/ViewModels/INV_ItemViewModel.h"
 
 void UINV_CategoryViewModel::Initialize(const FINV_CategoryDisplayData& CategoryData)
 {
-	SetCategoryName(CategoryData.CategoryName);
+	UE_MVVM_SET_PROPERTY_VALUE(CategoryName, CategoryData.CategoryName);
 	SetItems(CategoryData.Items);
 	Tag = CategoryData.Tag;
-}
-
-void UINV_CategoryViewModel::Deinitialize()
-{
-	//TODO: Deinitialize items
-}
-
-void UINV_CategoryViewModel::SetCategoryName(const FText& Name)
-{
-	UE_MVVM_SET_PROPERTY_VALUE(CategoryName, Name);
 }
 
 void UINV_CategoryViewModel::SetItems(const TArray<FINV_ItemDisplayData>& ItemsData)

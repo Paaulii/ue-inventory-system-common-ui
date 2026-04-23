@@ -1,5 +1,3 @@
-// Copyright Paulina Hałatek, All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -8,41 +6,42 @@
 #include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_InventoryViewModel.generated.h"
 
-class UINV_ItemViewModel;
-struct FINV_ItemIdentification;
+class UINV_CategoryViewModel;
 class UINV_EquipmentViewModel;
-struct FINV_ItemDisplayData;
-struct FGameplayTag;
+class UINV_InventoryComponent;
 class UINV_ItemActionViewModel;
+class UINV_ItemViewModel;
+struct FGameplayTag;
 struct FINV_CategoryDisplayData;
 struct FINV_InventoryDisplayData;
-class UINV_InventoryComponent;
-class UINV_CategoryViewModel;
+struct FINV_ItemDisplayData;
+struct FINV_ItemIdentification;
 
 UCLASS()
 class INVENTORY_API UINV_InventoryViewModel : public UUIS_ViewModelBase
 {
 	GENERATED_BODY()
+	
 public:
 	virtual void Initialize() override;
 	virtual void Deinitialize() override;
-	
 	float GetCurrencyAmount() const { return CurrencyAmount; }
-	int GetMaxItemsCapacity() const { return MaxItemsCapacity; }
-	TArray<UINV_CategoryViewModel*> GetCategories() const { return Categories;}
-	UINV_EquipmentViewModel* GetEquipment() const { return Equipment;}
+	int32 GetMaxItemsCapacity() const { return MaxItemsCapacity; }
+	TArray<UINV_CategoryViewModel*> GetCategories() const { return Categories; }
+	UINV_EquipmentViewModel* GetEquipment() const { return Equipment; }
+	
 protected:
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, Category = "ViewModel")
-	float CurrencyAmount;
+	float CurrencyAmount = 0.0f;
 	
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, Category = "ViewModel")
-	int MaxItemsCapacity;
+	int32 MaxItemsCapacity = 0;
 
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, Category = "ViewModel")
-	TArray<UINV_CategoryViewModel*> Categories;
+	TArray<UINV_CategoryViewModel*> Categories = {};
 	
 	UPROPERTY(BlueprintReadWrite, FieldNotify, Getter, Category = "ViewModel")
-	TObjectPtr<UINV_EquipmentViewModel> Equipment;
+	TObjectPtr<UINV_EquipmentViewModel> Equipment = nullptr;
 	
 private:
 	UFUNCTION()
@@ -60,14 +59,13 @@ private:
 	UFUNCTION()
 	void HandleCurrencyChanged(const int32 Value);
 
-	void ResetCategories();
 	void InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray);
 	void SetCurrencyAmount(float Value);
-	void SetMaxItemsCapacity(int Value);
+	void SetMaxItemsCapacity(int32 Value);
 	void SetEquipment(UINV_EquipmentViewModel* EquipmentVM);
 	UINV_ItemViewModel* GetItemById(const FINV_ItemIdentification& ItemIdentification);
 	
 	UPROPERTY()
-	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
+	TObjectPtr<UINV_InventoryComponent> InventoryComponent = nullptr;
 };
 

@@ -1,20 +1,17 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Player/INV_PlayerController.h"
+﻿#include "Player/INV_PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Items/INV_Item.h"
-#include "Player/INV_Character.h"
 #include "Player/Components/INV_EquipmentComponent.h"
 #include "Player/Components/INV_ItemTracerComponent.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
+#include "Player/INV_Character.h"
 
 AINV_PlayerController::AINV_PlayerController()
 {
-	InventoryComponent = CreateDefaultSubobject<UINV_InventoryComponent>("InventoryComponent");
-	EquipmentComponent = CreateDefaultSubobject<UINV_EquipmentComponent>("EquipmentComponent");
-	ItemTracerComponent = CreateDefaultSubobject<UINV_ItemTracerComponent>("ItemTracer");
+	InventoryComponent = CreateDefaultSubobject<UINV_InventoryComponent>(FName("InventoryComponent"));
+	EquipmentComponent = CreateDefaultSubobject<UINV_EquipmentComponent>(FName("EquipmentComponent"));
+	ItemTracerComponent = CreateDefaultSubobject<UINV_ItemTracerComponent>(FName("ItemTracer"));
 
 	InventoryComponent->OnDelegateApplyEffect.AddDynamic(this, &AINV_PlayerController::ApplyEffects);
 	InventoryComponent->OnDelegateRevokeEffect.AddDynamic(this, &AINV_PlayerController::RevokeEffects);
@@ -25,7 +22,8 @@ void AINV_PlayerController::BeginPlay()
 	Super::BeginPlay();
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>((GetLocalPlayer()));
 
-	if (IsValid(Subsystem)) {
+	if (IsValid(Subsystem))
+	{
 		Subsystem->AddMappingContext(DefaultIMC, 0);
 	}
 	
@@ -33,6 +31,22 @@ void AINV_PlayerController::BeginPlay()
 
 	InventoryCharacter = Cast<AINV_Character>(GetCharacter());
 	InventoryComponent->LoadInventoryData();
+}
+
+void AINV_PlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	
+	if (InventoryComponent)
+	{
+		InventoryComponent->OnDelegateApplyEffect.RemoveDynamic(this, &AINV_PlayerController::ApplyEffects);
+		InventoryComponent->OnDelegateRevokeEffect.RemoveDynamic(this, &AINV_PlayerController::RevokeEffects);
+	}
+
+	if (InputComponent)
+	{
+		InputComponent->ClearActionBindings();
+	}
 }
 
 void AINV_PlayerController::SetupInputComponent()
@@ -44,20 +58,14 @@ void AINV_PlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(OpenInventoryAction, ETriggerEvent::Started, this, &AINV_PlayerController::OpenInventory);
 }
 
-void AINV_PlayerController::ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply)
+void AINV_PlayerController::OpenInventory()
 {
-	if (InventoryCharacter)
+	if (InventoryComponent == nullptr)
 	{
-		InventoryCharacter->ApplyEffects(EffectsToApply);
+		return;
 	}
-}
-
-void AINV_PlayerController::RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToRevoke)
-{
-	if (InventoryCharacter)
-	{
-		InventoryCharacter->RevokeEffects(EffectsToRevoke);
-	}
+	
+	InventoryComponent->ToggleInventory();
 }
 
 void AINV_PlayerController::OnInteractWithItem()
@@ -75,12 +83,18 @@ void AINV_PlayerController::OnInteractWithItem()
 	} 
 }
 
-void AINV_PlayerController::OpenInventory()
+void AINV_PlayerController::ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply)
 {
-	if (InventoryComponent == nullptr)
+	if (InventoryCharacter)
 	{
-		return;
+		InventoryCharacter->ApplyEffects(EffectsToApply);
 	}
-	
-	InventoryComponent->ToggleInventory();
+}
+
+void AINV_PlayerController::RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToRevoke)
+{
+	if (InventoryCharacter)
+	{
+		InventoryCharacter->RevokeEffects(EffectsToRevoke);
+	}
 }

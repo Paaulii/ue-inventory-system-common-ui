@@ -1,6 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -15,7 +13,8 @@ class INVENTORY_API AINV_StaticEquippedItem : public AActor, public IINV_Equippa
 public:
 	AINV_StaticEquippedItem();
 	virtual void SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const override;
+	
 private:
 	UPROPERTY()
-	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent = nullptr;
 };

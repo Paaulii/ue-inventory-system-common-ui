@@ -1,7 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/Widgets/INV_ActivatableMvvmWidget.h"
+﻿#include "UI/Widgets/INV_ActivatableMvvmWidget.h"
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
 
@@ -18,7 +15,7 @@ void UINV_ActivatableMvvmWidget::NativeOnActivated()
 	{
 		if (MVVMView)
 		{
-			CacheViewModels(UIManager);
+			CacheViewModels(*UIManager);
 		}
 	}
 }

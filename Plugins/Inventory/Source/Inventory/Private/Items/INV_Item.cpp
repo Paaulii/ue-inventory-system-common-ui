@@ -1,7 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Items/INV_Item.h"
+﻿#include "Items/INV_Item.h"
 #include "Data/INV_InventoryDataAsset.h"
 #include "Data/Types/INV_InventoryDataAssetTypes.h"
 #include "GameFramework/RotatingMovementComponent.h"
@@ -9,7 +6,7 @@
 AINV_Item::AINV_Item()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	RotatingComponent = CreateDefaultSubobject<URotatingMovementComponent>("RotatingComponent");
+	RotatingComponent = CreateDefaultSubobject<URotatingMovementComponent>(FName("RotatingComponent"));
 }
 
 void AINV_Item::BeginPlay()
@@ -24,12 +21,12 @@ void AINV_Item::OnConstruction(const FTransform& Transform)
 	Setup();
 }
 
-void AINV_Item::Highlight_Implementation()
+void AINV_Item::Highlight()
 {
 	MeshComponent->SetOverlayMaterial(HighlightMaterial);
 }
 
-void AINV_Item::UnHighlight_Implementation()
+void AINV_Item::Unhighlight()
 {
 	MeshComponent->SetOverlayMaterial(nullptr);
 }
@@ -39,9 +36,7 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
-	FName PropertyName = (PropertyChangedEvent.MemberProperty != NULL)
-		                     ? PropertyChangedEvent.MemberProperty->GetFName()
-		                     : NAME_None;
+	FName PropertyName = (PropertyChangedEvent.MemberProperty != NULL)? PropertyChangedEvent.MemberProperty->GetFName(): NAME_None;
 	if (PropertyName == GET_MEMBER_NAME_CHECKED(AINV_Item, ItemData))
 	{
 		if (ItemData.ItemIdentification.ItemTag.IsValid() && ItemData.ItemIdentification.CategoryTag.IsValid())
@@ -51,24 +46,6 @@ void AINV_Item::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 	}
 }
 #endif
-
-void AINV_Item::SetupMesh()
-{
-	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemDefinition(ItemData.ItemIdentification.ItemTag,
-		ItemData.ItemIdentification.CategoryTag);
-
-	if (!ItemAssetDefinition)
-	{
-		return;
-	}
-
-	ChangeMesh(ItemAssetDefinition);
-}
-
-void AINV_Item::PickUp()
-{
-	Destroy();
-}
 
 void AINV_Item::Initialize(const FINV_ItemData& Data)
 {
@@ -82,4 +59,22 @@ void AINV_Item::Setup()
 	{
 		SetupMesh();
 	}
+}
+
+void AINV_Item::SetupMesh()
+{
+	FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryDataAsset->GetItemAssetDefinition(ItemData.ItemIdentification.ItemTag,
+		ItemData.ItemIdentification.CategoryTag);
+
+	if (!ItemAssetDefinition)
+	{
+		return;
+	}
+
+	ChangeMesh(ItemAssetDefinition);
+}
+
+void AINV_Item::PickUp()
+{
+	Destroy();
 }

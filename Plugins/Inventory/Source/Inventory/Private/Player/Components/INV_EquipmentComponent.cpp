@@ -1,14 +1,11 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Player/Components/INV_EquipmentComponent.h"
-#include "Player/Components/Inventory/INV_InventoryComponent.h"
-#include "Utils/INV_InventoryStatics.h"
+﻿#include "Player/Components/INV_EquipmentComponent.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
 #include "GameFramework/Character.h"
-#include "Items/INV_SkeletalEquippedItem.h"
 #include "Items/INV_StaticEquippedItem.h"
+#include "Items/INV_SkeletalEquippedItem.h"
 #include "Items/Interaction/INV_Equippable.h"
+#include "Player/Components/Inventory/INV_InventoryComponent.h"
+#include "Utils/INV_InventoryStatics.h"
 
 UINV_EquipmentComponent::UINV_EquipmentComponent()
 {
@@ -36,9 +33,62 @@ void UINV_EquipmentComponent::Initialize(APlayerController* Controller, USkeleta
 	BindToInventoryComponentEquipEvents();
 }
 
+void UINV_EquipmentComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if (OwningPlayerController != nullptr)
+	{
+		OwningPlayerController->OnPossessedPawnChanged.RemoveAll(this);
+	}
+}
+
 void UINV_EquipmentComponent::SetOwningMesh(USkeletalMeshComponent* Mesh)
 {
 	OwningSkeletalMesh = Mesh;
+}
+
+void UINV_EquipmentComponent::BindToInventoryComponentEquipEvents()
+{
+	InventoryComponent = UINV_InventoryStatics::GetInventoryComponent(OwningPlayerController.Get());
+
+	if (!InventoryComponent.IsValid())
+	{
+		return;
+	}
+
+	if (!InventoryComponent->OnItemEquipped.IsAlreadyBound(this, &UINV_EquipmentComponent::OnItemEquipped))
+	{
+		InventoryComponent->OnItemEquipped.AddDynamic(this, &UINV_EquipmentComponent::OnItemEquipped);
+	}
+
+	if (!InventoryComponent->OnItemUnequipped.IsAlreadyBound(this, &UINV_EquipmentComponent::OnItemUnequipped))
+	{
+		InventoryComponent->OnItemUnequipped.AddDynamic(this, &UINV_EquipmentComponent::OnItemUnequipped);
+	}
+}
+
+void UINV_EquipmentComponent::OnItemEquipped(const FINV_ItemIdentification& EquippedItem)
+{
+	if (AActor* AttachedItem = SpawnEquippedItem(EquippedItem))
+	{
+		OnItemAttached.Broadcast(AttachedItem);
+	}
+}
+
+void UINV_EquipmentComponent::OnItemUnequipped(const FINV_ItemIdentification& UnequippedItem)
+{
+	if (!EquippedItems.Contains(UnequippedItem.Id))
+	{
+		return;
+	}
+	
+	if (AActor* SpawnedItem = EquippedItems[UnequippedItem.Id])
+	{
+		OnItemDetached.Broadcast(SpawnedItem);
+		SpawnedItem->Destroy();
+		EquippedItems.Remove(UnequippedItem.Id);
+	}
 }
 
 AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification& ItemId)
@@ -78,50 +128,6 @@ AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification
 	}
 
 	return nullptr;
-}
-
-void UINV_EquipmentComponent::BindToInventoryComponentEquipEvents()
-{
-	InventoryComponent = UINV_InventoryStatics::GetInventoryComponent(OwningPlayerController.Get());
-
-	if (!InventoryComponent.IsValid())
-	{
-		return;
-	}
-
-	if (!InventoryComponent->OnItemEquipped.IsAlreadyBound(this, &UINV_EquipmentComponent::OnItemEquipped))
-	{
-		InventoryComponent->OnItemEquipped.AddDynamic(this, &UINV_EquipmentComponent::OnItemEquipped);
-	}
-
-	if (!InventoryComponent->OnItemUnequipped.IsAlreadyBound(this, &UINV_EquipmentComponent::OnItemUnequipped))
-	{
-		InventoryComponent->OnItemUnequipped.AddDynamic(this, &UINV_EquipmentComponent::OnItemUnequipped);
-	}
-}
-
-
-void UINV_EquipmentComponent::OnItemEquipped(const FINV_ItemIdentification& EquippedItem)
-{
-	if (AActor* AttachedItem = SpawnEquippedItem(EquippedItem))
-	{
-		OnItemAttached.Broadcast(AttachedItem);
-	}
-}
-
-void UINV_EquipmentComponent::OnItemUnequipped(const FINV_ItemIdentification& UnequippedItem)
-{
-	if (!EquippedItems.Contains(UnequippedItem.Id))
-	{
-		return;
-	}
-	
-	if (AActor* SpawnedItem = EquippedItems[UnequippedItem.Id])
-	{
-		OnItemDetached.Broadcast(SpawnedItem);
-		SpawnedItem->Destroy();
-		EquippedItems.Remove(UnequippedItem.Id);
-	}
 }
 
 void UINV_EquipmentComponent::ResetOwningMesh(APawn* OldPawn, APawn* NewPawn)

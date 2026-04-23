@@ -1,29 +1,26 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Player/INV_ProxyMesh.h"
-
+﻿#include "Player/INV_ProxyMesh.h"
 #include "Components/SceneCaptureComponent2D.h"
+#include "Player/Components/INV_EquipmentComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Player/INV_PlayerController.h"
-#include "Player/Components/INV_EquipmentComponent.h"
-
 
 AINV_ProxyMesh::AINV_ProxyMesh()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
+	RootComponent = CreateDefaultSubobject<USceneComponent>(FName("Root"));
 
-	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
+	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(FName("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 
-	EquipmentComponent = CreateDefaultSubobject<UINV_EquipmentComponent>("Equipment");
-	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
+	EquipmentComponent = CreateDefaultSubobject<UINV_EquipmentComponent>(FName("Equipment"));
+	EquipmentComponent->OnItemAttached.AddDynamic(this, &ThisClass::OnItemAttached);
+	EquipmentComponent->OnItemDetached.AddDynamic(this, &ThisClass::OnItemDetached);
+	
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(FName("SpringArm"));
 	SpringArmComponent->SetupAttachment(RootComponent);
 
-	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>("SceneCapture");
+	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(FName("SceneCapture"));
 	SceneCaptureComponent->SetupAttachment(SpringArmComponent);
 }
 
@@ -33,6 +30,24 @@ void AINV_ProxyMesh::BeginPlay()
 
 	SceneCaptureComponent->ShowOnlyActors.Add(this);
 	WaitForPawnPossession();
+}
+
+void AINV_ProxyMesh::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* Controller = World->GetFirstPlayerController())
+		{
+			Controller->OnPossessedPawnChanged.RemoveDynamic(this, &AINV_ProxyMesh::SetupMesh);
+		}
+	}
+
+	if (EquipmentComponent)
+	{
+		EquipmentComponent->OnItemAttached.RemoveDynamic(this, &ThisClass::OnItemAttached);
+		EquipmentComponent->OnItemDetached.RemoveDynamic(this, &ThisClass::OnItemDetached);
+	}
 }
 
 void AINV_ProxyMesh::WaitForPawnPossession()
@@ -64,8 +79,6 @@ void AINV_ProxyMesh::SetupMesh(APawn* OldPawn, APawn* NewPawn)
 			Mesh->SetAnimInstanceClass(SourceMesh->GetAnimInstance()->GetClass());
 			EquipmentComponent->SetOwningMesh(Mesh);
 			EquipmentComponent->Initialize(Cast<APlayerController>(NewPawn->GetController()), Mesh);
-			EquipmentComponent->OnItemAttached.AddDynamic(this, &ThisClass::OnItemAttached);
-			EquipmentComponent->OnItemDetached.AddDynamic(this, &ThisClass::OnItemDetached);
 		}
 	}
 }

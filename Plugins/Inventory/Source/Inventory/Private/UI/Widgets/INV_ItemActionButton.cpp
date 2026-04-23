@@ -1,14 +1,10 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/Widgets/INV_ItemActionButton.h"
+﻿#include "UI/Widgets/INV_ItemActionButton.h"
 #include "CommonTextBlock.h"
 #include "UI/Widgets/INV_InputAction.h"
 
 void UINV_ItemActionButton::SetHoveredState(bool bState)
 {
 	SetVisualStateWithAnimation(Hovered, bState);
-	
 }
 
 void UINV_ItemActionButton::SetEnabledState(bool bState)
@@ -21,9 +17,9 @@ void UINV_ItemActionButton::NativePreConstruct()
 	Super::NativePreConstruct();
 	SetButtonText(ButtonText);
 
-	if (Button_InputAction)
+	if (InputActionButton)
 	{
-		Button_InputAction->UpdateTriggeringInputAction(ClickInputAction);
+		InputActionButton->UpdateTriggeringInputAction(ClickInputAction);
 	}
 }
 
@@ -34,11 +30,11 @@ void UINV_ItemActionButton::SetButtonVisibility(bool bState)
 
 void UINV_ItemActionButton::SetButtonText(const FText& NewText) const
 {
-	Text_Label->SetText(NewText);
+	TextLabel->SetText(NewText);
 }
 
 void UINV_ItemActionButton::SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward)
 {
 	EUMGSequencePlayMode::Type PlayModeType =  bPlayForward ? EUMGSequencePlayMode::Forward: EUMGSequencePlayMode::Reverse;
-	PlayAnimation(Animation,0,1,PlayModeType);
+	PlayAnimation(Animation, 0, 1, PlayModeType);
 }

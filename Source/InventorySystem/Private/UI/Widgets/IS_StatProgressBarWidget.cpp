@@ -1,8 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/Widgets/IS_StatProgressBarWidget.h"
-
+﻿#include "UI/Widgets/IS_StatProgressBarWidget.h"
 #include "Components/Image.h"
 #include "Components/ProgressBar.h"
 
@@ -10,7 +6,7 @@ void UIS_StatProgressBarWidget::NativePreConstruct()
 {
 	Super::NativePreConstruct();
 
-	Image_StatIcon->SetBrushFromTexture(Icon);
+	StatIconImage->SetBrushFromTexture(Icon);
 	ProgressBar->SetFillColorAndOpacity(FillColor);
 }
 

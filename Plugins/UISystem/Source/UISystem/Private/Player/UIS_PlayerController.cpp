@@ -1,5 +1,4 @@
-﻿// // Copyright Paulina Hałatek, All Rights Reserved.
-#include "Player/UIS_PlayerController.h"
+﻿#include "Player/UIS_PlayerController.h"
 #include "Player/UIS_LocalPlayer.h"
 
 void AUIS_PlayerController::ReceivedPlayer()
@@ -10,10 +9,4 @@ void AUIS_PlayerController::ReceivedPlayer()
 	{
 		LocalPlayer->OnPlayerControllerSet.Broadcast(LocalPlayer, this);
 	}
-}
-
-void AUIS_PlayerController::OnPossess(APawn* PossessedPawn)
-{
-	Super::OnPossess(PossessedPawn);
-	OnPawnPossessed.Broadcast();
 }

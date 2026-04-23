@@ -1,6 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#include "UI/ViewModels/INV_ItemActionViewModel.h"
+﻿#include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
 
 void UINV_ItemActionViewModel::Initialize()
@@ -12,17 +10,15 @@ void UINV_ItemActionViewModel::Initialize()
 	}
 }
 
-void UINV_ItemActionViewModel::SetSelectedAction(const FINV_ItemActionType& Action)
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const
 {
-	if (UE_MVVM_SET_PROPERTY_VALUE(SelectedAction, Action))
-	{
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetPromptText);
-	}
+	DelegatePerformAction(SelectedAction, ItemIdentification);
 }
 
-void UINV_ItemActionViewModel::SetIsSingleItemQuantityAction(bool bState)
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const
 {
-	UE_MVVM_SET_PROPERTY_VALUE(IsSingleItemQuantityAction, bState);
+	// TODO: Change to Quantity when implemented
+	InventoryComponent->PerformAction(ActionType, ItemIdentification, 1);
 }
 
 void UINV_ItemActionViewModel::DelegateShowItemActionPopup() const
@@ -30,7 +26,7 @@ void UINV_ItemActionViewModel::DelegateShowItemActionPopup() const
 	InventoryComponent->ShowItemActionPopup();
 }
 
-FText UINV_ItemActionViewModel::GetPromptText() const
+const FText& UINV_ItemActionViewModel::VM_GetPromptText() const
 {
 	if (!InventoryComponent)
 	{
@@ -40,13 +36,15 @@ FText UINV_ItemActionViewModel::GetPromptText() const
 	return InventoryComponent->GetPromptTextByActionType(SelectedAction);
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const
+void UINV_ItemActionViewModel::SetSelectedAction(const FINV_ItemActionType& Action)
 {
-	// TODO: Change to Quantity when implemented
-	InventoryComponent->PerformAction(ActionType, ItemIdentification, 1);
+	if (UE_MVVM_SET_PROPERTY_VALUE(SelectedAction, Action))
+	{
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(VM_GetPromptText);
+	}
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const
+void UINV_ItemActionViewModel::SetIsSingleItemQuantityAction(bool bState)
 {
-	DelegatePerformAction(SelectedAction, ItemIdentification);
+	UE_MVVM_SET_PROPERTY_VALUE(IsSingleItemQuantityAction, bState);
 }

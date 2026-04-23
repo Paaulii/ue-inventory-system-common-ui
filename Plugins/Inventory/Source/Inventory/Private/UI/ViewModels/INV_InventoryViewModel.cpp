@@ -1,6 +1,3 @@
-// Copyright Paulina Hałatek, All Rights Reserved.
-
-
 #include "UI/ViewModels/INV_InventoryViewModel.h"
 #include "Data/Types/INV_InventoryDisplayTypes.h"
 #include "Player/Components/Inventory/INV_InventoryComponent.h"
@@ -48,6 +45,20 @@ void UINV_InventoryViewModel::RebuildInventory(const FINV_InventoryDisplayData& 
 	InitializeCategoryVM(InventoryData.Categories);
 }
 
+void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray)
+{
+	Categories.Empty();
+	
+	for (const FINV_CategoryDisplayData& CategoryData : CategoryDataArray)
+	{
+		UINV_CategoryViewModel* CategoryVM = NewObject<UINV_CategoryViewModel>(this);
+		CategoryVM->Initialize(CategoryData);
+		Categories.Add(CategoryVM);
+	}
+
+	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Categories);
+}
+
 void UINV_InventoryViewModel::UpdateCategoryData(const FINV_CategoryDisplayData& CategoryData)
 {
 	for (UINV_CategoryViewModel* CategoryVM : Categories)
@@ -81,36 +92,12 @@ void UINV_InventoryViewModel::HandleCurrencyChanged(const int32 Value)
 	SetCurrencyAmount(Value);
 }
 
-void UINV_InventoryViewModel::ResetCategories()
-{
-	for (UINV_CategoryViewModel*CategoryViewModel : Categories)
-	{
-		CategoryViewModel->Deinitialize();
-	}
-	
-	Categories.Empty();
-}
-
-void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDisplayData>& CategoryDataArray)
-{
-	ResetCategories();
-	
-	for (const FINV_CategoryDisplayData& CategoryData : CategoryDataArray)
-	{
-		UINV_CategoryViewModel* CategoryVM = NewObject<UINV_CategoryViewModel>(this);
-		CategoryVM->Initialize(CategoryData);
-		Categories.Add(CategoryVM);
-	}
-
-	UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(Categories);
-}
-
 void UINV_InventoryViewModel::SetCurrencyAmount(float Value)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(CurrencyAmount, Value);
 }
 
-void UINV_InventoryViewModel::SetMaxItemsCapacity(int Value)
+void UINV_InventoryViewModel::SetMaxItemsCapacity(int32 Value)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(MaxItemsCapacity, Value);
 }
@@ -119,7 +106,6 @@ void UINV_InventoryViewModel::SetEquipment(UINV_EquipmentViewModel* EquipmentVM)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(Equipment, EquipmentVM);
 }
-
 
 UINV_ItemViewModel* UINV_InventoryViewModel::GetItemById(const FINV_ItemIdentification& ItemIdentification)
 {

@@ -1,8 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/ViewModels/INV_PlayerStatViewModel.h"
-
+﻿#include "UI/ViewModels/INV_PlayerStatViewModel.h"
 #include "Player/UIS_PlayerController.h"
 #include "Player/INV_Character.h"
 
@@ -24,12 +20,12 @@ void UINV_PlayerStatViewModel::Initialize()
 	}
 }
 
-float UINV_PlayerStatViewModel::GetHealthPercent() const
+float UINV_PlayerStatViewModel::VM_GetHealthPercent() const
 {
 	return GetStatPercent(CurrentHealth, MaxHealth);
 }
 
-float UINV_PlayerStatViewModel::GetManaPercent() const
+float UINV_PlayerStatViewModel::VM_GetManaPercent() const
 {
 	return GetStatPercent(CurrentMana, MaxMana);
 }
@@ -48,7 +44,7 @@ void UINV_PlayerStatViewModel::SetCurrentHealth(int32 Value)
 {
 	if (UE_MVVM_SET_PROPERTY_VALUE(CurrentHealth, Value))
 	{
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetHealthPercent);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(VM_GetHealthPercent);
 	}
 }
 
@@ -56,7 +52,7 @@ void UINV_PlayerStatViewModel::SetMaxHealth(int32 Value)
 {
 	if (UE_MVVM_SET_PROPERTY_VALUE(MaxHealth, Value))
 	{
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetHealthPercent);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(VM_GetHealthPercent);
 	}
 }
 
@@ -64,7 +60,7 @@ void UINV_PlayerStatViewModel::SetCurrentMana(int32 Value)
 {
 	if (UE_MVVM_SET_PROPERTY_VALUE(CurrentMana, Value))
 	{
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetManaPercent);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(VM_GetManaPercent);
 	}
 }
 
@@ -72,7 +68,7 @@ void UINV_PlayerStatViewModel::SetMaxMana(int32 Value)
 {
 	if (UE_MVVM_SET_PROPERTY_VALUE(MaxMana, Value))
 	{
-		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(GetManaPercent);
+		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(VM_GetManaPercent);
 	}
 }
 

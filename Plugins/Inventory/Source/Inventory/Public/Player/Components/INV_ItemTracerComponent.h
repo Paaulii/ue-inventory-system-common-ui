@@ -1,11 +1,8 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#pragma once
 
-#pragma once
-
-#include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "CoreMinimal.h"
 #include "INV_ItemTracerComponent.generated.h"
-
 
 class AINV_PlayerController;
 
@@ -16,27 +13,26 @@ class INVENTORY_API UINV_ItemTracerComponent : public UActorComponent
 
 public:
 	UINV_ItemTracerComponent();
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-								   FActorComponentTickFunction* ThisTickFunction) override;
-
 	virtual void BeginPlay() override;
-	TObjectPtr<AActor> GetHoveredActor() const { return ThisActor;}
-protected:
-	void TraceForItem();
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	TObjectPtr<AActor> GetHoveredActor() const { return ThisActor; }
 	
+protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
-	float TraceLength;
+	float TraceLength = 0.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TEnumAsByte<ECollisionChannel> ItemTraceChannel;
 
 private:
+	void TraceForItem();
+	
 	UPROPERTY()
-	TObjectPtr<AINV_PlayerController> Owner;
+	TObjectPtr<AINV_PlayerController> Owner = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<AActor> ThisActor;
+	TObjectPtr<AActor> ThisActor = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<AActor> LastActor;
+	TObjectPtr<AActor> LastActor = nullptr;
 };

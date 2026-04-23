@@ -1,49 +1,46 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#pragma once
 
-#pragma once
-
-#include "CoreMinimal.h"
 #include "CommonButtonBase.h"
+#include "CoreMinimal.h"
 #include "INV_ItemActionButton.generated.h"
 
-class UINV_InputAction;
 class UCommonTextBlock;
-/**
- * 
- */
+class UINV_InputAction;
+
 UCLASS()
 class INVENTORY_API UINV_ItemActionButton : public UCommonButtonBase
 {
 	GENERATED_BODY()
+	
 public:
 	virtual void NativePreConstruct() override;
 	void SetButtonVisibility(bool bState);
-protected:
+
+private:
 	UFUNCTION(BlueprintCallable)
 	void SetHoveredState(bool bState);
 	
 	UFUNCTION(BlueprintCallable)
 	void SetEnabledState(bool bState);
-
+	
 	void SetButtonText(const FText& NewText) const;
-	
-	UPROPERTY(EditInstanceOnly, Category="Label")
-	FText ButtonText;
-	
-	UPROPERTY(EditInstanceOnly, Category = "Custom Input")
-	FDataTableRowHandle ClickInputAction;
-private:
 	void SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward);
 	
+	UPROPERTY(EditInstanceOnly)
+	FText ButtonText = {};
+	
+	UPROPERTY(EditInstanceOnly)
+	FDataTableRowHandle ClickInputAction = {};
+
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_InputAction> Button_InputAction;
+	TObjectPtr<UINV_InputAction> InputActionButton = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UCommonTextBlock> Text_Label;
+	TObjectPtr<UCommonTextBlock> TextLabel = nullptr;
 	
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
-	TObjectPtr<UWidgetAnimation>  Hovered;
+	TObjectPtr<UWidgetAnimation> Hovered = nullptr;
 	
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
-	TObjectPtr<UWidgetAnimation> Disabled;
+	TObjectPtr<UWidgetAnimation> Disabled = nullptr;
 };

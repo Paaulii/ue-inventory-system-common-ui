@@ -1,6 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
@@ -12,6 +10,7 @@ UCLASS()
 class INVENTORY_API UINV_InventoryStatics : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	static UINV_InventoryComponent* GetInventoryComponent(const APlayerController* PlayerController);

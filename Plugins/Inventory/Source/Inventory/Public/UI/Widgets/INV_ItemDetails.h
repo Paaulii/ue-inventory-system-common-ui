@@ -1,30 +1,32 @@
-// Copyright Paulina Hałatek, All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonActivatableWidget.h"
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_ItemDetails.generated.h"
 
+class UCommonTextBlock;
+class UImage;
 class UINV_EquipmentViewModel;
-enum class FINV_ItemActionType : uint8;
-class UINV_ItemDetailsViewModel;
-class UINV_ItemActionViewModel;
 class UINV_InventoryViewModel;
 class UINV_ItemActionButton;
+class UINV_ItemActionViewModel;
+class UINV_ItemDetailsViewModel;
 class UINV_ItemViewModel;
-class UImage;
 class UINV_SelectionViewModel;
-class UCommonTextBlock;
+enum class FINV_ItemActionType : uint8;
 
 UCLASS()
 class INVENTORY_API UINV_ItemDetails : public UINV_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
-public:
+	
+protected:
+	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
+	virtual void ClearViewModelsCache() override;
+	
+private:
 	UFUNCTION(BlueprintCallable)
-	void VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem);
+	void VM_SelectedItemUpdated(const UINV_ItemViewModel* SelectedItem);
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_OnEquipItemStateChange(const UINV_ItemViewModel* Item);
@@ -44,41 +46,37 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnSellButtonSelected();
 
-	void ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const;
-protected:
-	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
-	virtual void ClearViewModelsCache() override;
-private:
 	void HandleItemActionPressed(const FINV_ItemActionType& ActionType) const;
 	void DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const;
+	void ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const;
 	
 	UPROPERTY(meta = (BindWidget))
-	UImage* Image_SelectedItem;
+	TObjectPtr<UImage> SelectedItemImage = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	UCommonTextBlock* Text_Name;
+	TObjectPtr<UCommonTextBlock> NameText = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	UCommonTextBlock* Text_Description;
+	TObjectPtr<UCommonTextBlock> DescriptionText = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
-	UCommonTextBlock* Text_Value;
+	TObjectPtr<UCommonTextBlock> ValueText = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_ItemActionButton> Button_Consume;
+	TObjectPtr<UINV_ItemActionButton> ConsumeButton = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_ItemActionButton> Button_Equip;
+	TObjectPtr<UINV_ItemActionButton> EquipButton = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_ItemActionButton> Button_Unequip;
+	TObjectPtr<UINV_ItemActionButton> UnequipButton = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_ItemActionButton> Button_Drop;
+	TObjectPtr<UINV_ItemActionButton> DropButton = nullptr;
 	
 	UPROPERTY()
-	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
+	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UINV_ItemActionViewModel> CachedItemActionVM;
+	TObjectPtr<UINV_ItemActionViewModel> CachedItemActionVM = nullptr;
 };

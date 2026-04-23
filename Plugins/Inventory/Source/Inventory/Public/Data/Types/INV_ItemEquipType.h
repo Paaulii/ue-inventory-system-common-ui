@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "CoreMinimal.h"
 
 UENUM(BlueprintType)
 enum class EINV_ItemEquipType : uint8

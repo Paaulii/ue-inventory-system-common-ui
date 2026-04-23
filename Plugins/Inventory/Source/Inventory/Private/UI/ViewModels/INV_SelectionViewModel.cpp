@@ -1,7 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "UI/ViewModels/INV_SelectionViewModel.h"
+﻿#include "UI/ViewModels/INV_SelectionViewModel.h"
 
 void UINV_SelectionViewModel::SetSelectedCategory(UINV_CategoryViewModel* Category)
 {
@@ -14,7 +11,7 @@ void UINV_SelectionViewModel::SetSelectedCategory(UINV_CategoryViewModel* Catego
 	}
 	
 	TArray<TObjectPtr<UINV_ItemViewModel>> CategoryItems = SelectedCategory->GetCategoryItems();
-	SetSelectedItem(CategoryItems.IsValidIndex(0) ? CategoryItems[0] : nullptr);
+	SetSelectedItem(!CategoryItems.IsEmpty() ? CategoryItems[0] : nullptr);
 }
 
 void UINV_SelectionViewModel::SetSelectedItem(UINV_ItemViewModel* ItemVM)
@@ -33,9 +30,9 @@ void UINV_SelectionViewModel::SetSelectedItem(UINV_ItemViewModel* ItemVM)
 
 void UINV_SelectionViewModel::TryRequestRefreshFocusTarget()
 {
-	if (RefreshFocusRequested == false)
+	if (bRefreshFocusRequested == false)
 	{
-		UE_MVVM_SET_PROPERTY_VALUE(RefreshFocusRequested,true);
-		UE_MVVM_SET_PROPERTY_VALUE(RefreshFocusRequested,false);
+		UE_MVVM_SET_PROPERTY_VALUE(bRefreshFocusRequested,true);
+		UE_MVVM_SET_PROPERTY_VALUE(bRefreshFocusRequested,false);
 	}
 }

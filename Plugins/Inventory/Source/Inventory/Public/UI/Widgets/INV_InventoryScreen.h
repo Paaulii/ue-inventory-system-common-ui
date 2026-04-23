@@ -1,15 +1,13 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_InventoryScreen.generated.h"
 
-class UINV_PlayerStatViewModel;
-class UINV_ItemActionViewModel;
-class UINV_SelectionViewModel;
 class UINV_InventoryViewModel;
+class UINV_ItemActionViewModel;
+class UINV_PlayerStatViewModel;
+class UINV_SelectionViewModel;
 
 UCLASS()
 class INVENTORY_API UINV_InventoryScreen : public UINV_ActivatableMvvmWidget
@@ -18,15 +16,15 @@ class INVENTORY_API UINV_InventoryScreen : public UINV_ActivatableMvvmWidget
 protected:
 	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
-	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
+	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
 	virtual void ClearViewModelsCache() override;
 private:
 	UPROPERTY()
-	TObjectPtr<UINV_InventoryViewModel> CachedInventoryVM;
+	TObjectPtr<UINV_InventoryViewModel> CachedInventoryVM = nullptr;
 	
 	UPROPERTY()
-	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
+	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UINV_PlayerStatViewModel> CachedPlayerStatVM;
+	TObjectPtr<UINV_PlayerStatViewModel> CachedPlayerStatVM = nullptr;
 };

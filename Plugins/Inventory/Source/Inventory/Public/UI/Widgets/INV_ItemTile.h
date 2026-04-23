@@ -1,27 +1,28 @@
-// Copyright Paulina Hałatek, All Rights Reserved.
-
 #pragma once
 
-#include "CoreMinimal.h"
 #include "CommonButtonBase.h"
+#include "CoreMinimal.h"
 #include "INV_ItemTile.generated.h"
 
+class UCommonLazyImage;
 class UCommonTextBlock;
 class UMVVMView;
+class UImage;
 class UINV_SelectionViewModel;
 class UINV_ItemViewModel;
-class UCommonLazyImage;
-class UImage;
 
 UCLASS()
 class INVENTORY_API UINV_ItemTile : public UCommonButtonBase
 {
 	GENERATED_BODY()
+	
 public:
 	virtual void NativeOnInitialized() override;
-	
+	void SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionViewModel* SelectionVM);
+
+private:
 	UFUNCTION(BlueprintCallable)
-	void VM_OnSelectItemUpdated(UINV_ItemViewModel* ItemVM);
+	void VM_OnSelectItemUpdated(const UINV_ItemViewModel* ItemVM);
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_ItemImageUpdated(UTexture2D* Image);
@@ -45,41 +46,39 @@ public:
 	
 	void SetInteractable(bool bState);
 	
-	void SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionViewModel* SelectionVM);
-	
 	void SetEquippedState(bool bState, bool bSkipAnimation);
 	
 	void SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward, bool bSkipAnimation);
-protected:
-	UPROPERTY(meta = (BindWidgetAnim), Transient)
-	TObjectPtr<UWidgetAnimation> Hovered;
 	
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
-	TObjectPtr<UWidgetAnimation> Selected;
+	TObjectPtr<UWidgetAnimation> Hovered = nullptr;
+	
+	UPROPERTY(meta = (BindWidgetAnim), Transient)
+	TObjectPtr<UWidgetAnimation> Selected = nullptr;
 
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
-	TObjectPtr<UWidgetAnimation> Equipped;
+	TObjectPtr<UWidgetAnimation> Equipped = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UImage> Background_Image;
+	TObjectPtr<UImage> BackgroundImage = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UImage> Item;
+	TObjectPtr<UImage> Item = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	float EmptyItemBackgroundFadeValue;
-private:
-	UPROPERTY()
-	TObjectPtr<UINV_ItemViewModel> CachedItemVM;
+	float EmptyItemBackgroundFadeValue = 0.0f;
 	
 	UPROPERTY()
-	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
+	TObjectPtr<UINV_ItemViewModel> CachedItemVM = nullptr;
+	
+	UPROPERTY()
+	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UMVVMView> MVVMView;
+	TObjectPtr<UMVVMView> MVVMView = nullptr;
 	
-	bool bIsSelected;
-	bool bIsEquipped;
-	bool bIsEmpty;
+	bool bIsSelected = false;
+	bool bIsEquipped = false;
+	bool bIsEmpty = false;
 	bool bIsInteractable = true;
 };

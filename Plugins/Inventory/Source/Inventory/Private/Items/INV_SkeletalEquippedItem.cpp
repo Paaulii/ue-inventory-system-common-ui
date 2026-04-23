@@ -1,15 +1,10 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Items/INV_SkeletalEquippedItem.h"
-
+﻿#include "Items/INV_SkeletalEquippedItem.h"
 #include "Data/Types/INV_InventoryDataAssetTypes.h"
-
 
 AINV_SkeletalEquippedItem::AINV_SkeletalEquippedItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMesh");
+	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(FName("SkeletalMesh"));
 	SetActorEnableCollision(false);
 }
 

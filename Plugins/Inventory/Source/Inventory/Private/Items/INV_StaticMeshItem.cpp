@@ -1,14 +1,10 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Items/INV_StaticMeshItem.h"
-
+﻿#include "Items/INV_StaticMeshItem.h"
 #include "Data/Types/INV_InventoryDataAssetTypes.h"
 
 AINV_StaticMeshItem::AINV_StaticMeshItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 }
 
 void AINV_StaticMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition)

@@ -1,13 +1,11 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "INV_CategoryViewModel.h"
-#include "MVVMViewModelBase.h"
 #include "Data/Types/INV_ItemEquipType.h"
 #include "Data/Types/INV_ItemRarity.h"
 #include "Data/Types/INV_ItemSaveDataTypes.h"
+#include "INV_CategoryViewModel.h"
+#include "MVVMViewModelBase.h"
 #include "INV_ItemViewModel.generated.h"
 
 enum class EINV_ItemEquipType : uint8;
@@ -16,91 +14,76 @@ UCLASS()
 class INVENTORY_API UINV_ItemViewModel : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
-public:
-	void Initialize(const FINV_ItemDisplayData& ItemData, UINV_CategoryViewModel* CategoryVM);
-
-	UFUNCTION(BlueprintPure, FieldNotify)
-	bool IsQuantityVisible() const;
 	
-	FText GetItemName() const { return ItemName; }
-	FText GetDescription() const { return Description; }
+public:
+	UFUNCTION(BlueprintPure, FieldNotify)
+	bool VM_IsQuantityVisible() const;
+	
+	void Initialize(const FINV_ItemDisplayData& ItemData, UINV_CategoryViewModel* CategoryVM);
+	void SetbIsEquipped(bool bState);
+	const FText& GetItemName() const { return ItemName; }
+	const FText& GetDescription() const { return Description; }
+	const EINV_ItemRarity& GetRarity() const { return Rarity; }
+	UINV_CategoryViewModel* GetCategory() const { return Category; }
+	const EINV_ItemEquipType& GetEquipType() const { return EquipType; }
+	const FINV_ItemIdentification& GetItemIdentification() const { return ItemIdentification; }
 	UTexture2D* GetSmallImage() const { return SmallImage; }
 	UTexture2D* GetLargeImage() const { return LargeImage; }
-	EINV_ItemRarity GetRarity() const { return Rarity; }
 	int32 GetCurrencyValue() const { return CurrencyValue; }
-	UINV_CategoryViewModel* GetCategory() const { return Category; }
 	int32 GetRequiredLevel() const { return RequiredLevel; }
 	int32 GetQuantity() const { return Quantity; }
 	int32 GetMaxQuantity() const { return MaxQuantity; }
-	bool GetEquippable() const { return Equippable;}
-	bool GetConsumable() const { return Consumable;}
-	bool GetDroppable() const { return Droppable;}
-	bool GetIsEquipped() const { return IsEquipped; }
-	EINV_ItemEquipType GetEquipType() const { return EquipType; }
-	const FINV_ItemIdentification& GetItemIdentification() const { return ItemIdentification; }
+	bool GetbIsEquippable() const { return bIsEquippable; }
+	bool GetbIsConsumable() const { return bIsConsumable; }
+	bool GetbIsDroppable() const { return bIsDroppable; }
+	bool GetbIsEquipped() const { return bIsEquipped; }
 	
-	void SetIsEquipped(bool bState);
 protected:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	FText ItemName;
+	FText ItemName = {};
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	FText Description;
+	FText Description = {};
 
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	UTexture2D* SmallImage;
+	TObjectPtr<UTexture2D> SmallImage = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	UTexture2D* LargeImage;
+	TObjectPtr<UTexture2D> LargeImage = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	EINV_ItemRarity Rarity;
+	EINV_ItemRarity Rarity = EINV_ItemRarity::Common;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	int32 CurrencyValue;
+	int32 CurrencyValue = 0;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	TObjectPtr<UINV_CategoryViewModel> Category = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	int32 RequiredLevel = 0;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	int32 Quantity = 0;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	int32 MaxQuantity = 0;
+
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool bIsConsumable = false;
+	
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool bIsEquippable = false;
+
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
+	bool bIsDroppable = false;
 	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
-	TObjectPtr<UINV_CategoryViewModel> Category;
-	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	int32 RequiredLevel;
-	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	int32 Quantity;
-	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	int32 MaxQuantity;
-
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	bool Consumable;
-	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	bool Equippable;
-
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
-	bool Droppable;
-	
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
-	bool IsEquipped;
+	bool bIsEquipped = false;
 
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter)
 	EINV_ItemEquipType EquipType { EINV_ItemEquipType::None };
 	
 private:
-	void SetItemName(const FText& Name);
-	void SetDescription(const FText& NewDescription);
-	void SetSmallImage(UTexture2D* Image);
-	void SetLargeImage(UTexture2D* Image);
-	void SetRarity(const EINV_ItemRarity& ItemRarity);
-	void SetCurrencyValue(const int32 Currency);
-	void SetCategory(UINV_CategoryViewModel* CategoryVM);
-	void SetRequiredLevel(int32 Level);
-	void SetQuantity(int32 Value);
-	void SetMaxQuantity(int32 Value);
-	void SetConsumable(bool bState);
-	void SetEquippable(bool bState);
-	void SetDroppable(bool bState);
-	void SetEquipType(EINV_ItemEquipType Type);
-
-	FINV_ItemIdentification ItemIdentification;
+	FINV_ItemIdentification ItemIdentification = {};
 };

@@ -1,86 +1,81 @@
-// Copyright Paulina Hałatek, All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "INV_ActivatableMvvmWidget.h"
 #include "INV_CategoryItems.generated.h"
 
-class UINV_InputAction;
-class UINV_ItemTile;
-class UINV_InventoryViewModel;
 class UDynamicEntryBox;
 class UINV_CategoryViewModel;
-class UMVVMView;
+class UINV_InputAction;
+class UINV_InventoryViewModel;
+class UINV_ItemTile;
 class UINV_ItemViewModel;
 class UINV_SelectionViewModel;
-/**
- * 
- */
+class UMVVMView;
+
 UCLASS()
 class INVENTORY_API UINV_CategoryItems : public UINV_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
+	
 public:
 	virtual void NativeOnInitialized() override;
-	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager) override;
+	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
 	virtual void ClearViewModelsCache() override;
-protected:
-	UFUNCTION(BlueprintCallable)
-	void VM_ForceFocusEvaluation(bool bHasPendingRequest);
-	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FText VM_GetItemsCapacityText(UINV_ItemViewModel* ItemVM) const;
-	
+
+private:
 	UFUNCTION(BlueprintCallable)
 	void VM_CategoryItemsChanged(const TArray<UINV_ItemViewModel*>& ItemsVM);
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_SelectedCategoryChanged(UINV_CategoryViewModel* CategoryVM);
-	
+
 	UFUNCTION(BlueprintCallable)
-	void VM_RefreshFocusTarget(TArray<UINV_ItemViewModel*> ItemsVM);
+	void VM_ForceFocusEvaluation(bool bHasPendingRequest);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FText VM_GetItemsCapacityText(const UINV_ItemViewModel* ItemVM) const;
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UUserWidget* GetFocusTile() const;
-	void SelectFirstItemOnPage();
-
+	
 	UFUNCTION(BlueprintCallable)
-	void ChangePage(int PageOffset);
+	void ChangePage(int32 PageOffset);
 	
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UDynamicEntryBox> DynamicEntryBox_Items;
-
-	UPROPERTY(EditDefaultsOnly)
-	int MaxDynamicEntryBoxCapacity;
-	
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_InputAction> InputAction_PreviousPage;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_InputAction> InputAction_NextPage;
-private:
-	void UpdateSlots(TArray<UINV_ItemViewModel*> ItemViewModels);
 	void PopulateSlots();
-	void UpdatePageButtonVisibility();
 	UINV_ItemTile* CreateSlot();
+	void UpdateSlots(TArray<UINV_ItemViewModel*> ItemViewModels);
+	void UpdatePageButtonVisibility();
+	void SelectFirstItemOnPage();
 	int GetItemIndexForSelectedCategory() const;
 	
+	UPROPERTY(EditDefaultsOnly)
+	int32 MaxDynamicEntryBoxCapacity = 0;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UDynamicEntryBox> DynamicEntryBoxItems = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UINV_InputAction> PreviousPageInputAction = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UINV_InputAction> NextPageInputAction = nullptr;
+	
 	UPROPERTY()
-	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM;
+	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UINV_CategoryViewModel> CachedCategoryVM;
+	TObjectPtr<UINV_CategoryViewModel> CachedCategoryVM = nullptr;
 	
 	UPROPERTY()
-	TObjectPtr<UINV_InventoryViewModel> CachedInventoryVM;
+	TObjectPtr<UINV_InventoryViewModel> CachedInventoryVM = nullptr;
 
 	UPROPERTY()
-	TArray<UINV_ItemTile*> ItemTiles;
+	TArray<UINV_ItemTile*> ItemTiles = {};
 	
 	UPROPERTY()
-	TArray<UINV_ItemViewModel*> CachedItemsVM;
+	TArray<UINV_ItemViewModel*> CachedItemsVM = {};
 	
-	int CurrentPage = 0;
-	int PageCount = 1;
+	int32 CurrentPage = 0;
+	int32 PageCount = 1;
 };

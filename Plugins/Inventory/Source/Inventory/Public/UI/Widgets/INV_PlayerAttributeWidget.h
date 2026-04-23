@@ -1,40 +1,35 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#pragma once
 
-#pragma once
-
-#include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "CoreMinimal.h"
 #include "INV_PlayerAttributeWidget.generated.h"
 
-class UTextBlock;
 class UImage;
-/**
- * 
- */
+class UTextBlock;
+
 UCLASS()
 class INVENTORY_API UINV_PlayerAttributeWidget : public UUserWidget
 {
 	GENERATED_BODY()
-public:
+
+protected:
+	virtual void NativePreConstruct() override;
+
 	UFUNCTION(BlueprintCallable)
 	void VM_SetAttributeValue(const FText& Value);
 	
 	UPROPERTY(EditAnywhere)
-	UTexture2D* StatIcon;
+	TObjectPtr<UTexture2D> StatIcon = nullptr;
 	
 	UPROPERTY(EditAnywhere)
-	FText StatName;
-	
-protected:
-	virtual void NativePreConstruct() override;
-
-private:
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UImage> Image_StatIcon;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> Text_StatName;
+	FText StatName = {};
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> Text_StatValue;
+	TObjectPtr<UImage> StatIconImage = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> StatNameText = nullptr;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> StatValueText = nullptr;
 };

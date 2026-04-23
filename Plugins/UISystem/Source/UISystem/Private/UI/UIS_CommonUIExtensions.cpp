@@ -1,8 +1,8 @@
 ﻿#include "UI/UIS_CommonUIExtensions.h"
+#include "CommonActivatableWidget.h"
 #include "GameplayTagContainer.h"
 #include "UIS_UIManagerSubsystem.h"
 #include "UI/UIS_GameUIPolicy.h"
-#include "CommonActivatableWidget.h"
 #include "UI/UIS_PrimaryGameLayout.h"
 
 UCommonActivatableWidget* UUIS_CommonUIExtensions::PushContentToLayer(const ULocalPlayer* LocalPlayer,

@@ -1,10 +1,7 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "StructUtils/InstancedStruct.h"
 #include "INV_Equippable.generated.h"
 
 struct FINV_ItemAssetDefinition;
@@ -18,6 +15,7 @@ class UINV_Equippable : public UInterface
 class INVENTORY_API IINV_Equippable
 {
 	GENERATED_BODY()
+
 public:
 	virtual void SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const = 0;
 };

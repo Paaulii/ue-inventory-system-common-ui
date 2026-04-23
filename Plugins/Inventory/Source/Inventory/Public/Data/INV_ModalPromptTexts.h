@@ -1,6 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
@@ -15,5 +13,5 @@ class INVENTORY_API UINV_ModalPromptTexts : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TMap<FINV_ItemActionType, FText> Prompts;
+	TMap<FINV_ItemActionType, FText> Prompts = {};
 };

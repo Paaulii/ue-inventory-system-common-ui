@@ -1,21 +1,17 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
+﻿#pragma once
 
-#pragma once
-
-#include "CoreMinimal.h"
 #include "Player/UIS_PlayerController.h"
+#include "CoreMinimal.h"
 #include "INV_PlayerController.generated.h"
 
-class UINV_EquipmentComponent;
-class UGameplayEffect;
 class AINV_Character;
-class UINV_ItemTracerComponent;
-class UINV_InventoryComponent;
+class UGameplayEffect;
 class UInputAction;
 class UInputMappingContext;
-/**
- * 
- */
+class UINV_EquipmentComponent;
+class UINV_InventoryComponent;
+class UINV_ItemTracerComponent;
+
 UCLASS()
 class INVENTORY_API AINV_PlayerController : public AUIS_PlayerController
 {
@@ -23,6 +19,8 @@ class INVENTORY_API AINV_PlayerController : public AUIS_PlayerController
 
 public:
 	AINV_PlayerController();
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TObjectPtr<UInputMappingContext> DefaultIMC;
@@ -33,32 +31,30 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TObjectPtr<UInputAction> OpenInventoryAction;
 
-protected:
-	UFUNCTION()
-	void OnInteractWithItem();
+private:
+	virtual void SetupInputComponent() override;
 	
 	UFUNCTION()
 	void OpenInventory();
 	
-	virtual void BeginPlay() override;
-	virtual void SetupInputComponent() override;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UINV_InventoryComponent> InventoryComponent;
+	UFUNCTION()
+	void OnInteractWithItem();
 	
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UINV_EquipmentComponent> EquipmentComponent;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UINV_ItemTracerComponent> ItemTracerComponent;
-
-private:
 	UFUNCTION()
 	void ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply);
 
 	UFUNCTION()
 	void RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToRevoke);
 	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UINV_InventoryComponent> InventoryComponent = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UINV_EquipmentComponent> EquipmentComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UINV_ItemTracerComponent> ItemTracerComponent = nullptr;
+
 	UPROPERTY()
-	TObjectPtr<AINV_Character> InventoryCharacter;
+	TObjectPtr<AINV_Character> InventoryCharacter = nullptr;
 };

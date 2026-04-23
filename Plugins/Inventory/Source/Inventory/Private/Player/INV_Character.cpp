@@ -1,16 +1,11 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "Player/INV_Character.h"
-
-#include "AbilitySystemComponent.h"
+﻿#include "Player/INV_Character.h"
 #include "AbilitySystem/AttributeSets/INV_PlayerAttributes.h"
-
+#include "AbilitySystemComponent.h"
 
 AINV_Character::AINV_Character()
 {
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AttributeSet = CreateDefaultSubobject<UINV_PlayerAttributes>(TEXT("AttributeSet"));
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(FName("AbilitySystemComponent"));
+	AttributeSet = CreateDefaultSubobject<UINV_PlayerAttributes>(FName("AttributeSet"));
 }
 
 void AINV_Character::BeginPlay()
@@ -30,6 +25,22 @@ void AINV_Character::BeginPlay()
 	}
 	
 	ApplyEffects(StartupEffects);
+}
+
+void AINV_Character::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).RemoveAll(this);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxHealthAttribute()).RemoveAll(this);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetManaAttribute()).RemoveAll(this);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxManaAttribute()).RemoveAll(this);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetBaseAttackAttribute()).RemoveAll(this);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetArmorAttribute()).RemoveAll(this);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMagicPowerAttribute()).RemoveAll(this);
+	}
 }
 
 UAbilitySystemComponent* AINV_Character::GetAbilitySystemComponent() const
@@ -64,7 +75,7 @@ void AINV_Character::RevokeEffects(const TArray<TSubclassOf<UGameplayEffect>>& E
 		return;
 	}
 
-	for (auto GameplayEffect : EffectsToRevoke)
+	for (const auto& GameplayEffect : EffectsToRevoke)
 	{
 		AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(GameplayEffect, AbilitySystemComponent);
 	}
@@ -78,6 +89,11 @@ void AINV_Character::NotifyHealthChanged(const FOnAttributeChangeData& Data) con
 void AINV_Character::NotifyMaxHealthChanged(const FOnAttributeChangeData& Data) const
 {
 	OnMaxHealthChanged.Broadcast(Data.NewValue);
+}
+
+void AINV_Character::NotifyManaChanged(const FOnAttributeChangeData& Data) const
+{
+	OnManaChanged.Broadcast(Data.NewValue);
 }
 
 void AINV_Character::NotifyMaxManaChanged(const FOnAttributeChangeData& Data) const
@@ -99,9 +115,3 @@ void AINV_Character::NotifyMagicPowerChanged(const FOnAttributeChangeData& Data)
 {
 	OnMagicPowerChanged.Broadcast(Data.NewValue);
 }
-
-void AINV_Character::NotifyManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnManaChanged.Broadcast(Data.NewValue);
-}
-

@@ -1,6 +1,4 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "INV_Item.h"
@@ -13,5 +11,7 @@ class INVENTORY_API AINV_StaticMeshItem : public AINV_Item
 
 public:
 	AINV_StaticMeshItem();
+
+protected:
 	virtual void ChangeMesh(const FINV_ItemAssetDefinition*  ItemAssetDefinition) override;
 };

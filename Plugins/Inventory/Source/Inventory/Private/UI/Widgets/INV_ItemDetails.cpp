@@ -1,18 +1,33 @@
-// Copyright Paulina Hałatek, All Rights Reserved.
-
-
 #include "UI/Widgets/INV_ItemDetails.h"
-
+#include "CommonTextBlock.h"
 #include "Components/Image.h"
+#include "Data/Types/INV_ItemActionType.h"
+#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
+#include "UI/Widgets/INV_ItemActionButton.h"
 #include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
-#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "View/MVVMView.h"
-#include "CommonTextBlock.h"
-#include "Data/Types/INV_ItemActionType.h"
-#include "UI/Widgets/INV_ItemActionButton.h"
 
-void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
+void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
+{
+	UINV_SelectionViewModel* SelectionVM = UIManager.GetViewModel<UINV_SelectionViewModel>();
+	MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);
+	CachedSelectionVM = SelectionVM;
+	
+	UINV_ItemActionViewModel* ItemActionVM = UIManager.GetViewModel<UINV_ItemActionViewModel>();
+	MVVMView->SetViewModel(FName("ItemActionViewModel"), ItemActionVM);
+	CachedItemActionVM = ItemActionVM;
+}
+
+void UINV_ItemDetails::ClearViewModelsCache()
+{
+	MVVMView->SetViewModel(FName("SelectionViewModel"), nullptr);
+	MVVMView->SetViewModel(FName("ItemActionViewModel"), nullptr);
+	CachedSelectionVM = nullptr;
+	CachedItemActionVM = nullptr;
+}
+
+void UINV_ItemDetails::VM_SelectedItemUpdated(const UINV_ItemViewModel* SelectedItem)
 {
 	bool bIsItemEmpty = SelectedItem == nullptr;
 	SetVisibility(bIsItemEmpty ? ESlateVisibility::Hidden : ESlateVisibility::Visible);
@@ -22,22 +37,36 @@ void UINV_ItemDetails::VM_SelectedItemUpdated(UINV_ItemViewModel* SelectedItem)
 		return;
 	}
 
-	Text_Name->SetText(SelectedItem->GetItemName());
-	Text_Description->SetText(SelectedItem->GetDescription());
-	Text_Value->SetText(FText::AsNumber(SelectedItem->GetCurrencyValue()));
-	Image_SelectedItem->SetBrushFromTexture(SelectedItem->GetLargeImage());
-	Button_Consume->SetButtonVisibility(SelectedItem->GetConsumable());
-	Button_Drop->SetButtonVisibility(SelectedItem->GetDroppable());
+	NameText->SetText(SelectedItem->GetItemName());
+	DescriptionText->SetText(SelectedItem->GetDescription());
+	ValueText->SetText(FText::AsNumber(SelectedItem->GetCurrencyValue()));
+	SelectedItemImage->SetBrushFromTexture(SelectedItem->GetLargeImage());
+	ConsumeButton->SetButtonVisibility(SelectedItem->GetbIsConsumable());
+	DropButton->SetButtonVisibility(SelectedItem->GetbIsDroppable());
 	ToggleEquipButtonState(*SelectedItem);
 }
 
-void UINV_ItemDetails::ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const
+void UINV_ItemDetails::HandleItemActionPressed(const FINV_ItemActionType& ActionType) const
 {
-	bool bShouldEquipButtonVisible = SelectedItem.GetEquippable() && !SelectedItem.GetIsEquipped();
-	Button_Equip->SetButtonVisibility(bShouldEquipButtonVisible);
+	if (CachedItemActionVM)
+	{
+		CachedItemActionVM->SetSelectedAction(ActionType);
+		CachedItemActionVM->DelegateShowItemActionPopup();
+		CachedItemActionVM->SetIsSingleItemQuantityAction(true);
+	}
+}
 
-	bool bShouldUnEquipButtonVisible = SelectedItem.GetEquippable() && !bShouldEquipButtonVisible;
-	Button_Unequip->SetButtonVisibility(bShouldUnEquipButtonVisible);
+void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const
+{
+	if (!CachedItemActionVM || !CachedSelectionVM)
+	{
+		return;
+	}
+
+	if (const UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem())
+	{
+		CachedItemActionVM->DelegatePerformAction(ActionType, SelectedItem->GetItemIdentification());
+	}
 }
 
 void UINV_ItemDetails::VM_OnEquipItemStateChange(const UINV_ItemViewModel* Item)
@@ -47,7 +76,7 @@ void UINV_ItemDetails::VM_OnEquipItemStateChange(const UINV_ItemViewModel* Item)
 		return;
 	}
 	
-	UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem();
+	const UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem();
 
 	if (!SelectedItem)
 	{
@@ -59,6 +88,15 @@ void UINV_ItemDetails::VM_OnEquipItemStateChange(const UINV_ItemViewModel* Item)
 	{
 		ToggleEquipButtonState(*SelectedItem);
 	}
+}
+
+void UINV_ItemDetails::ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const
+{
+	bool bShouldEquipButtonVisible = SelectedItem.GetbIsEquippable() && !SelectedItem.GetbIsEquipped();
+	EquipButton->SetButtonVisibility(bShouldEquipButtonVisible);
+
+	bool bShouldUnEquipButtonVisible = SelectedItem.GetbIsEquippable() && !bShouldEquipButtonVisible;
+	UnequipButton->SetButtonVisibility(bShouldUnEquipButtonVisible);
 }
 
 void UINV_ItemDetails::OnConsumeButtonSelected()
@@ -84,46 +122,4 @@ void UINV_ItemDetails::OnUnequipButtonSelected()
 void UINV_ItemDetails::OnSellButtonSelected()
 {
 	HandleItemActionPressed(FINV_ItemActionType::Sell);
-}
-
-void UINV_ItemDetails::HandleItemActionPressed(const FINV_ItemActionType& ActionType) const
-{
-	if (CachedItemActionVM)
-	{
-		CachedItemActionVM->SetSelectedAction(ActionType);
-		CachedItemActionVM->DelegateShowItemActionPopup();
-		CachedItemActionVM->SetIsSingleItemQuantityAction(true);
-	}
-}
-
-void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const
-{
-	if (!CachedItemActionVM || !CachedSelectionVM)
-	{
-		return;
-	}
-
-	if (UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem())
-	{
-		CachedItemActionVM->DelegatePerformAction(ActionType, SelectedItem->GetItemIdentification());
-	}
-}
-
-void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem* UIManager)
-{
-	UINV_SelectionViewModel* SelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
-	MVVMView->SetViewModel("SelectionViewModel", SelectionVM);
-	CachedSelectionVM = SelectionVM;
-	
-	UINV_ItemActionViewModel* ItemActionVM = UIManager->GetViewModel<UINV_ItemActionViewModel>();
-	MVVMView->SetViewModel("ItemActionViewModel", ItemActionVM);
-	CachedItemActionVM = ItemActionVM;
-}
-
-void UINV_ItemDetails::ClearViewModelsCache()
-{
-	MVVMView->SetViewModel("SelectionViewModel", nullptr);
-	MVVMView->SetViewModel("ItemActionViewModel", nullptr);
-	CachedSelectionVM = nullptr;
-	CachedItemActionVM = nullptr;
 }

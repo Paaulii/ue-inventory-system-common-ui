@@ -1,35 +1,25 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "UIS_UIManagerSubsystem.h"
 #include "UIS_MvvmUIManagerSubsystem.generated.h"
 
 class AUIS_PlayerController;
-class UUIS_ViewModelBase;
-class UMVVMViewModelBase;
-class UINV_SelectionViewModel;
 class UINV_InventoryViewModel;
-/**
- * 
- */
+class UINV_SelectionViewModel;
+class UMVVMViewModelBase;
+class UUIS_ViewModelBase;
+
 UCLASS(Blueprintable)
 class UISYSTEM_API UUIS_MvvmUIManagerSubsystem : public UUIS_UIManagerSubsystem
 {
 	GENERATED_BODY()
+	
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
-	virtual void NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer) override;
 	
-	UFUNCTION()
-	void OnPawnPossessed();
-	
-	void InitializeViewModels();
-	void DeinitializeViewModels();
-
 	template <typename T>
 	T* GetViewModel()
 	{
@@ -43,10 +33,20 @@ public:
 
 		return nullptr;
 	}
+	
 protected:
-	UPROPERTY(EditDefaultsOnly )
-	TArray<TSubclassOf<UUIS_ViewModelBase>> ViewModelsToSpawn;
+	virtual void NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer) override;
+	
 private:
+	UFUNCTION()
+	void OnPawnPossessed(APawn* OldPawn, APawn* NewPawn);
+	
+	void InitializeViewModels();
+	void DeinitializeViewModels();
+	
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<UUIS_ViewModelBase>> ViewModelsToSpawn = {};
+	
 	UPROPERTY()
-	TArray<TObjectPtr<UUIS_ViewModelBase>> ViewModels;
+	TArray<TObjectPtr<UUIS_ViewModelBase>> ViewModels = {};
 };

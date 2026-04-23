@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 using UnrealBuildTool;
 
 public class InventorySystem : ModuleRules
@@ -7,28 +5,14 @@ public class InventorySystem : ModuleRules
 	public InventorySystem(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-
-		PublicDependencyModuleNames.AddRange(new string[]
-		{
-			"Core", "CoreUObject", "Engine", "InputCore",
-			"EnhancedInput", "StructUtils", "UMG", "GameplayTags", 
-			"ModelViewViewModel", "FieldNotification", "CommonUI", "UISystem", "Inventory",
-			"GameplayAbilities"
-		});
-
-		PrivateDependencyModuleNames.AddRange(new string[]
-		{
-			"Slate",
-			"SlateCore",
-			"FieldNotification"
-		});
-
-		// Uncomment if you are using Slate UI
-		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-
-		// Uncomment if you are using online features
-		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
-		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+		PrivateDependencyModuleNames.AddRange(
+		[
+			"Core",
+			"CoreUObject",
+			"GameplayTags",
+			"EnhancedInput",
+			"Inventory",
+			"UISystem",
+		]);
 	}
 }

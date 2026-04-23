@@ -1,6 +1,6 @@
 #include "UIS_CommonGameInstance.h"
-#include "UIS_UIManagerSubsystem.h"
 #include "Player/UIS_LocalPlayer.h"
+#include "UIS_UIManagerSubsystem.h"
 
 int32 UUIS_CommonGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, FPlatformUserId UserId)
 {

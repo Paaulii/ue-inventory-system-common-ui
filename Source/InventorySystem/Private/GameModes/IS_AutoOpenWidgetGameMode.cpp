@@ -1,10 +1,6 @@
-﻿// Copyright Paulina Hałatek, All Rights Reserved.
-
-
-#include "GameModes/IS_AutoOpenWidgetGameMode.h"
+﻿#include "GameModes/IS_AutoOpenWidgetGameMode.h"
 #include "CommonActivatableWidget.h"
 #include "UIS_UIManagerSubsystem.h"
-#include "UI/UIS_CommonUILayerTags.h"
 #include "UI/UIS_GameUIPolicy.h"
 #include "UI/UIS_PrimaryGameLayout.h"
 

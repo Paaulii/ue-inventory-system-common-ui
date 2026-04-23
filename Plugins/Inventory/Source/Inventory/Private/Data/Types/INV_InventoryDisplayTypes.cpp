@@ -8,14 +8,14 @@ void FINV_InventoryDisplayData::SetCurrencyAmount(const int32 Amount)
 
 void FINV_InventoryDisplayData::AddOrUpdateItem(const FINV_ItemDisplayData& ItemToUpdate)
 {
-	for (FINV_CategoryDisplayData& Category : Categories)
+	for (auto& Category : Categories)
 	{
 		if (Category.Tag != ItemToUpdate.ItemIdentification.CategoryTag)
 		{
 			continue;
 		}
 
-		for (int i = 0; i < Category.Items.Num(); i++)
+		for (int32 i = 0; i < Category.Items.Num(); i++)
 		{
 			if (Category.Items[i].ItemIdentification.Id == ItemToUpdate.ItemIdentification.Id)
 			{
@@ -28,11 +28,11 @@ void FINV_InventoryDisplayData::AddOrUpdateItem(const FINV_ItemDisplayData& Item
 	}
 }
 
-void FINV_InventoryDisplayData::RemoveItemAt(const int16 ItemId)
+void FINV_InventoryDisplayData::RemoveItemAt(const int32 ItemId)
 {
-	for (FINV_CategoryDisplayData& Category : Categories)
+	for (auto& Category : Categories)
 	{
-		for (int i = 0; i < Category.Items.Num(); i++)
+		for (int32 i = 0; i < Category.Items.Num(); i++)
 		{
 			if (Category.Items[i].ItemIdentification.Id == ItemId)
 			{
@@ -45,7 +45,7 @@ void FINV_InventoryDisplayData::RemoveItemAt(const int16 ItemId)
 
 const FINV_CategoryDisplayData* FINV_InventoryDisplayData::GetCategory(const FGameplayTag& GameplayTag)
 {
-	for (const FINV_CategoryDisplayData& Category : Categories)
+	for (const auto& Category : Categories)
 	{
 		if (Category.Tag == GameplayTag)
 		{
