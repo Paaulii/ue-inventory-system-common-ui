@@ -15,7 +15,7 @@ void UINV_CategoryTabs::VM_CreateTabs(const TArray<UINV_CategoryViewModel*> Cate
 	
 	ResetTabs();
 	CacheViewModels();
-	for (UINV_CategoryViewModel* CategoryViewModel : CategoryViewModels)
+	for (const auto& CategoryViewModel : CategoryViewModels)
 	{
 		UUserWidget* NewTab = TabButtons->CreateEntry();
 		if (UINV_CategoryButtonTab* ButtonTab = Cast<UINV_CategoryButtonTab>(NewTab))
@@ -32,11 +32,13 @@ void UINV_CategoryTabs::CacheViewModels()
 	if (CacheSelectionVM == nullptr)
 	{
 		CacheSelectionVM = UIManager->GetViewModel<UINV_SelectionViewModel>();
+		checkf(CacheSelectionVM, TEXT("UIManager cannot find SelectionViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	}
 
 	if (CacheInventoryVM == nullptr)
 	{
 		CacheInventoryVM = UIManager->GetViewModel<UINV_InventoryViewModel>();
+		checkf(CacheSelectionVM, TEXT("UIManager cannot find InventoryViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	}
 }
 
@@ -69,7 +71,7 @@ void UINV_CategoryTabs::SelectTab(const int32 Index) const
 
 void UINV_CategoryTabs::ResetTabs() const
 {
-	for (UUserWidget* Tab : TabButtons->GetAllEntries())
+	for (const auto& Tab : TabButtons->GetAllEntries())
 	{
 		if (UINV_CategoryButtonTab* ButtonTab = Cast<UINV_CategoryButtonTab>(Tab))
 		{

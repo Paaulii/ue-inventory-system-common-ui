@@ -9,15 +9,18 @@ AINV_StaticMeshItem::AINV_StaticMeshItem()
 
 void AINV_StaticMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition)
 {
-	if (ItemAssetDefinition->StaticMesh)
+	if (ensureMsgf(ItemAssetDefinition, TEXT("Couldn't find item's definition. Cannot set static mesh for item.")))
 	{
-		if (UStaticMeshComponent* StaticMeshComponent = Cast<UStaticMeshComponent>(MeshComponent))
+		if (ItemAssetDefinition->StaticMesh)
 		{
-			StaticMeshComponent->SetStaticMesh(ItemAssetDefinition->StaticMesh);
-
-			if (ItemAssetDefinition->Material)
+			if (UStaticMeshComponent* StaticMeshComponent = Cast<UStaticMeshComponent>(MeshComponent))
 			{
-				StaticMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
+				StaticMeshComponent->SetStaticMesh(ItemAssetDefinition->StaticMesh);
+
+				if (ItemAssetDefinition->Material)
+				{
+					StaticMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
+				}
 			}
 		}
 	}

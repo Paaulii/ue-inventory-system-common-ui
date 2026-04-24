@@ -8,10 +8,12 @@
 void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
 {
 	UINV_SelectionViewModel* SelectionVM = UIManager.GetViewModel<UINV_SelectionViewModel>();
+	checkf(SelectionVM, TEXT("UIManager cannot find SelectionViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);
 	CachedSelectionVM = SelectionVM;
 
 	UINV_ItemActionViewModel* ItemActionVM = UIManager.GetViewModel<UINV_ItemActionViewModel>();
+	checkf(ItemActionVM, TEXT("UIManager cannot find ItemActionViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	MVVMView->SetViewModel(FName("ItemActionViewModel"), ItemActionVM);
 	CachedItemActionVM = ItemActionVM;
 }

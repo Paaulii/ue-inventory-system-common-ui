@@ -105,7 +105,7 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemData.ItemIdentification);
 
-	if (!ItemAssetDefinition)
+	if (ensureMsgf(ItemAssetDefinition, TEXT("Couldn't find item's definition. Cannot add item. Check if InventoryDataAsset contains item with tag %s"), *ItemData.ItemIdentification.ItemTag.ToString()))
 	{
 		return;
 	}
@@ -265,7 +265,7 @@ void UINV_InventoryComponent::EquipItem(const FINV_ItemIdentification& ItemIdent
 
 void UINV_InventoryComponent::EquipItems()
 {
-	for (FINV_ItemIdentification& ItemToEquip : EquippedItems)
+	for (const auto& ItemToEquip : EquippedItems)
 	{
 		EquipItem(ItemToEquip);
 	}
@@ -438,7 +438,7 @@ int32 UINV_InventoryComponent::GetNextUID() const
 	}
 	
 	int32 HighestUID = 0;
-	for (const FINV_ItemData& ItemData : CachedPlayerItems)
+	for (const auto& ItemData : CachedPlayerItems)
 	{
 		if (ItemData.ItemIdentification.Id > HighestUID)
 		{
@@ -451,7 +451,7 @@ int32 UINV_InventoryComponent::GetNextUID() const
 
 FINV_ItemData* UINV_InventoryComponent::GetCachedItem(int32 ItemUID)
 {
-	for (FINV_ItemData& Item : CachedPlayerItems)
+	for (auto& Item : CachedPlayerItems)
 	{
 		if (Item.ItemIdentification.Id == ItemUID)
 		{
@@ -497,14 +497,14 @@ TArray<FINV_CategoryDisplayData> UINV_InventoryComponent::TranslatePlayerItemsTo
 	return CategoryDisplayDataList;
 }
 
-TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(const FINV_ItemData& ItemDefinition) const
+TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(const FINV_ItemData& ItemData) const
 {
-	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemDefinition.ItemIdentification);
+	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemData.ItemIdentification);
 
-	if (ItemAssetDefinition == nullptr)
+	if (!ensureMsgf(ItemAssetDefinition, TEXT("Couldn't create Item's Display Data for %s. Make sure item is defined in InventoryAssetData."), *ItemData.ItemIdentification.ItemTag.ToString()))
 	{
 		return {};
 	}
 
-	return FINV_ItemDisplayData(ItemDefinition.ItemIdentification, ItemAssetDefinition, ItemDefinition.Quantity);
+	return FINV_ItemDisplayData(ItemData.ItemIdentification, ItemAssetDefinition, ItemData.Quantity);
 }

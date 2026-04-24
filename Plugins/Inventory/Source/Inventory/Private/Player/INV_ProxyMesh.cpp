@@ -85,10 +85,16 @@ void AINV_ProxyMesh::SetupMesh(APawn* OldPawn, APawn* NewPawn)
 
 void AINV_ProxyMesh::OnItemAttached(AActor* AttachedItem)
 {
-	SceneCaptureComponent->ShowOnlyActors.Add(AttachedItem);
+	if (AttachedItem)
+	{
+		SceneCaptureComponent->ShowOnlyActors.Add(AttachedItem);
+	}
 }
 
 void AINV_ProxyMesh::OnItemDetached(AActor* DetachedItem)
 {
-	SceneCaptureComponent->ShowOnlyActors.Remove(DetachedItem);
+	if (DetachedItem)
+	{
+		SceneCaptureComponent->ShowOnlyActors.Remove(DetachedItem);
+	}
 }

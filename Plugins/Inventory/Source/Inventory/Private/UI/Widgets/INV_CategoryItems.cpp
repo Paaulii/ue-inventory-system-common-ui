@@ -16,10 +16,12 @@ void UINV_CategoryItems::NativeOnInitialized()
 void UINV_CategoryItems::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
 {
 	UINV_InventoryViewModel* InventoryVM = UIManager.GetViewModel<UINV_InventoryViewModel>();
+	checkf(InventoryVM, TEXT("UIManager cannot find InventoryViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	CachedInventoryVM = InventoryVM;
 	MVVMView->SetViewModel(FName("InventoryViewModel"), InventoryVM);
 
 	UINV_SelectionViewModel* SelectionVM = UIManager.GetViewModel<UINV_SelectionViewModel>();
+	checkf(SelectionVM, TEXT("UIManager cannot find SelectionViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	CachedSelectionVM = SelectionVM;
 	MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);
 }

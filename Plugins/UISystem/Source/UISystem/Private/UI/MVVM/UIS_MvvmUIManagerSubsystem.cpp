@@ -17,7 +17,7 @@ void UUIS_MvvmUIManagerSubsystem::Deinitialize()
 
 void UUIS_MvvmUIManagerSubsystem::InitializeViewModels()
 {
-	for (auto ViewModelClass : ViewModelsToSpawn)
+	for (const auto& ViewModelClass : ViewModelsToSpawn)
 	{
 		auto NewViewModel = NewObject<UUIS_ViewModelBase>(this, ViewModelClass);
 		ViewModels.Add(NewViewModel);
@@ -26,7 +26,7 @@ void UUIS_MvvmUIManagerSubsystem::InitializeViewModels()
 
 void UUIS_MvvmUIManagerSubsystem::DeinitializeViewModels()
 {
-	for (auto ViewModel : ViewModels)
+	for (const auto& ViewModel : ViewModels)
 	{
 		if (ViewModel.Get())
 		{
@@ -58,7 +58,7 @@ void UUIS_MvvmUIManagerSubsystem::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlaye
 
 void UUIS_MvvmUIManagerSubsystem::OnPawnPossessed(APawn* OldPawn, APawn* NewPawn)
 {
-	for (auto ViewModel : ViewModels)
+	for (const auto& ViewModel : ViewModels)
 	{
 		ViewModel->Initialize();
 	};

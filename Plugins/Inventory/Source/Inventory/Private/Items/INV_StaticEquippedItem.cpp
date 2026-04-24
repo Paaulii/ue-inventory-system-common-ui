@@ -10,13 +10,16 @@ AINV_StaticEquippedItem::AINV_StaticEquippedItem()
 
 void AINV_StaticEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const
 {
-	if (ItemDefinition->StaticMesh)
+	if (ensureMsgf(ItemDefinition, TEXT("Couldn't find item's definition. Cannot set skeletal mesh for item.")))
 	{
-		StaticMeshComponent->SetStaticMesh(ItemDefinition->StaticMesh);
-
-		if (ItemDefinition->Material)
+		if (ItemDefinition->StaticMesh)
 		{
-			StaticMeshComponent->SetMaterial(0, ItemDefinition->Material);
+			StaticMeshComponent->SetStaticMesh(ItemDefinition->StaticMesh);
+
+			if (ItemDefinition->Material)
+			{
+				StaticMeshComponent->SetMaterial(0, ItemDefinition->Material);
+			}
 		}
 	}
 }

@@ -67,7 +67,7 @@ private:
 	bool DecreaseItemQuantity(const FINV_ItemIdentification& ItemId, const int32 Amount);
 	int32 GetNextUID() const;
 	FINV_ItemData* GetCachedItem(int32 ItemUID);
-	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemDefinition) const;
+	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemData) const;
 	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")

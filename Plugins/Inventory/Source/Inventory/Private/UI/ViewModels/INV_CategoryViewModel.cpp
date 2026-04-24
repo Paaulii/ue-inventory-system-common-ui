@@ -12,7 +12,7 @@ void UINV_CategoryViewModel::Initialize(const FINV_CategoryDisplayData& Category
 void UINV_CategoryViewModel::SetItems(const TArray<FINV_ItemDisplayData>& ItemsData)
 {
 	CategoryItems.Empty();
-	for (const FINV_ItemDisplayData& ItemData : ItemsData)
+	for (const auto& ItemData : ItemsData)
 	{
 		UINV_ItemViewModel* NewItemVM = NewObject<UINV_ItemViewModel>(this);
 		NewItemVM->Initialize(ItemData, this);

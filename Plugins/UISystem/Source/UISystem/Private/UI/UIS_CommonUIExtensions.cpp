@@ -8,19 +8,18 @@
 UCommonActivatableWidget* UUIS_CommonUIExtensions::PushContentToLayer(const ULocalPlayer* LocalPlayer,
 	FGameplayTag LayerName, TSubclassOf<UCommonActivatableWidget> WidgetClass)
 {
-	if (!ensure(LocalPlayer) || !ensure(WidgetClass != nullptr))
+	if (!ensure(LocalPlayer) || !ensure(WidgetClass))
 	{
 		return nullptr;
 	}
-
-	if (UUIS_UIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UUIS_UIManagerSubsystem>())
+	
+	UUIS_UIManagerSubsystem* UIManager = LocalPlayer->GetGameInstance()->GetSubsystem<UUIS_UIManagerSubsystem>();
+	checkf(UIManager, TEXT("Cannot push UI to root layout. Cannot find UIManagerSubsystem."))
+	if (UUIS_GameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
 	{
-		if (UUIS_GameUIPolicy* Policy = UIManager->GetCurrentUIPolicy())
+		if (UUIS_PrimaryGameLayout* RootLayout = Policy->GetRootLayout())
 		{
-			if (UUIS_PrimaryGameLayout* RootLayout = Policy->GetRootLayout())
-			{
-				return RootLayout->PushWidgetToLayerStack(LayerName, WidgetClass);
-			}
+			return RootLayout->PushWidgetToLayerStack(LayerName, WidgetClass);
 		}
 	}
 

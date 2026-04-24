@@ -9,15 +9,18 @@ AINV_SkeletalMeshItem::AINV_SkeletalMeshItem()
 
 void AINV_SkeletalMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition)
 {
-	if (ItemAssetDefinition->SkeletalMesh)
+	if (ensureMsgf(ItemAssetDefinition, TEXT("Couldn't find item's definition. Cannot set skeletal mesh for item.")))
 	{
-		if (USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(MeshComponent))
+		if (ItemAssetDefinition->SkeletalMesh)
 		{
-			SkeletalMeshComponent->SetSkeletalMesh(ItemAssetDefinition->SkeletalMesh);
-
-			if (ItemAssetDefinition->Material)
+			if (USkeletalMeshComponent* SkeletalMeshComponent = Cast<USkeletalMeshComponent>(MeshComponent))
 			{
-				SkeletalMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
+				SkeletalMeshComponent->SetSkeletalMesh(ItemAssetDefinition->SkeletalMesh);
+
+				if (ItemAssetDefinition->Material)
+				{
+					SkeletalMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
+				}
 			}
 		}
 	}

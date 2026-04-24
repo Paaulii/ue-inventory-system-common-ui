@@ -58,7 +58,7 @@ void AINV_Character::ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& Ef
 	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
 	
-	for (auto GameplayEffect : EffectsToApply)
+	for (const auto& GameplayEffect : EffectsToApply)
 	{
 		FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, 1, EffectContext);
 		if (NewHandle.IsValid())

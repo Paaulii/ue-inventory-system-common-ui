@@ -10,13 +10,16 @@ AINV_SkeletalEquippedItem::AINV_SkeletalEquippedItem()
 
 void AINV_SkeletalEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const
 {
-	if (ItemDefinition->SkeletalMesh)
+	if (ensureMsgf(ItemDefinition, TEXT("Couldn't find item's definition. Cannot set skeletal mesh for equipped item.")))
 	{
-		SkeletalMeshComponent->SetSkeletalMesh(ItemDefinition->SkeletalMesh);
-
-		if (ItemDefinition->Material)
+		if (ItemDefinition->SkeletalMesh)
 		{
-			SkeletalMeshComponent->SetMaterial(0, ItemDefinition->Material);
+			SkeletalMeshComponent->SetSkeletalMesh(ItemDefinition->SkeletalMesh);
+	
+			if (ItemDefinition->Material)
+			{
+				SkeletalMeshComponent->SetMaterial(0, ItemDefinition->Material);
+			}
 		}
 	}
 }

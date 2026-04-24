@@ -7,6 +7,7 @@ void UINV_ItemActionViewModel::Initialize()
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
 		InventoryComponent = PlayerController->FindComponentByClass<UINV_InventoryComponent>();
+		checkf(InventoryComponent,TEXT("PlayerController doesn't contain InventoryComponent! Make sure to add that component otherwise Inventory System won't work."));
 	}
 }
 

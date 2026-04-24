@@ -14,7 +14,7 @@ UINV_EquipmentComponent::UINV_EquipmentComponent()
 
 void UINV_EquipmentComponent::Initialize(APlayerController* Controller, USkeletalMeshComponent* Mesh)
 {
-	if (Controller)
+	if (ensureMsgf(Controller, TEXT("Passed PlayerController for equipment component is null!")))
 	{
 		OwningPlayerController = Controller;
 
@@ -97,7 +97,7 @@ AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification
 	{
 		FINV_ItemAssetDefinition* ItemAssetDefinition = InventoryComponent->GetItemAssetDefinition(ItemId);
 
-		if (!ItemAssetDefinition)
+		if (!ensureMsgf(ItemAssetDefinition, TEXT("Couldn't find item's asset definition. Check if InventoryDataAsset contains item with tag %s"), *ItemId.ItemTag.ToString()))
 		{
 			return nullptr;
 		}

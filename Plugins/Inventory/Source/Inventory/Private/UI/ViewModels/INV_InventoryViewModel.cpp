@@ -10,14 +10,12 @@ void UINV_InventoryViewModel::Initialize()
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
 		InventoryComponent = PlayerController->FindComponentByClass<UINV_InventoryComponent>();
-		if (InventoryComponent)
-		{
-			InventoryComponent->OnInventoryDataParsed.BindUObject(this, &UINV_InventoryViewModel::RebuildInventory);
-			InventoryComponent->OnCategoryItemsChanged.BindUObject(this, &UINV_InventoryViewModel::UpdateCategoryData);
-			InventoryComponent->OnCurrencyChanged.BindUObject(this, &UINV_InventoryViewModel::HandleCurrencyChanged);
-			InventoryComponent->OnItemEquipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemEquipped);
-			InventoryComponent->OnItemUnequipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemUnequipped);
-		}
+		checkf(InventoryComponent, TEXT("PlayerController doesn't contain InventoryComponent! Make sure to add that component otherwise Inventory System won't work."));
+		InventoryComponent->OnInventoryDataParsed.BindUObject(this, &UINV_InventoryViewModel::RebuildInventory);
+		InventoryComponent->OnCategoryItemsChanged.BindUObject(this, &UINV_InventoryViewModel::UpdateCategoryData);
+		InventoryComponent->OnCurrencyChanged.BindUObject(this, &UINV_InventoryViewModel::HandleCurrencyChanged);
+		InventoryComponent->OnItemEquipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemEquipped);
+		InventoryComponent->OnItemUnequipped.AddDynamic(this, &UINV_InventoryViewModel::HandleItemUnequipped);
 	}
 
 	SetEquipment(NewObject<UINV_EquipmentViewModel>(this));
@@ -49,7 +47,7 @@ void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDis
 {
 	Categories.Empty();
 	
-	for (const FINV_CategoryDisplayData& CategoryData : CategoryDataArray)
+	for (const auto& CategoryData : CategoryDataArray)
 	{
 		UINV_CategoryViewModel* CategoryVM = NewObject<UINV_CategoryViewModel>(this);
 		CategoryVM->Initialize(CategoryData);
@@ -61,7 +59,7 @@ void UINV_InventoryViewModel::InitializeCategoryVM(const TArray<FINV_CategoryDis
 
 void UINV_InventoryViewModel::UpdateCategoryData(const FINV_CategoryDisplayData& CategoryData)
 {
-	for (UINV_CategoryViewModel* CategoryVM : Categories)
+	for (const auto& CategoryVM : Categories)
 	{
 		if (CategoryVM->GetCategoryTag() == CategoryData.Tag)
 		{
@@ -73,7 +71,8 @@ void UINV_InventoryViewModel::UpdateCategoryData(const FINV_CategoryDisplayData&
 
 void UINV_InventoryViewModel::HandleItemEquipped(const FINV_ItemIdentification& ItemIdentification)
 {
-	if (UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification))
+	UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification);
+	if (ensureMsgf(FoundItem, TEXT("Couldn't equip item. Item ViewModel not found.")))
 	{
 		Equipment->OnEquipItem(*FoundItem);
 	}
@@ -81,7 +80,8 @@ void UINV_InventoryViewModel::HandleItemEquipped(const FINV_ItemIdentification& 
 
 void UINV_InventoryViewModel::HandleItemUnequipped(const FINV_ItemIdentification& ItemIdentification)
 {
-	if (UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification))
+	UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification);
+	if (ensureMsgf(FoundItem, TEXT("Couldn't unequip item. Item ViewModel not found.")))
 	{
 		Equipment->OnUnequipItem(*FoundItem);
 	}
@@ -111,7 +111,7 @@ UINV_ItemViewModel* UINV_InventoryViewModel::GetItemById(const FINV_ItemIdentifi
 {
 	for (const auto& Cat : Categories)
 	{
-		for (UINV_ItemViewModel* ItemVM :Cat->GetCategoryItems())
+		for (const auto& ItemVM : Cat->GetCategoryItems())
 		{
 			if (ItemVM->GetItemIdentification().Id == ItemIdentification.Id)
 			{
