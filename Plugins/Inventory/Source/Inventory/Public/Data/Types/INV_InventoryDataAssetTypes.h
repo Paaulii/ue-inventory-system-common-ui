@@ -10,7 +10,7 @@ class UGameplayEffect;
 enum class EINV_ItemEquipType : uint8;
 
 USTRUCT(BlueprintType)
-struct FINV_ItemAssetDefinition
+struct FINV_ItemDetailsData
 {
 	GENERATED_BODY()
 	
@@ -42,27 +42,36 @@ struct FINV_ItemAssetDefinition
 	int32 RequiredLevel = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MaxQuantity = 0;
+	int32 MaxQuantity = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsConsumable = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsEquippable = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="bIsEquippable", EditConditionHides))
+	EINV_ItemEquipType EquipType = EINV_ItemEquipType::None;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="bIsEquippable", EditConditionHides))
 	FName SocketAttachPoint = NAME_None;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="bIsEquippable", EditConditionHides))
-	EINV_ItemEquipType EquipType = EINV_ItemEquipType::None;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsDroppable = true;
+};
+
+USTRUCT(BlueprintType)
+struct FINV_ItemAssetDefinition
+{
+	GENERATED_BODY()
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition= "StaticMesh == nullptr", EditConditionHides))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FINV_ItemDetailsData ItemDetails;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="StaticMesh == nullptr", EditConditionHides))
 	TObjectPtr<USkeletalMesh> SkeletalMesh = nullptr;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition= "SkeletalMesh == nullptr", EditConditionHides))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="SkeletalMesh == nullptr", EditConditionHides))
 	TObjectPtr<UStaticMesh> StaticMesh = nullptr;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

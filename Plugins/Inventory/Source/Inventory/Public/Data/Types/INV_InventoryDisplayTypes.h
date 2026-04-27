@@ -47,49 +47,16 @@ struct FINV_ItemDisplayData
 {
 	GENERATED_BODY()
 	FINV_ItemDisplayData(){}
-	FINV_ItemDisplayData(const FINV_ItemIdentification& ItemIdentification, const FINV_ItemAssetDefinition* AssetDefinition, int32 Quantity)
-		: ItemIdentification(ItemIdentification), Quantity(Quantity)
-	{
-		// todo: create base class from FINV_ItemAssetDefinition and pass as argument in constructor, pass as reference
-		Name = AssetDefinition->Name;
-		Description = AssetDefinition->Description;
-		SmallImage = AssetDefinition->SmallImage;
-		LargeImage = AssetDefinition->LargeImage;
-		Rarity = AssetDefinition->Rarity;
-		CurrencyValue = AssetDefinition->CurrencyValue;
-		RequiredLevel = AssetDefinition->RequiredLevel;
-		MaxQuantity = AssetDefinition->MaxQuantity;
-		bIsConsumable = AssetDefinition->bIsConsumable;
-		bIsEquippable = AssetDefinition->bIsEquippable;
-		bIsDroppable = AssetDefinition->bIsDroppable;
-		EquipType = AssetDefinition->EquipType;
-	}
+	FINV_ItemDisplayData(const FINV_ItemIdentification& ItemIdentification, const FINV_ItemDetailsData& ItemDetails, int32 Quantity)
+		: ItemIdentification(ItemIdentification), ItemDetails(ItemDetails), Quantity(Quantity){}
 	
 	bool operator==(const FINV_ItemDisplayData& Other) const
 	{
 		return ItemIdentification.Id == Other.ItemIdentification.Id;
 	}
 
-	FINV_ItemIdentification ItemIdentification {};
-	FText Name {};
-	FText Description {};
-	
-	UPROPERTY()
-	TObjectPtr<UTexture2D> SmallImage = nullptr;
-	
-	UPROPERTY()
-	TObjectPtr<UTexture2D> LargeImage = nullptr;
-	
-	EINV_ItemRarity Rarity = EINV_ItemRarity::Common;
-	EINV_ItemEquipType EquipType = EINV_ItemEquipType::None;
-	
-	int32 CurrencyValue = 0;
-	int32 RequiredLevel = 0;
+	FINV_ItemIdentification ItemIdentification = {};
+	FINV_ItemDetailsData ItemDetails = {};
 	int32 Quantity = 0;
-	int32 MaxQuantity = 0;
-	
-	bool bIsConsumable = false;
-	bool bIsEquippable = false;
-	bool bIsDroppable = false;
 	bool bIsEquipped = false;
 };

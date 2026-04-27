@@ -5,7 +5,7 @@ FINV_ItemAssetDefinition* UINV_InventoryDataAsset::GetItemAssetDefinition(const 
 	FINV_ItemAssetDefinition* ItemAssetDefinition = Items.FindByPredicate(
 		[ItemTag, CategoryTag](const FINV_ItemAssetDefinition& Item)
 		{
-			return Item.ItemTag == ItemTag && Item.CategoryTag == CategoryTag;
+			return Item.ItemDetails.ItemTag == ItemTag && Item.ItemDetails.CategoryTag == CategoryTag;
 		});
 
 	return ItemAssetDefinition;

@@ -122,7 +122,7 @@ AActor* UINV_EquipmentComponent::SpawnEquippedItem(const FINV_ItemIdentification
 		{
 			EquippableItem->SetMesh(ItemAssetDefinition);
 			EquippedItems.Add(ItemId.Id, SpawnedEquippedItem);
-			SpawnedEquippedItem->AttachToComponent(OwningSkeletalMesh, FAttachmentTransformRules:: SnapToTargetNotIncludingScale, ItemAssetDefinition->SocketAttachPoint);
+			SpawnedEquippedItem->AttachToComponent(OwningSkeletalMesh, FAttachmentTransformRules:: SnapToTargetNotIncludingScale, ItemAssetDefinition->ItemDetails.SocketAttachPoint);
 			return SpawnedEquippedItem;
 		}
 	}

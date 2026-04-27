@@ -105,13 +105,13 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemData.ItemIdentification);
 
-	if (ensureMsgf(ItemAssetDefinition, TEXT("Couldn't find item's definition. Cannot add item. Check if InventoryDataAsset contains item with tag %s"), *ItemData.ItemIdentification.ItemTag.ToString()))
+	if (ensureMsgf(!ItemAssetDefinition, TEXT("Couldn't find item's definition. Cannot add item. Check if InventoryDataAsset contains item with tag %s"), *ItemData.ItemIdentification.ItemTag.ToString()))
 	{
 		return;
 	}
 	
 	int ReminderQuantityToAdd = ItemData.Quantity;
-	const int MaxQuantity = ItemAssetDefinition->MaxQuantity;
+	const int MaxQuantity = ItemAssetDefinition->ItemDetails.MaxQuantity;
 
 	if (CachedPlayerItems.Num() > 0)
 	{
@@ -243,7 +243,7 @@ void UINV_InventoryComponent::TryEquipItem(const FINV_ItemIdentification& ItemId
 		{
 			FINV_ItemAssetDefinition* EquippedItemAssedDefinition =  GetItemAssetDefinition(EquippedItemId);
 			
-			return ItemToEquipAssetDefinition->EquipType == EquippedItemAssedDefinition->EquipType;
+			return ItemToEquipAssetDefinition->ItemDetails.EquipType == EquippedItemAssedDefinition->ItemDetails.EquipType;
 		});
 	
 	if (ItemToUnequipIndex >= 0)
@@ -310,7 +310,7 @@ void UINV_InventoryComponent::SellItem(const FINV_ItemIdentification& ItemId, co
 	
 	if (FINV_ItemAssetDefinition* ItemDefinition = GetItemAssetDefinition(ItemId))
 	{
-		int SellValue = ItemDefinition->CurrencyValue * Amount;
+		int SellValue = ItemDefinition->ItemDetails.CurrencyValue * Amount;
 		
 		UINV_InventorySaveData* InventorySaveData = Cast<UINV_InventorySaveData>(UGameplayStatics::LoadGameFromSlot(TEXT("SaveData"), 0));
 		if (!InventorySaveData)
@@ -506,5 +506,5 @@ TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(c
 		return {};
 	}
 
-	return FINV_ItemDisplayData(ItemData.ItemIdentification, ItemAssetDefinition, ItemData.Quantity);
+	return FINV_ItemDisplayData(ItemData.ItemIdentification, ItemAssetDefinition->ItemDetails, ItemData.Quantity);
 }
