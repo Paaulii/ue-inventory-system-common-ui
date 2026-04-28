@@ -13,7 +13,7 @@ void UINV_ItemActionViewModel::Initialize()
 
 void UINV_ItemActionViewModel::DelegatePerformAction(const UINV_ItemViewModel& ItemViewModel, int32 Quantity) const
 {
-	DelegatePerformAction(SelectedAction, ItemViewModel.GetItemIdentification(), ItemViewModel.GetQuantity());
+	DelegatePerformAction(SelectedAction, ItemViewModel.GetItemIdentification(), Quantity);
 }
 
 void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const UINV_ItemViewModel& ItemViewModel) const
