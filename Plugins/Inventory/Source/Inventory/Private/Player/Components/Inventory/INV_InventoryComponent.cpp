@@ -318,11 +318,12 @@ void UINV_InventoryComponent::SellItem(const FINV_ItemIdentification& ItemId, co
 			return;
 		}
 
-		CachedInventoryDisplayData.SetCurrencyAmount(CachedInventoryDisplayData.CurrencyAmount + SellValue);
-		InventorySaveData->SetCurrencyAmount(CachedInventoryDisplayData.CurrencyAmount);
+		int32 NewCurrency = CachedInventoryDisplayData.CurrencyAmount + SellValue;
+		CachedInventoryDisplayData.SetCurrencyAmount(NewCurrency);
+		InventorySaveData->SetCurrencyAmount(NewCurrency);
 		UGameplayStatics::SaveGameToSlot(InventorySaveData, TEXT("SaveData"), 0);
 
-		OnCurrencyChanged.ExecuteIfBound(CachedInventoryDisplayData.CurrencyAmount);
+		OnCurrencyChanged.ExecuteIfBound(NewCurrency);
 	}
 }
 
@@ -501,7 +502,7 @@ TOptional<FINV_ItemDisplayData> UINV_InventoryComponent::CreateItemDisplayData(c
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemData.ItemIdentification);
 
-	if (!ensureMsgf(ItemAssetDefinition, TEXT("Couldn't create Item's Display Data for %s. Make sure item is defined in InventoryAssetData."), *ItemData.ItemIdentification.ItemTag.ToString()))
+	if (!ItemAssetDefinition)
 	{
 		return {};
 	}
