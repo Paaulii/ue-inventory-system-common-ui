@@ -120,5 +120,5 @@ void UINV_ItemTile::SetVisualStateWithAnimation(UWidgetAnimation* Animation, boo
 	EUMGSequencePlayMode::Type PlayModeType =  bPlayForward ? EUMGSequencePlayMode::Forward: EUMGSequencePlayMode::Reverse;
 	float AnimationPlaySpeed = (!bSkipAnimation && !bPlayForward) ? 1.5f : 1.0f;
 
-	PlayAnimation(Animation,AnimationStartTime,1,PlayModeType,AnimationPlaySpeed);
+	PlayAnimation(Animation, AnimationStartTime, 1, PlayModeType, AnimationPlaySpeed);
 }
