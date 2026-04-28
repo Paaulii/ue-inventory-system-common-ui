@@ -16,11 +16,7 @@ void AINV_StaticMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDe
 			if (UStaticMeshComponent* StaticMeshComponent = Cast<UStaticMeshComponent>(MeshComponent))
 			{
 				StaticMeshComponent->SetStaticMesh(ItemAssetDefinition->StaticMesh);
-
-				if (ItemAssetDefinition->Material)
-				{
-					StaticMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
-				}
+				StaticMeshComponent->SetMaterial(0, ItemAssetDefinition->Material);
 			}
 		}
 	}
