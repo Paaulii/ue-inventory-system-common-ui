@@ -11,15 +11,19 @@ void UINV_ItemActionViewModel::Initialize()
 	}
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const
+void UINV_ItemActionViewModel::DelegatePerformAction(const UINV_ItemViewModel& ItemViewModel, int32 Quantity) const
 {
-	DelegatePerformAction(SelectedAction, ItemIdentification);
+	DelegatePerformAction(SelectedAction, ItemViewModel.GetItemIdentification(), ItemViewModel.GetQuantity());
 }
 
-void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const UINV_ItemViewModel& ItemViewModel) const
 {
-	// TODO: Change to Quantity when implemented
-	InventoryComponent->PerformAction(ActionType, ItemIdentification, 1);
+	DelegatePerformAction(ActionType, ItemViewModel.GetItemIdentification(), ItemViewModel.GetQuantity());
+}
+
+void UINV_ItemActionViewModel::DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification, int32 Quantity) const
+{
+	InventoryComponent->PerformAction(ActionType, ItemIdentification, Quantity);
 }
 
 void UINV_ItemActionViewModel::DelegateShowItemActionPopup() const
@@ -43,9 +47,4 @@ void UINV_ItemActionViewModel::SetSelectedAction(const FINV_ItemActionType& Acti
 	{
 		UE_MVVM_BROADCAST_FIELD_VALUE_CHANGED(VM_GetPromptText);
 	}
-}
-
-void UINV_ItemActionViewModel::SetIsSingleItemQuantityAction(bool bState)
-{
-	UE_MVVM_SET_PROPERTY_VALUE(IsSingleItemQuantityAction, bState);
 }

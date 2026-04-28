@@ -1,10 +1,25 @@
 ﻿#include "UI/Widgets/INV_ModalConfirmationWidget.h"
 #include "CommonTextBlock.h"
+#include "Components/HorizontalBox.h"
 #include "Components/Image.h"
+#include "Components/Slider.h"
 #include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
 #include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "View/MVVMView.h"
+
+void UINV_ModalConfirmationWidget::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+	if (QuantitySlider)
+	{
+		QuantitySlider->OnValueChanged.AddDynamic(this, &ThisClass::OnSliderValueChanged);
+		QuantitySlider->OnMouseCaptureBegin.AddDynamic(this, &ThisClass::UINV_ModalConfirmationWidget::SnapSliderToValue);
+		QuantitySlider->SetValue(0);
+	}
+}
+
 void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
 {
 	UINV_SelectionViewModel* SelectionVM = UIManager.GetViewModel<UINV_SelectionViewModel>();
@@ -26,29 +41,44 @@ void UINV_ModalConfirmationWidget::ClearViewModelsCache()
 	CachedItemActionVM = nullptr;
 }
 
-void UINV_ModalConfirmationWidget::VM_SelectedItemChanged(const UINV_ItemViewModel* ItemVM)
-{
-	if (ItemVM == nullptr)
-	{
-		return;
-	}
-	
-	ImageIcon->SetBrushFromTexture(ItemVM->GetSmallImage());
-}
-
 void UINV_ModalConfirmationWidget::OnConfirmAction()
 {
-	const UINV_ItemViewModel* ItemViewModel = CachedSelectionVM->GetSelectedItem();
-
-	if (!ItemViewModel)
+	if (const UINV_ItemViewModel* ItemViewModel = CachedSelectionVM->GetSelectedItem())
 	{
-		return;
+		CachedItemActionVM->DelegatePerformAction(*ItemViewModel, QuantitySlider->GetValue());
 	}
-
-	CachedItemActionVM->DelegatePerformAction(ItemViewModel->GetItemIdentification());
 }
 
-void UINV_ModalConfirmationWidget::VM_ToggleItemQuantityVisibility(bool bIsSingleItemQuantityAction)
+void UINV_ModalConfirmationWidget::OnSliderValueChanged(float Value)
 {
-	QuantityText->SetVisibility(bIsSingleItemQuantityAction? ESlateVisibility::Collapsed : ESlateVisibility::Visible);	
+	SnapSliderToValue();
+	QuantityText->SetText(FText::FromString(FString::FromInt(QuantitySlider->GetValue())));
 }
+
+void UINV_ModalConfirmationWidget::SnapSliderToValue()
+{
+	int32 Value = QuantitySlider->GetValue();
+	QuantitySlider->SetValue(Value);
+}
+
+void UINV_ModalConfirmationWidget::VM_SetupSlider(const int32 ItemQuantity)
+{
+	LeftSliderValueText->SetText(FText::FromString(FString::FromInt(0)));
+	RightSliderValueText->SetText(FText::FromString(FString::FromInt(ItemQuantity)));
+	QuantitySlider->SetMinValue(0);
+	QuantitySlider->SetMaxValue(ItemQuantity);
+	MaxValue = ItemQuantity;
+}
+
+void UINV_ModalConfirmationWidget::VM_ToggleQuantityDisplayInfo(bool bState)
+{
+	ESlateVisibility CurrentVisibility = bState? ESlateVisibility::Collapsed : ESlateVisibility::Visible;
+	QuantityText->SetVisibility(CurrentVisibility);
+	SliderParent->SetVisibility(CurrentVisibility);
+}
+
+void UINV_ModalConfirmationWidget::VM_OnItemImageChanged(UTexture2D* ItemImage)
+{
+	ImageIcon->SetBrushFromTexture(ItemImage);
+}
+

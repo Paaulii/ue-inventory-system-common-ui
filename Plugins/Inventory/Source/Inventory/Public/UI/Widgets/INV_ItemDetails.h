@@ -46,7 +46,7 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void OnSellButtonSelected();
 
-	void HandleItemActionPressed(const FINV_ItemActionType& ActionType) const;
+	void DelegateShowItemActionPopup(const FINV_ItemActionType& ActionType) const;
 	void DelegatePerformItemAction(const FINV_ItemActionType& ActionType) const;
 	void ToggleEquipButtonState(const UINV_ItemViewModel& SelectedItem) const;
 	

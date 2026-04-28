@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "INV_ItemViewModel.h"
 #include "Data/Types/INV_ItemActionType.h"
 #include "UI/MVVM/UIS_ViewModelBase.h"
 #include "INV_ItemActionViewModel.generated.h"
@@ -20,22 +21,16 @@ public:
 	UFUNCTION(BlueprintPure, FieldNotify)
 	const FText& VM_GetPromptText() const;
 	
-	void DelegatePerformAction(const FINV_ItemIdentification& ItemIdentification) const;
-	void DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification) const;
+	void DelegatePerformAction(const UINV_ItemViewModel& ItemViewModel, const int32 Quantity) const;
+	void DelegatePerformAction(const FINV_ItemActionType& ActionType, const UINV_ItemViewModel& ItemViewModel) const;
+	void DelegatePerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemIdentification, int32 Quantity) const;
 	void DelegateShowItemActionPopup() const;
 	void SetSelectedAction(const FINV_ItemActionType& Action);
-	void SetIsSingleItemQuantityAction(bool bState);
-	bool GetIsSingleItemQuantityAction() const { return IsSingleItemQuantityAction; };
 	const FINV_ItemActionType& GetSelectedAction() const { return SelectedAction; }
 	
 protected:
-	//TODO: Add Quantity
-	
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
 	FINV_ItemActionType SelectedAction = FINV_ItemActionType::None;
-
-	UPROPERTY(BlueprintReadOnly, FieldNotify, Getter, Setter)
-	bool IsSingleItemQuantityAction = false;
 	
 private:
 	UPROPERTY()

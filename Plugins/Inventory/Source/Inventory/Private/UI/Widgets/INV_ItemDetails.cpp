@@ -48,13 +48,12 @@ void UINV_ItemDetails::VM_SelectedItemUpdated(const UINV_ItemViewModel* Selected
 	ToggleEquipButtonState(*SelectedItem);
 }
 
-void UINV_ItemDetails::HandleItemActionPressed(const FINV_ItemActionType& ActionType) const
+void UINV_ItemDetails::DelegateShowItemActionPopup(const FINV_ItemActionType& ActionType) const
 {
 	if (CachedItemActionVM)
 	{
 		CachedItemActionVM->SetSelectedAction(ActionType);
 		CachedItemActionVM->DelegateShowItemActionPopup();
-		CachedItemActionVM->SetIsSingleItemQuantityAction(true);
 	}
 }
 
@@ -67,7 +66,7 @@ void UINV_ItemDetails::DelegatePerformItemAction(const FINV_ItemActionType& Acti
 
 	if (const UINV_ItemViewModel* SelectedItem = CachedSelectionVM->GetSelectedItem())
 	{
-		CachedItemActionVM->DelegatePerformAction(ActionType, SelectedItem->GetItemIdentification());
+		CachedItemActionVM->DelegatePerformAction(ActionType, *SelectedItem);
 	}
 }
 
@@ -103,12 +102,12 @@ void UINV_ItemDetails::ToggleEquipButtonState(const UINV_ItemViewModel& Selected
 
 void UINV_ItemDetails::OnConsumeButtonSelected()
 {
-	HandleItemActionPressed(FINV_ItemActionType::Consume);
+	DelegateShowItemActionPopup(FINV_ItemActionType::Consume);
 }
 
 void UINV_ItemDetails::OnDropButtonSelected()
 {
-	HandleItemActionPressed(FINV_ItemActionType::Drop);
+	DelegateShowItemActionPopup(FINV_ItemActionType::Drop);
 }
 
 void UINV_ItemDetails::OnEquipButtonSelected()
@@ -123,5 +122,5 @@ void UINV_ItemDetails::OnUnequipButtonSelected()
 
 void UINV_ItemDetails::OnSellButtonSelected()
 {
-	HandleItemActionPressed(FINV_ItemActionType::Sell);
+	DelegateShowItemActionPopup(FINV_ItemActionType::Sell);
 }

@@ -19,6 +19,9 @@ public:
 	UFUNCTION(BlueprintPure, FieldNotify)
 	bool VM_IsQuantityVisible() const;
 	
+	UFUNCTION(BlueprintPure, FieldNotify)
+	bool VM_IsSingleItem() const;
+	
 	void Initialize(const FINV_ItemDisplayData& ItemData, UINV_CategoryViewModel* CategoryVM);
 	void SetbIsEquipped(bool bState);
 	const FText& GetItemName() const { return ItemName; }
@@ -85,5 +88,7 @@ protected:
 	EINV_ItemEquipType EquipType { EINV_ItemEquipType::None };
 	
 private:
+	void SetMaxQuantity(int32 Value);
+	void SetQuantity(int32 Value);
 	FINV_ItemIdentification ItemIdentification = {};
 };
