@@ -58,8 +58,11 @@ void UUIS_MvvmUIManagerSubsystem::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlaye
 
 void UUIS_MvvmUIManagerSubsystem::OnPawnPossessed(APawn* OldPawn, APawn* NewPawn)
 {
-	for (const auto& ViewModel : ViewModels)
+	if (NewPawn)
 	{
-		ViewModel->Initialize();
-	};
+		for (const auto& ViewModel : ViewModels)
+		{
+			ViewModel->Initialize();
+		};	
+	}
 }
