@@ -50,7 +50,7 @@ void UINV_ItemDetails::VM_SelectedItemUpdated(const UINV_ItemViewModel* Selected
 
 void UINV_ItemDetails::DelegateShowItemActionPopup(const FINV_ItemActionType& ActionType) const
 {
-	if (CachedItemActionVM)
+	if (CachedItemActionVM && CachedSelectionVM->GetSelectedItem())
 	{
 		CachedItemActionVM->SetSelectedAction(ActionType);
 		CachedItemActionVM->DelegateShowItemActionPopup();
