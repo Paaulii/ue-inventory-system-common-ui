@@ -145,7 +145,6 @@ UUserWidget* UINV_CategoryItems::GetFocusTile() const
 
 void UINV_CategoryItems::VM_SelectedCategoryChanged(UINV_CategoryViewModel* CategoryVM)
 {
-	UE_LOG(LogTemp, Warning, TEXT(" Category VM is null %s"), CategoryVM == nullptr ? TEXT("true") : TEXT("false"));
 	if (!CategoryVM)
 	{
 		MVVMView->UninitializeBindings();
@@ -153,7 +152,6 @@ void UINV_CategoryItems::VM_SelectedCategoryChanged(UINV_CategoryViewModel* Cate
 	
 	CurrentPage = 0;
 	CachedCategoryVM = CategoryVM;
-	UE_LOG(LogTemp, Warning, TEXT("An Actor's name is %s"), MVVMView->AreBindingsInitialized() ? TEXT("true") : TEXT("false"));
 	MVVMView->SetViewModel(FName("CategoryViewModel"), CategoryVM);
 }
 
