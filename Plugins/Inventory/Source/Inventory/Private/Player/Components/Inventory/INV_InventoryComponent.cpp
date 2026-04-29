@@ -105,7 +105,7 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 {
 	FINV_ItemAssetDefinition* ItemAssetDefinition =  GetItemAssetDefinition(ItemData.ItemIdentification);
 
-	if (ensureMsgf(!ItemAssetDefinition, TEXT("Couldn't find item's definition. Cannot add item. Check if InventoryDataAsset contains item with tag %s"), *ItemData.ItemIdentification.ItemTag.ToString()))
+	if (ensureMsgf(ItemAssetDefinition, TEXT("Couldn't find item's definition. Cannot add item. Check if InventoryDataAsset contains item with tag %s"), *ItemData.ItemIdentification.ItemTag.ToString()))
 	{
 		return;
 	}

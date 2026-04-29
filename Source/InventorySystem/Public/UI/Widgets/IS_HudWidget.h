@@ -13,7 +13,6 @@ class INVENTORYSYSTEM_API UIS_HudWidget : public UINV_ActivatableMvvmWidget
 
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
-	virtual void ClearViewModelsCache() override;
 
 private:
 	UPROPERTY()

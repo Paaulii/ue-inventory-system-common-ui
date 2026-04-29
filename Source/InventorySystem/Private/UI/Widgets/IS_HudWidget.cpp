@@ -10,9 +10,3 @@ void UIS_HudWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
 	MVVMView->SetViewModel(FName("PlayerStatViewModel"), PlayerStatVM);
 	CachedPlayerStatVM = PlayerStatVM;
 }
-
-void UIS_HudWidget::ClearViewModelsCache()
-{
-	MVVMView->SetViewModel(FName("PlayerStatViewModel"), nullptr);
-	CachedPlayerStatVM = nullptr;
-}

@@ -1,6 +1,7 @@
 #include "UI/Widgets/INV_ItemTile.h"
 #include "Animation/WidgetAnimation.h"
 #include "CommonLazyImage.h"
+#include "CommonTextBlock.h"
 #include "Components/Image.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "View/MVVMView.h"
@@ -19,8 +20,19 @@ void UINV_ItemTile::SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionView
 	{
 		CachedItemVM = ItemVM;
 		CachedSelectionVM = SelectionVM;
-		MVVMView->SetViewModel(FName("ItemViewModel"),ItemVM);
-		MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);
+		
+		// Manual initialization is necessary, because without it after closing Inventory UI
+		// if there is a View with null ViewModel there will be errors in the console that MVVM couldn't uninitialize VM, thus this manual uninitialization 
+		if (ItemVM && SelectionVM)
+		{
+			MVVMView->SetViewModel(FName("ItemViewModel"),ItemVM);
+			MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);
+			MVVMView->InitializeBindings();
+		}
+		else
+		{
+			MVVMView->UninitializeBindings();
+		}
 	}
 
 	SetEmptyState(ItemVM == nullptr);
@@ -54,6 +66,11 @@ void UINV_ItemTile::VM_OnIsEquippedUpdated(bool bState)
 	}
 	
 	SetEquippedState(bState, false);
+}
+
+void UINV_ItemTile::VM_SetItemQuantity(int Value)
+{
+	QuantityText->SetText(FText::FromString(FString::FromInt(Value)));
 }
 
 void UINV_ItemTile::SetFocusState(bool bState, bool bSkipAnimation)
@@ -107,6 +124,7 @@ void UINV_ItemTile::SetEmptyState(bool bState)
 	SetIsSelectable(!bIsEmpty);
 	BackgroundImage->SetRenderOpacity(bState ? EmptyItemBackgroundFadeValue: 1.0f);
 	Item->SetRenderOpacity(bState ? 0.0f: 1.0f);
+	QuantityText->SetVisibility(bState? ESlateVisibility::Hidden: ESlateVisibility::Visible);
 }
 
 void UINV_ItemTile::SetInteractable(bool bState)

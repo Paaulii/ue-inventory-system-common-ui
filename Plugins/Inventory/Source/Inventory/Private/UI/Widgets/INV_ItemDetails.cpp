@@ -21,14 +21,6 @@ void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
 	CachedItemActionVM = ItemActionVM;
 }
 
-void UINV_ItemDetails::ClearViewModelsCache()
-{
-	MVVMView->SetViewModel(FName("SelectionViewModel"), nullptr);
-	MVVMView->SetViewModel(FName("ItemActionViewModel"), nullptr);
-	CachedSelectionVM = nullptr;
-	CachedItemActionVM = nullptr;
-}
-
 void UINV_ItemDetails::VM_SelectedItemUpdated(const UINV_ItemViewModel* SelectedItem)
 {
 	bool bIsItemEmpty = SelectedItem == nullptr;

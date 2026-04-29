@@ -33,14 +33,6 @@ void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem& 
 	CachedItemActionVM = ItemActionVM;
 }
 
-void UINV_ModalConfirmationWidget::ClearViewModelsCache()
-{
-	MVVMView->SetViewModel(FName("SelectionViewModel"), nullptr);
-	MVVMView->SetViewModel(FName("ItemActionViewModel"), nullptr);
-	CachedSelectionVM = nullptr;
-	CachedItemActionVM = nullptr;
-}
-
 void UINV_ModalConfirmationWidget::OnConfirmAction()
 {
 	if (const UINV_ItemViewModel* ItemViewModel = CachedSelectionVM->GetSelectedItem())

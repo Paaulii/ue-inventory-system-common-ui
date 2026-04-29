@@ -60,6 +60,7 @@ void AINV_PlayerController::SetupInputComponent()
 
 void AINV_PlayerController::OpenInventory()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(AINV_PlayerController::OpenInventory);
 	if (InventoryComponent == nullptr)
 	{
 		return;
@@ -70,6 +71,8 @@ void AINV_PlayerController::OpenInventory()
 
 void AINV_PlayerController::OnInteractWithItem()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(AINV_PlayerController::OnInteractWithItem);
+		
 	TObjectPtr<AActor> HoveredActor = ItemTracerComponent->GetHoveredActor();
 	if (!IsValid(HoveredActor))
 	{

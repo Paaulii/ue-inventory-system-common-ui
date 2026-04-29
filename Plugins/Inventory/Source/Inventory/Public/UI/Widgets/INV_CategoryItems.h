@@ -21,7 +21,6 @@ class INVENTORY_API UINV_CategoryItems : public UINV_ActivatableMvvmWidget
 public:
 	virtual void NativeOnInitialized() override;
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
-	virtual void ClearViewModelsCache() override;
 
 private:
 	UFUNCTION(BlueprintCallable)

@@ -6,11 +6,7 @@ void UINV_ActivatableMvvmWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	MVVMView = Cast<UMVVMView>(GetExtension(UMVVMView::StaticClass()));
-}
-
-void UINV_ActivatableMvvmWidget::NativeOnActivated()
-{
-	Super::NativeOnActivated();
+	
 	if (UUIS_MvvmUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIS_MvvmUIManagerSubsystem>())
 	{
 		if (MVVMView)
@@ -20,12 +16,7 @@ void UINV_ActivatableMvvmWidget::NativeOnActivated()
 	}
 }
 
-void UINV_ActivatableMvvmWidget::NativeOnDeactivated()
+void UINV_ActivatableMvvmWidget::NativeOnActivated()
 {
-	if (MVVMView)
-	{
-		ClearViewModelsCache();
-	}
-	
-	Super::NativeOnDeactivated();
+	Super::NativeOnActivated();
 }

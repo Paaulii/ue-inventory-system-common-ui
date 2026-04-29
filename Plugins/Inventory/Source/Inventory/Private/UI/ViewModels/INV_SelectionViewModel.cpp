@@ -20,7 +20,7 @@ void UINV_SelectionViewModel::SetSelectedItem(UINV_ItemViewModel* ItemVM)
 
 	if (ItemVM !=  nullptr)
 	{
-		UINV_CategoryViewModel* SelectedItemCategory = SelectedItem->GetCategory();
+		UINV_CategoryViewModel* SelectedItemCategory = ItemVM->GetCategory();
 		if ( SelectedItemCategory != SelectedCategory)
 		{
 			SetSelectedCategory(SelectedItemCategory);

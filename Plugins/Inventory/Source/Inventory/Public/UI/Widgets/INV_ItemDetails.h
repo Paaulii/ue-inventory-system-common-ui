@@ -22,7 +22,6 @@ class INVENTORY_API UINV_ItemDetails : public UINV_ActivatableMvvmWidget
 	
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
-	virtual void ClearViewModelsCache() override;
 	
 private:
 	UFUNCTION(BlueprintCallable)

@@ -20,7 +20,6 @@ public:
 	virtual void NativeOnInitialized() override;
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
-	virtual void ClearViewModelsCache() override;
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_ToggleQuantityDisplayInfo(bool bState);

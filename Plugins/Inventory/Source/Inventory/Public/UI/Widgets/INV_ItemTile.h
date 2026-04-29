@@ -11,6 +11,7 @@ class UImage;
 class UINV_SelectionViewModel;
 class UINV_ItemViewModel;
 
+// This class doesn't have auto binding on Construct enabled. Binding's initialization is set manually in SetViewModel().
 UCLASS()
 class INVENTORY_API UINV_ItemTile : public UCommonButtonBase
 {
@@ -19,8 +20,8 @@ class INVENTORY_API UINV_ItemTile : public UCommonButtonBase
 public:
 	virtual void NativeOnInitialized() override;
 	void SetViewModels(UINV_ItemViewModel* ItemVM, UINV_SelectionViewModel* SelectionVM);
-
-private:
+	
+protected:
 	UFUNCTION(BlueprintCallable)
 	void VM_OnSelectItemUpdated(const UINV_ItemViewModel* ItemVM);
 	
@@ -29,7 +30,11 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	void VM_OnIsEquippedUpdated(bool bState);
-
+	
+	UFUNCTION(BlueprintCallable)
+	void VM_SetItemQuantity(int Value);
+	
+private:
 	UFUNCTION(BlueprintCallable)
 	void SetFocusState(bool bState, bool bSkipAnimation);
 	
@@ -64,7 +69,10 @@ private:
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Item = nullptr;
-
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UCommonTextBlock> QuantityText = nullptr;
+	
 	UPROPERTY(EditDefaultsOnly)
 	float EmptyItemBackgroundFadeValue = 0.0f;
 	

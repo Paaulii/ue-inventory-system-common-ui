@@ -15,10 +15,8 @@ class INVENTORY_API UINV_ActivatableMvvmWidget : public UCommonActivatableWidget
 public:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override;
 protected:
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) PURE_VIRTUAL(UInv_ActivatableMvvmWidget::CacheViewModels, );
-	virtual void ClearViewModelsCache() PURE_VIRTUAL(UInv_ActivatableMvvmWidget::ClearViewModelsCache, );
 	
 	UPROPERTY()
 	TObjectPtr<UMVVMView> MVVMView = nullptr;

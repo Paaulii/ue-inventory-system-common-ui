@@ -14,10 +14,10 @@ class INVENTORY_API UINV_InventoryScreen : public UINV_ActivatableMvvmWidget
 {
 	GENERATED_BODY()
 protected:
+	virtual void NativeOnInitialized() override;
 	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override;
+	//virtual void NativeOnDeactivated() override;
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
-	virtual void ClearViewModelsCache() override;
 private:
 	UPROPERTY()
 	TObjectPtr<UINV_InventoryViewModel> CachedInventoryVM = nullptr;

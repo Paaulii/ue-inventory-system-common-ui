@@ -5,10 +5,16 @@
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "View/MVVMView.h"
 
+void UINV_InventoryScreen::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+	MVVMView = Cast<UMVVMView>(GetExtension(UMVVMView::StaticClass()));
+}
+
 void UINV_InventoryScreen::NativeOnActivated()
 {
 	Super::NativeOnActivated();
-
+	
 	TArray<UINV_CategoryViewModel*> Categories = CachedInventoryVM->GetCategories();
 	if (Categories.Num() > 0)
 	{
@@ -16,11 +22,11 @@ void UINV_InventoryScreen::NativeOnActivated()
 	}
 }
 
-void UINV_InventoryScreen::NativeOnDeactivated()
+/*void UINV_InventoryScreen::NativeOnDeactivated()
 {
 	CachedSelectionVM->SetSelectedCategory(nullptr);
 	Super::NativeOnDeactivated();
-}
+}*/
 
 void UINV_InventoryScreen::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
 {
@@ -38,15 +44,4 @@ void UINV_InventoryScreen::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManage
 	checkf(PlayerStatVM, TEXT("UIManager cannot find PlayerStatViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	MVVMView->SetViewModel(FName("PlayerStatViewModel"), PlayerStatVM);
 	CachedPlayerStatVM = PlayerStatVM;
-}
-
-void UINV_InventoryScreen::ClearViewModelsCache()
-{
-	MVVMView->SetViewModel(FName("InventoryViewModel"), nullptr);
-	MVVMView->SetViewModel(FName("SelectionViewModel"), nullptr);
-	MVVMView->SetViewModel(FName("PlayerStatViewModel"), nullptr);
-
-	CachedInventoryVM = nullptr;
-	CachedSelectionVM = nullptr;
-	CachedPlayerStatVM = nullptr;
 }
