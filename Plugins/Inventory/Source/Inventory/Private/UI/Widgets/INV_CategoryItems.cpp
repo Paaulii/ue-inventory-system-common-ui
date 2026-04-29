@@ -135,7 +135,7 @@ UUserWidget* UINV_CategoryItems::GetFocusTile() const
 
 	TArray<UUserWidget*> CategoryItems = DynamicEntryBoxItems->GetAllEntries();
 
-	if (CategoryItems.IsValidIndex(SelectedItemIndex))
+	if (CategoryItems.IsValidIndex(SelectedItemIndex) && CategoryItems[SelectedItemIndex]->IsFocusable())
 	{
 		return CategoryItems[SelectedItemIndex];
 	}
