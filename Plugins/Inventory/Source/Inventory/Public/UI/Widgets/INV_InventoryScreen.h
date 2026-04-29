@@ -16,7 +16,6 @@ class INVENTORY_API UINV_InventoryScreen : public UINV_ActivatableMvvmWidget
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeOnActivated() override;
-	//virtual void NativeOnDeactivated() override;
 	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
 private:
 	UPROPERTY()

@@ -11,7 +11,7 @@ void UINV_CategoryButtonTab::Setup(UINV_CategoryViewModel* CategoryVM, UINV_Sele
 
 void UINV_CategoryButtonTab::Deinitialize()
 {
-	bIsSelected = false;
+	SetSelectedState(false);
 }
 
 void UINV_CategoryButtonTab::SetViewModels(UINV_CategoryViewModel* CategoryVM, UINV_SelectionViewModel* SelectionVM)

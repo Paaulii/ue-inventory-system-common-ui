@@ -22,12 +22,6 @@ void UINV_InventoryScreen::NativeOnActivated()
 	}
 }
 
-/*void UINV_InventoryScreen::NativeOnDeactivated()
-{
-	CachedSelectionVM->SetSelectedCategory(nullptr);
-	Super::NativeOnDeactivated();
-}*/
-
 void UINV_InventoryScreen::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
 {
 	UINV_InventoryViewModel* InventoryVM = UIManager.GetViewModel<UINV_InventoryViewModel>();
