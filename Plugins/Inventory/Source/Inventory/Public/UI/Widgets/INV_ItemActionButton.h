@@ -20,16 +20,13 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void SetHoveredState(bool bState);
 	
-	UFUNCTION(BlueprintCallable)
-	void SetEnabledState(bool bState);
-	
 	void SetButtonText(const FText& NewText) const;
 	void SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward);
 	
 	UPROPERTY(EditInstanceOnly)
 	FText ButtonText = {};
 	
-	UPROPERTY(EditInstanceOnly)
+	UPROPERTY(EditInstanceOnly, Category = "Input Action Button | Custom Click Action")
 	FDataTableRowHandle ClickInputAction = {};
 
 	UPROPERTY(meta = (BindWidget))
@@ -40,7 +37,4 @@ private:
 	
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
 	TObjectPtr<UWidgetAnimation> Hovered = nullptr;
-	
-	UPROPERTY(meta = (BindWidgetAnim), Transient)
-	TObjectPtr<UWidgetAnimation> Disabled = nullptr;
 };

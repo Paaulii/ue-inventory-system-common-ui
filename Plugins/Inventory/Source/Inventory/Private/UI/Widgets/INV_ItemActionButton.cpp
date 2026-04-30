@@ -2,21 +2,10 @@
 #include "CommonTextBlock.h"
 #include "UI/Widgets/INV_InputAction.h"
 
-void UINV_ItemActionButton::SetHoveredState(bool bState)
-{
-	SetVisualStateWithAnimation(Hovered, bState);
-}
-
-void UINV_ItemActionButton::SetEnabledState(bool bState)
-{
-	SetVisualStateWithAnimation(Disabled, bState);
-}
-
 void UINV_ItemActionButton::NativePreConstruct()
 {
 	Super::NativePreConstruct();
 	SetButtonText(ButtonText);
-
 	if (InputActionButton)
 	{
 		InputActionButton->UpdateTriggeringInputAction(ClickInputAction);
@@ -31,6 +20,11 @@ void UINV_ItemActionButton::SetButtonVisibility(bool bState)
 void UINV_ItemActionButton::SetButtonText(const FText& NewText) const
 {
 	TextLabel->SetText(NewText);
+}
+
+void UINV_ItemActionButton::SetHoveredState(bool bState)
+{
+	SetVisualStateWithAnimation(Hovered, bState);
 }
 
 void UINV_ItemActionButton::SetVisualStateWithAnimation(UWidgetAnimation* Animation, bool bPlayForward)
