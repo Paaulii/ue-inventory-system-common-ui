@@ -8,7 +8,7 @@ AINV_SkeletalEquippedItem::AINV_SkeletalEquippedItem()
 	SetActorEnableCollision(false);
 }
 
-void AINV_SkeletalEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const
+void AINV_SkeletalEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition, USkeletalMeshComponent* ParentMeshComponent) const
 {
 	if (ensureMsgf(ItemDefinition, TEXT("Couldn't find item's definition. Cannot set skeletal mesh for equipped item.")))
 	{
@@ -20,7 +20,19 @@ void AINV_SkeletalEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefi
 			{
 				SkeletalMeshComponent->SetMaterial(0, ItemDefinition->Material);
 			}
+
+			if (ParentMeshComponent && ParentMeshComponent->GetAnimInstance())
+			{
+				if (UClass* AnimClass = ParentMeshComponent->GetAnimInstance()->GetClass())
+				{
+					SkeletalMeshComponent->SetAnimInstanceClass(AnimClass);
+				}
+
+				if (USkinnedMeshComponent* SkinnedMeshComponent = Cast<USkinnedMeshComponent>(ParentMeshComponent))
+				{
+					SkeletalMeshComponent->SetLeaderPoseComponent(SkinnedMeshComponent);
+				}
+			}
 		}
 	}
 }
-

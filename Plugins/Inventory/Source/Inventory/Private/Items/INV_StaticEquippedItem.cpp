@@ -8,7 +8,7 @@ AINV_StaticEquippedItem::AINV_StaticEquippedItem()
 	SetActorEnableCollision(false);
 }
 
-void AINV_StaticEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const
+void AINV_StaticEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefinition, USkeletalMeshComponent* ParentMeshComponent) const
 {
 	if (ensureMsgf(ItemDefinition, TEXT("Couldn't find item's definition. Cannot set skeletal mesh for item.")))
 	{

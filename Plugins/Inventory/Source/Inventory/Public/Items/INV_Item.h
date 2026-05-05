@@ -35,7 +35,7 @@ protected:
 	virtual void ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition) PURE_VIRTUAL(AINVItem::ChangeMesh, );
 	
 	UPROPERTY(EditInstanceOnly, Category= "Inventory")
-	FINV_ItemData ItemData = {};
+	FINV_ItemData ItemData = { {}, 1 };
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory" )
 	TObjectPtr<UINV_InventoryDataAsset> InventoryDataAsset = nullptr;

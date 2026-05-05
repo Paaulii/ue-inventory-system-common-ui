@@ -17,5 +17,5 @@ class INVENTORY_API IINV_Equippable
 	GENERATED_BODY()
 
 public:
-	virtual void SetMesh(const FINV_ItemAssetDefinition* ItemDefinition) const = 0;
+	virtual void SetMesh(const FINV_ItemAssetDefinition* ItemDefinition, USkeletalMeshComponent* ParentMeshComponent) const = 0;
 };
