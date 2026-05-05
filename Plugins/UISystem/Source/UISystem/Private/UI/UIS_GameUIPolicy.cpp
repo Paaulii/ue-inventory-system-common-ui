@@ -50,10 +50,13 @@ void UUIS_GameUIPolicy::OnRootLayoutAddedToViewport(UUIS_LocalPlayer* LocalPlaye
 
 void UUIS_GameUIPolicy::RemoveLayoutFromViewport(UUIS_PrimaryGameLayout* Layout)
 {
-	TWeakPtr<SWidget> LayoutSlateWidget = Layout->GetCachedWidget();
-	if (LayoutSlateWidget.IsValid())
+	if (Layout)
 	{
-		Layout->RemoveFromParent();
+		TWeakPtr<SWidget> LayoutSlateWidget = Layout->GetCachedWidget();
+		if (LayoutSlateWidget.IsValid())
+		{
+			Layout->RemoveFromParent();
+		}
 	}
 }
 

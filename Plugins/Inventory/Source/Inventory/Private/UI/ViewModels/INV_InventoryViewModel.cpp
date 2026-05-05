@@ -72,16 +72,20 @@ void UINV_InventoryViewModel::UpdateCategoryData(const FINV_CategoryDisplayData&
 void UINV_InventoryViewModel::HandleItemEquipped(const FINV_ItemIdentification& ItemIdentification)
 {
 	UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification);
-	if (ensureMsgf(FoundItem, TEXT("Couldn't equip item. Item ViewModel not found.")))
+	checkf(FoundItem, TEXT("Couldn't equip item. Item ViewModel not found."))
+
+	if (FoundItem)
 	{
-		Equipment->OnEquipItem(*FoundItem);
+		Equipment->OnUnequipItem(*FoundItem);
 	}
 }
 
 void UINV_InventoryViewModel::HandleItemUnequipped(const FINV_ItemIdentification& ItemIdentification)
 {
 	UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification);
-	if (ensureMsgf(FoundItem, TEXT("Couldn't unequip item. Item ViewModel not found.")))
+	checkf(FoundItem, TEXT("Couldn't unequip item. Item ViewModel not found."))
+
+	if (FoundItem)
 	{
 		Equipment->OnUnequipItem(*FoundItem);
 	}
