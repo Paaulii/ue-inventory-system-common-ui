@@ -37,7 +37,8 @@ void UINV_ModalConfirmationWidget::OnConfirmAction()
 {
 	if (const UINV_ItemViewModel* ItemViewModel = CachedSelectionVM->GetSelectedItem())
 	{
-		CachedItemActionVM->DelegatePerformAction(*ItemViewModel, QuantitySlider->GetValue());
+		int32 QuantityValue = IsSingleItemDisplayed() ? MinValue : QuantitySlider->GetValue();
+		CachedItemActionVM->DelegatePerformAction(*ItemViewModel, QuantityValue);
 	}
 }
 
@@ -53,12 +54,23 @@ void UINV_ModalConfirmationWidget::SnapSliderToValue()
 	QuantitySlider->SetValue(Value);
 }
 
+bool UINV_ModalConfirmationWidget::IsSingleItemDisplayed() const
+{
+	return SliderParent->GetVisibility() == ESlateVisibility::Collapsed;
+}
+
 void UINV_ModalConfirmationWidget::VM_SetupSlider(const int32 ItemQuantity)
 {
+	if (IsSingleItemDisplayed())
+	{
+		return;
+	}
+	
 	LeftSliderValueText->SetText(FText::FromString(FString::FromInt(0)));
 	RightSliderValueText->SetText(FText::FromString(FString::FromInt(ItemQuantity)));
-	QuantitySlider->SetMinValue(0);
+	QuantitySlider->SetMinValue(MinValue);
 	QuantitySlider->SetMaxValue(ItemQuantity);
+	QuantitySlider->SetValue(MinValue);
 	MaxValue = ItemQuantity;
 }
 

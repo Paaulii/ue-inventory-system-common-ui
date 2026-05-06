@@ -39,6 +39,8 @@ private:
 	
 	UFUNCTION()
 	void SnapSliderToValue();
+
+	bool IsSingleItemDisplayed() const;
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UHorizontalBox> SliderParent = nullptr;
@@ -65,4 +67,5 @@ private:
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM = nullptr;
 
 	int32 MaxValue = 0;
+	int32 MinValue = 1;
 };
