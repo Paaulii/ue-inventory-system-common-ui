@@ -14,13 +14,13 @@ void UINV_EquipSlot::VM_EquippedItemsChanged(const TArray<UINV_ItemViewModel*>& 
 	{
 		if (EquippedItem->GetEquipType() == EquipType)
 		{
-			VM_ItemEquipStateChange(EquippedItem);
+			SetEquipSlotImage(EquippedItem);
 			return;
 		}
 	}
 }
 
-void UINV_EquipSlot::VM_ItemEquipStateChange(const UINV_ItemViewModel* ItemVM)
+void UINV_EquipSlot::SetEquipSlotImage(const UINV_ItemViewModel* ItemVM)
 {
 	if (ItemVM == nullptr || ItemVM->GetEquipType() != EquipType )
 	{

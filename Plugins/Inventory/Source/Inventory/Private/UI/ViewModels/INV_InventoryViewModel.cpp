@@ -76,7 +76,7 @@ void UINV_InventoryViewModel::HandleItemEquipped(const FINV_ItemIdentification& 
 
 	if (FoundItem)
 	{
-		Equipment->OnUnequipItem(*FoundItem);
+		Equipment->OnEquipItem(*FoundItem);
 	}
 }
 

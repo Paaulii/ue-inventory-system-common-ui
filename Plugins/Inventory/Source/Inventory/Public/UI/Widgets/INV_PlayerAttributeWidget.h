@@ -11,12 +11,13 @@ UCLASS()
 class INVENTORY_API UINV_PlayerAttributeWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
+public:
+	UFUNCTION(BlueprintCallable)
+	void VM_SetAttributeValue(FText Value);
+	
 protected:
 	virtual void NativePreConstruct() override;
-
-	UFUNCTION(BlueprintCallable)
-	void VM_SetAttributeValue(const FText& Value);
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UTexture2D> StatIcon = nullptr;

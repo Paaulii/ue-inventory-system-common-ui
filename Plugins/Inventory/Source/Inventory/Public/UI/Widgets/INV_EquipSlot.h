@@ -20,8 +20,9 @@ public:
 	void VM_EquippedItemsChanged(const TArray<UINV_ItemViewModel*>& EquippedItems);
 
 	UFUNCTION(BlueprintCallable)
-	void VM_ItemEquipStateChange(const UINV_ItemViewModel* ItemVM);
+	void SetEquipSlotImage(const UINV_ItemViewModel* ItemVM);
 
+	const EINV_ItemEquipType& GetEquipType() const { return EquipType;};
 protected:
 	UPROPERTY(EditInstanceOnly, Category = "SlotProperties")
 	EINV_ItemEquipType EquipType = EINV_ItemEquipType::None;
