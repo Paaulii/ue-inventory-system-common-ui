@@ -22,12 +22,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	FLinearColor FillColor = {};
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UTexture2D> Icon = nullptr;
-	
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UImage> StatIconImage = nullptr;
-
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> ProgressBar = nullptr;
 };
