@@ -61,8 +61,7 @@ Consume                    |  Equip                    |  Unequip
 
 Single item action         |  Multiple item action  
 :-------------------------:|:-------------------------:
-<img width="1909" height="984" alt="image" src="https://github.com/user-attachments/assets/e79d8f0b-5d82-4aef-8d33-6e28457d155c" /> |  <img width="1914" height="985" alt="image" src="https://github.com/user-attachments/assets/f2866257-80d5-48cd-8741-f63909c189d0" />
-
+<img width="1909" height="985" alt="image" src="https://github.com/user-attachments/assets/7228adb8-d99f-4c08-8082-7da6dd22bf27" /> |  <img width="1914" height="985" alt="image" src="https://github.com/user-attachments/assets/f2866257-80d5-48cd-8741-f63909c189d0" />
 
 ### Plans for the future:
 - Integrate Enhanced Input with Common UI for opening inventory and picking up items.
