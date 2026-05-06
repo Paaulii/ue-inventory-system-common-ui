@@ -18,11 +18,12 @@ Consumable                 |  Weapons                  |  Armor
 <img width="1913" height="989" alt="image" src="https://github.com/user-attachments/assets/d2b4f85f-1069-4fb6-90e2-603e8f5ce7fc" /> | <img width="1915" height="988" alt="image" src="https://github.com/user-attachments/assets/4554382e-4178-4d9f-87d8-45435fd3a046" /> | <img width="1914" height="988" alt="image" src="https://github.com/user-attachments/assets/92a93f34-3b27-4c25-a738-f4c78353bc94" />
 
 - Pagination
-
+  
 ⚠️ Ability to extend player's inventory size in progress
+
 First page                 |  Second Page               
 :-------------------------:|:-------------------------:
-<img width="1910" height="984" alt="image" src="https://github.com/user-attachments/assets/8c81b5fa-2a2d-4f32-947d-bd247749884b" /> | <img width="1905" height="993" alt="image" src="https://github.com/user-attachments/assets/781b168d-6090-4ca1-9cff-f850f9863582" />
+<img width="1913" height="985" alt="image" src="https://github.com/user-attachments/assets/ef0e2250-8328-4d61-bb7a-5244fdb08eba" /> | <img width="1919" height="974" alt="image" src="https://github.com/user-attachments/assets/1c161ad3-2a18-4bcc-a3f2-c1baea9cbbff" />
 
 - Consuming items
 
@@ -64,6 +65,7 @@ Single item action         |  Multiple item action
 
 
 ### Plans for the future:
+- Integrate Enhanced Input with Common UI for opening inventory and picking up items.
 - Create Popup when hovering on item to inform Player that this item can be pick up.
 - Add ability to rotate character's display in Inventory
 - Create Pick-up notification widget.
