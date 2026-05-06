@@ -71,7 +71,6 @@ Single item action         |  Multiple item action
 - Create popup error message when consuming isn't available - when player has max health or mana.
 - Add lock image on items that have higher level than player's.
 - Move UI System onto separate Github repository and add it as a repository module to this repository.
-- 
 
 ### Inspiration:
 I took an inspiration for UI layout and separation of data stored in ViewModels from Irene Zanon, presented in Handling UI navigation with MVVM and Common Activatable Widgets tutorial : https://dev.epicgames.com/community/learning/tutorials/ep4k/unreal-engine-handling-ui-navigation-with-mvvm-and-common-activatable-widgets 
