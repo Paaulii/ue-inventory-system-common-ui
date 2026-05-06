@@ -1,19 +1,21 @@
 # Inventory System 🎒
-###### Last update: 03.04.2026
+###### Last update: 06.05.2026
 An inventory system implements MVVM pattern and was created using Common UI, it handles navigation for both gamepad and keyboard/mouse input.  Inventory System uses Gameplay Ability System for making actions on items, such as consume, equip.
+
 Gamepad                    |  Keyboard                  
 :-------------------------:|:-------------------------:
-<img width="1901" height="989" alt="image" src="https://github.com/user-attachments/assets/37f98d8c-7ce1-4927-98c9-3b78c57bcdf5" /> | <img width="1902" height="987" alt="image" src="https://github.com/user-attachments/assets/92f6265e-ccfe-42d2-b070-1cca64a2a0fb" />
+<img width="1915" height="985" alt="image" src="https://github.com/user-attachments/assets/531fd717-5103-45e3-942c-445bd34d0d83" /> | <img width="1913" height="989" alt="image" src="https://github.com/user-attachments/assets/d2b4f85f-1069-4fb6-90e2-603e8f5ce7fc" />
+
 
 The project currently is **still in progress** but it has already implemented several features such as:
 - Easy to extend and mantain data array with item's definitions. This is the place where we can specify what Gameplay Effects item has.
-<img width="1910" height="840" alt="image" src="https://github.com/user-attachments/assets/e37ec1b8-2484-496b-a6d8-ed9a040d7011" />
+<img width="1325" height="842" alt="image" src="https://github.com/user-attachments/assets/08b51a03-e8c6-4c98-a66c-28d4182829d4" />
 
 - Displaying items per category
 
 Consumable                 |  Weapons                  |  Armor
 :-------------------------:|:-------------------------:|:-------------------------:
-<img width="1902" height="987" alt="image" src="https://github.com/user-attachments/assets/92f6265e-ccfe-42d2-b070-1cca64a2a0fb" />  | <img width="1908" height="985" alt="image" src="https://github.com/user-attachments/assets/d1637af2-6e63-4309-8ebf-79fa4d6fa296" /> | <img width="1911" height="980" alt="image" src="https://github.com/user-attachments/assets/c132c4af-5c4b-4e47-8fd6-a9df7087ddfb" />
+<img width="1913" height="989" alt="image" src="https://github.com/user-attachments/assets/d2b4f85f-1069-4fb6-90e2-603e8f5ce7fc" /> | <img width="1915" height="988" alt="image" src="https://github.com/user-attachments/assets/4554382e-4178-4d9f-87d8-45435fd3a046" /> | <img width="1914" height="988" alt="image" src="https://github.com/user-attachments/assets/92a93f34-3b27-4c25-a738-f4c78353bc94" />
 
 - Pagination
 
@@ -24,63 +26,69 @@ First page                 |  Second Page
 
 - Consuming items
 
-⚠️ Selecting item's amount to consume in progress
 Before                     |  Confirmation window      |  After
 :-------------------------:|:-------------------------:|:-------------------------:
-<img width="1915" height="989" alt="image" src="https://github.com/user-attachments/assets/da5386bd-67f2-4734-b9df-62acdfec530b" /> | <img width="1909" height="984" alt="image" src="https://github.com/user-attachments/assets/e79d8f0b-5d82-4aef-8d33-6e28457d155c" /> | <img width="1913" height="992" alt="image" src="https://github.com/user-attachments/assets/326a277d-d6ea-487b-ba39-bbf71dfe172c" />
+<img width="1912" height="991" alt="image" src="https://github.com/user-attachments/assets/df2d4039-bfb7-493c-8fad-077bf2ecfc61" /> | <img width="1913" height="989" alt="image" src="https://github.com/user-attachments/assets/ab99b7a9-2d55-4be3-ad65-9bedc79c3d77" /> | <img width="1914" height="992" alt="image" src="https://github.com/user-attachments/assets/3bf1ed45-05f2-42d1-ae26-9e7f75edc06c" />
 
 - Equipping items - Player's stats change depending on equipped items
 
 Before                     |  After
 :-------------------------:|:-------------------------:
-<img width="1905" height="985" alt="image" src="https://github.com/user-attachments/assets/45e02765-5e5b-4d92-bdfc-53c92d0c8528" /> | <img width="1899" height="985" alt="image" src="https://github.com/user-attachments/assets/1358cb55-1d27-45fb-b564-cc5cb7832c93" />
+<img width="1914" height="985" alt="image" src="https://github.com/user-attachments/assets/efe6a764-ea53-469e-ad29-1bd78bdf1506" /> | <img width="1912" height="985" alt="image" src="https://github.com/user-attachments/assets/150536c5-d1bc-4186-98a3-3d94b94b3212" />
 
- <img width="1903" height="988" alt="image" src="https://github.com/user-attachments/assets/92bf5410-71d8-4ccb-985d-94d0a6aadd29" />
+<img width="1916" height="986" alt="image" src="https://github.com/user-attachments/assets/c97f54a4-a6ae-4e25-9b59-d2e099b6d286" />
  
-- Dropping items with defined range
-
-⚠️ Selecting item's amount to drop in progress
+- Dropping items
 
 Confirmation widget        |  Unequipping dropped item | Spawning item in defined range 
 :-------------------------:|:-------------------------:|:-------------------------:
-<img width="1908" height="987" alt="image" src="https://github.com/user-attachments/assets/d7584cdc-70f9-4322-8e3d-cff789c903e5" /> | <img width="1912" height="989" alt="image" src="https://github.com/user-attachments/assets/e65c4b10-b214-4cd9-8dae-a01d79bc97ae" /> | <img width="1908" height="987" alt="image" src="https://github.com/user-attachments/assets/7a85f5c0-e578-41ed-9a68-df4ab7aad4ad" />
+<img width="1914" height="979" alt="image" src="https://github.com/user-attachments/assets/68ddef69-7608-4846-abc1-c1658fc43f04" /> | <img width="1913" height="985" alt="image" src="https://github.com/user-attachments/assets/c6940b4b-d5ad-43e0-b87c-91bc40b31805" /> | <img width="1911" height="986" alt="image" src="https://github.com/user-attachments/assets/7e2a70c7-cf3b-4b98-966b-25117da811a6" />
 
 - Selling items
 
-⚠️ Selecting item's amount to sell in progress
 Before                     |  Confirmation widget      | After
 :-------------------------:|:-------------------------:|:-------------------------:
-<img width="1914" height="991" alt="image" src="https://github.com/user-attachments/assets/50f4fb20-8397-4a97-a854-5752cfa80606" /> | <img width="1910" height="990" alt="image" src="https://github.com/user-attachments/assets/815199c4-f84c-4ddb-a07c-a1d4193c15aa" /> | <img width="1908" height="991" alt="image" src="https://github.com/user-attachments/assets/33ede16f-a704-4978-ae20-3b1bdbcf14a9" />
+<img width="1909" height="989" alt="image" src="https://github.com/user-attachments/assets/0c66dc99-f2e0-4d2b-ad9a-506c424fda97" /> | <img width="1915" height="982" alt="image" src="https://github.com/user-attachments/assets/399e3998-c7c4-43e2-91ba-536dabd793d2" /> | <img width="1914" height="993" alt="image" src="https://github.com/user-attachments/assets/0a89f2a7-a25c-48fb-b93e-611b31c60f68" />
 
 - Different action buttons depending on item's type and state
 
 Consume                    |  Equip                    |  Unequip 
 :-------------------------:|:-------------------------:|:-------------------------:
-<img width="655" height="563" alt="image" src="https://github.com/user-attachments/assets/58f945b1-e1de-4456-ad01-9d6e888fa627" /> | <img width="648" height="544" alt="image" src="https://github.com/user-attachments/assets/f99aca3a-4a70-486e-abc5-cfb87d04bd89" /> | <img width="642" height="557" alt="image" src="https://github.com/user-attachments/assets/efcbfc44-e559-4c86-8d5f-f8da9de148d3" />
+<img width="711" height="666" alt="image" src="https://github.com/user-attachments/assets/402f589b-563f-41b0-aeca-e6c85525edfb" /> | <img width="669" height="694" alt="image" src="https://github.com/user-attachments/assets/bd58e46a-6ad7-427b-80d5-de6c316ad13a" /> | <img width="670" height="684" alt="image" src="https://github.com/user-attachments/assets/b1f9120d-a83c-4fe9-bcc9-2811db4e7261" />
 
 - Confirmation widgets
-<img width="1909" height="984" alt="image" src="https://github.com/user-attachments/assets/e79d8f0b-5d82-4aef-8d33-6e28457d155c" />
+
+Single item action         |  Multiple item action  
+:-------------------------:|:-------------------------:
+<img width="1909" height="984" alt="image" src="https://github.com/user-attachments/assets/e79d8f0b-5d82-4aef-8d33-6e28457d155c" /> |  <img width="1914" height="985" alt="image" src="https://github.com/user-attachments/assets/f2866257-80d5-48cd-8741-f63909c189d0" />
+
 
 ### Plans for the future:
-- Extend confirmation widget to have a slider to allow player to choose how many consumable items want to consume or how many items want to drop.
+- Create Popup when hovering on item to inform Player that this item can be pick up.
+- Add ability to rotate character's display in Inventory
 - Create Pick-up notification widget.
 - Create popup error message when consuming isn't available - when player has max health or mana.
 - Add lock image on items that have higher level than player's.
 - Move UI System onto separate Github repository and add it as a repository module to this repository.
+- 
 
 ### Inspiration:
 I took an inspiration for UI layout and separation of data stored in ViewModels from Irene Zanon, presented in Handling UI navigation with MVVM and Common Activatable Widgets tutorial : https://dev.epicgames.com/community/learning/tutorials/ep4k/unreal-engine-handling-ui-navigation-with-mvvm-and-common-activatable-widgets 
 
 ### Used assets:
 #### 3D assets:
-- 3D items, character models, UI icons - https://www.udemy.com/course/unreal-engine-5-inventory-systems/
+- Viking Helmet - https://www.fab.com/listings/a3891f55-339a-47ad-b75c-b97c792ab579
+- Magic Potion Free game-ready 3D asset - https://fab.com/s/1b428cca34bf
+- High-res Potion Bottles - https://cadelegeberg.itch.io/free-potion-bottles-transparent-in-hand-painted-style
+- KayKit : Fantasy Weapons Bits - https://kaylousberg.itch.io/fantasy-weapons-bits
+- 5 Piece Platemail - MetaHuman (rigged) by DevonLux is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). - https://sketchfab.com/3d-models/5-piece-platemail-metahuman-rigged-d5a36fd5d69640b29bb7e92f72f61608
 #### GUI assets:
 - 50 Free Stylized Icons - [https://assetstore.unity.com/packages/2d/gui/icons/2d-casual-ui-hd-82080#asset_quality](https://assetstore.unity.com/packages/2d/50-free-stylized-icons-307753?srsltid=AfmBOoqv7bltzKUTCW7nOJrxS7JLfQMwV2Ggd7GKm2n4wbyVVTCrZ8oE)
  
 - Free Icon Pack for Unity & Unreal – 1500+ Input Icons for Game UI - JulioCacko - [https://assetstore.unity.com/packages/3d/props/simple-gems-ultimate-animated-customizable-pack-73764#reviews](https://juliocacko.itch.io/free-input-prompts)
 
-- Pixel RPG Icons - [https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-remaster-free-109565](https://kickpixel.itch.io/50fantasyicons)
-
+- Free Icon Pack by @gvesster - https://gvesster.itch.io/free-icon-pack
+ 
 - GUI Parts - PONETI - https://www.fab.com/pl/listings/695e149d-93e3-42bb-b021-4f1bbf6eac2a
 
 #### Fonts:
