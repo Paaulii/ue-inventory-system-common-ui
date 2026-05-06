@@ -66,7 +66,7 @@ void UINV_ModalConfirmationWidget::VM_SetupSlider(const int32 ItemQuantity)
 		return;
 	}
 	
-	LeftSliderValueText->SetText(FText::FromString(FString::FromInt(0)));
+	LeftSliderValueText->SetText(FText::FromString(FString::FromInt(MinValue)));
 	RightSliderValueText->SetText(FText::FromString(FString::FromInt(ItemQuantity)));
 	QuantitySlider->SetMinValue(MinValue);
 	QuantitySlider->SetMaxValue(ItemQuantity);
