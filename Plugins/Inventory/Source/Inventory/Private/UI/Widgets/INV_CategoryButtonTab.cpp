@@ -9,11 +9,6 @@ void UINV_CategoryButtonTab::Setup(UINV_CategoryViewModel* CategoryVM, UINV_Sele
 	SetViewModels(CategoryVM, SelectionVM);
 }
 
-void UINV_CategoryButtonTab::Deinitialize()
-{
-	SetSelectedState(false);
-}
-
 void UINV_CategoryButtonTab::SetViewModels(UINV_CategoryViewModel* CategoryVM, UINV_SelectionViewModel* SelectionVM)
 {
 	if (UMVVMView* MVVMView = Cast<UMVVMView>(GetExtension(UMVVMView::StaticClass())))
@@ -25,7 +20,7 @@ void UINV_CategoryButtonTab::SetViewModels(UINV_CategoryViewModel* CategoryVM, U
 	}
 }
 
-void UINV_CategoryButtonTab::UpdateSelectionState(UINV_CategoryViewModel* SelectedCategory)
+void UINV_CategoryButtonTab::VM_UpdateSelectionState(UINV_CategoryViewModel* SelectedCategory)
 {
 	bool bIsNowSelected = SelectedCategory == CachedCategoryVM;
 	SetSelectedState(bIsNowSelected);

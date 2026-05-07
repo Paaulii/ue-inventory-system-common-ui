@@ -14,6 +14,7 @@ UCLASS()
 class INVENTORY_API UINV_CategoryTabs : public UUserWidget
 {
 	GENERATED_BODY()
+		
 private:
 	UFUNCTION(BlueprintCallable)
 	void VM_CreateTabs(const TArray<UINV_CategoryViewModel*> CategoryViewModels);
@@ -23,7 +24,6 @@ private:
 
 	void CacheViewModels();
 	void SelectTab(const int32 Index) const;
-	void ResetTabs() const;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UDynamicEntryBox> TabButtons = nullptr;

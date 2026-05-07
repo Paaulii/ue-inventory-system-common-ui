@@ -33,7 +33,7 @@ void UINV_InventoryScreen::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManage
 	checkf(SelectionVM, TEXT("UIManager cannot find SelectionViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);
 	CachedSelectionVM = SelectionVM;
-
+	
 	UINV_PlayerStatViewModel* PlayerStatVM = UIManager.GetViewModel<UINV_PlayerStatViewModel>();
 	checkf(PlayerStatVM, TEXT("UIManager cannot find PlayerStatViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	MVVMView->SetViewModel(FName("PlayerStatViewModel"), PlayerStatVM);

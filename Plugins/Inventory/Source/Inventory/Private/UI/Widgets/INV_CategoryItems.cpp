@@ -145,11 +145,6 @@ UUserWidget* UINV_CategoryItems::GetFocusTile() const
 
 void UINV_CategoryItems::VM_SelectedCategoryChanged(UINV_CategoryViewModel* CategoryVM)
 {
-	if (!CategoryVM)
-	{
-		MVVMView->UninitializeBindings();
-	}
-	
 	CurrentPage = 0;
 	CachedCategoryVM = CategoryVM;
 	MVVMView->SetViewModel(FName("CategoryViewModel"), CategoryVM);

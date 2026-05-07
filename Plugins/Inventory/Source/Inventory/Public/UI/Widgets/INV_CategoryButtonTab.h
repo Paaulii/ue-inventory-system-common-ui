@@ -14,11 +14,10 @@ class INVENTORY_API UINV_CategoryButtonTab : public UCommonButtonBase
 	
 public:
 	void Setup(UINV_CategoryViewModel* CategoryVM, UINV_SelectionViewModel* SelectionVM);
-	void Deinitialize();
-	
+
 private:
 	UFUNCTION(BlueprintCallable)
-	void UpdateSelectionState(UINV_CategoryViewModel* SelectedCategory);
+	void VM_UpdateSelectionState(UINV_CategoryViewModel* SelectedCategory);
 	
 	UFUNCTION(BlueprintCallable)
 	void SetSelectedState(bool bIsSelected);

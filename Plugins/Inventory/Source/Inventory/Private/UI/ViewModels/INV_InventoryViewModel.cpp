@@ -71,6 +71,7 @@ void UINV_InventoryViewModel::UpdateCategoryData(const FINV_CategoryDisplayData&
 
 void UINV_InventoryViewModel::HandleItemEquipped(const FINV_ItemIdentification& ItemIdentification)
 {
+	checkf(Equipment, TEXT("Cannot find EquipmentViewModel.Make sure InventoryViewModel creates it."));
 	UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification);
 	checkf(FoundItem, TEXT("Couldn't equip item. Item ViewModel not found."))
 
@@ -82,6 +83,7 @@ void UINV_InventoryViewModel::HandleItemEquipped(const FINV_ItemIdentification& 
 
 void UINV_InventoryViewModel::HandleItemUnequipped(const FINV_ItemIdentification& ItemIdentification)
 {
+	checkf(Equipment, TEXT("Cannot find EquipmentViewModel.Make sure InventoryViewModel creates it."));
 	UINV_ItemViewModel* FoundItem = GetItemById(ItemIdentification);
 	checkf(FoundItem, TEXT("Couldn't unequip item. Item ViewModel not found."))
 
