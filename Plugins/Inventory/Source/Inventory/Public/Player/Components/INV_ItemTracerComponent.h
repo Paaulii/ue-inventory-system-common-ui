@@ -12,6 +12,9 @@ class INVENTORY_API UINV_ItemTracerComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	DECLARE_MULTICAST_DELEGATE_OneParam(FINV_ItemHoverStateChanged, bool bState)
+	FINV_ItemHoverStateChanged OnItemHoverStateChanged;
+	
 	UINV_ItemTracerComponent();
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

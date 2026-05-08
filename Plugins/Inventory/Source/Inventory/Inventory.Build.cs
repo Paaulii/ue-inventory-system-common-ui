@@ -9,6 +9,7 @@ public class Inventory : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 		[
 			"GameplayAbilities",
+			"UISystem"
 		]);
 			
 		

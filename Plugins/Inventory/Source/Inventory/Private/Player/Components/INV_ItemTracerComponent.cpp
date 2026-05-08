@@ -51,14 +51,16 @@ void UINV_ItemTracerComponent::TraceForItem()
 	{
 		return;
 	}
-
-	if (IINV_Highlightable* ItemToHighlight = Cast<IINV_Highlightable>(ThisActor))
-	{
-		ItemToHighlight->Highlight();
-	}
-
+	
 	if (IINV_Highlightable* LastHighlightedItem = Cast<IINV_Highlightable>(LastActor))
 	{
 		LastHighlightedItem->Unhighlight();
+		OnItemHoverStateChanged.Broadcast(false);
+	}
+	
+	if (IINV_Highlightable* ItemToHighlight = Cast<IINV_Highlightable>(ThisActor))
+	{
+		ItemToHighlight->Highlight();
+		OnItemHoverStateChanged.Broadcast(true);
 	}
 }
