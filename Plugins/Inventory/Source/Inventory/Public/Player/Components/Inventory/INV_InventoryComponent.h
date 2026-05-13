@@ -29,6 +29,9 @@ public:
 	DECLARE_DELEGATE_OneParam(FINV_InventoryDataParsed, const FINV_InventoryDisplayData& InventoryData);
 	FINV_InventoryDataParsed OnInventoryDataParsed;
 	
+	DECLARE_DELEGATE_OneParam(FINV_ItemCollected, FINV_ItemData& ItemData);
+	FINV_ItemCollected OnItemCollected;
+	
 	DECLARE_DELEGATE_OneParam(FINV_CurrencyChanged, const int32 Value);
 	FINV_CurrencyChanged OnCurrencyChanged;
 	
@@ -48,6 +51,7 @@ public:
 	void ShowItemActionPopup() const;
 	const FText& GetPromptTextByActionType(const FINV_ItemActionType& ActionType) const;
 	FINV_ItemAssetDefinition* GetItemAssetDefinition(const FINV_ItemIdentification& ItemId) const;
+	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemData) const;
 	
 private:
 	void SetInventoryVisible(bool bIsVisible);
@@ -64,10 +68,10 @@ private:
 	void SaveEquipPlayerItems(const TArray<FINV_ItemIdentification>& EquippedItemsToSave) const;
 	void UpdateDisplayInventoryDataEntry(const FINV_ItemData& ItemData);
 	void DelegateApplyEffects(const FINV_ItemIdentification& ItemId) const;
+	void NotifyItemCollected(FINV_ItemData ItemData, int32 ItemUID) const;
 	bool DecreaseItemQuantity(const FINV_ItemIdentification& ItemId, const int32 Amount);
 	int32 GetNextUID() const;
 	FINV_ItemData* GetCachedItem(int32 ItemUID);
-	TOptional<FINV_ItemDisplayData> CreateItemDisplayData(const FINV_ItemData& ItemData) const;
 	TArray<FINV_CategoryDisplayData> TranslatePlayerItemsToDisplayData();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")

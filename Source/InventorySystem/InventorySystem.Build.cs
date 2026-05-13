@@ -5,6 +5,12 @@ public class InventorySystem : ModuleRules
 	public InventorySystem(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		
+		PublicDependencyModuleNames.AddRange(
+		[
+			"UISystem" 
+		]);
+		
 		PrivateDependencyModuleNames.AddRange(
 		[
 			"Core",

@@ -2,14 +2,16 @@
 #include "CommonTextBlock.h"
 #include "Components/Image.h"
 #include "Data/Types/INV_ItemActionType.h"
-#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
+#include "UI/MVVM/UIS_MVVMUIManagerSubsystem.h"
 #include "UI/Widgets/INV_ItemActionButton.h"
 #include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "View/MVVMView.h"
 
-void UINV_ItemDetails::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
+void UINV_ItemDetails::CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View)
 {
+	Super::CacheViewModels(UIManager, View);
+	
 	UINV_SelectionViewModel* SelectionVM = UIManager.GetViewModel<UINV_SelectionViewModel>();
 	checkf(SelectionVM, TEXT("UIManager cannot find SelectionViewMode. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);

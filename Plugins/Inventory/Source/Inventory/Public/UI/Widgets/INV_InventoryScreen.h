@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "INV_ActivatableMvvmWidget.h"
+#include "UI/MVVM/UIS_MVVMActivatableWidget.h"
 #include "INV_InventoryScreen.generated.h"
 
 class UINV_InventoryViewModel;
@@ -10,13 +10,12 @@ class UINV_PlayerStatViewModel;
 class UINV_SelectionViewModel;
 
 UCLASS()
-class INVENTORY_API UINV_InventoryScreen : public UINV_ActivatableMvvmWidget
+class INVENTORY_API UINV_InventoryScreen : public UUIS_MVVMActivatableWidget
 {
 	GENERATED_BODY()
 protected:
-	virtual void NativeOnInitialized() override;
 	virtual void NativeOnActivated() override;
-	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
+	virtual void CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View) override;
 private:
 	UPROPERTY()
 	TObjectPtr<UINV_InventoryViewModel> CachedInventoryVM = nullptr;

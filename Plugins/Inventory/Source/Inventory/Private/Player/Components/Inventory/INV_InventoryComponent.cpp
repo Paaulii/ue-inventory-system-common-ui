@@ -111,7 +111,7 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 	
 	int ReminderQuantityToAdd = ItemData.Quantity;
 	const int MaxQuantity = ItemAssetDefinition->ItemDetails.MaxQuantity;
-
+	int CachedItemUID = INDEX_NONE;
 	if (CachedPlayerItems.Num() > 0)
 	{
 		for (int i = 0 ; i < CachedPlayerItems.Num(); i++)
@@ -126,7 +126,7 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 				
 			int16 QuantityAfterAddition = CurrentItemData.Quantity + ReminderQuantityToAdd;
 			ReminderQuantityToAdd = QuantityAfterAddition - MaxQuantity;
-
+			CachedItemUID = CurrentItemData.ItemIdentification.Id;
 			CurrentItemData.Quantity = FMath::Clamp(QuantityAfterAddition, 0, MaxQuantity);
 			UpdateDisplayInventoryDataEntry(CurrentItemData);
 		}
@@ -144,6 +144,7 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 		
 
 		FINV_ItemData NewItemData = FINV_ItemData(FINV_ItemIdentification(NextUID, ItemData.ItemIdentification.ItemTag, ItemData.ItemIdentification.CategoryTag), ItemQuantity);
+		CachedItemUID = NewItemData.ItemIdentification.Id;
 		CachedPlayerItems.Add(NewItemData);
 		UpdateDisplayInventoryDataEntry(NewItemData);
 		ReminderQuantityToAdd -= ItemQuantity;
@@ -155,6 +156,17 @@ void UINV_InventoryComponent::TryAddItem(const FINV_ItemData& ItemData)
 	{
 		OnCategoryItemsChanged.ExecuteIfBound(*CategoryDisplayData);
 	}
+	
+	// CachedItemUID is used for item notification, as a last Item UID that is added to player's cached item list,
+	// since notifications contains summary quantity value (contains data about entire item - whole quantity regardless of item's max capacity),
+	// so it doesn't matter what UID it will be, just must be unique for each notification
+	NotifyItemCollected(ItemData, CachedItemUID);
+}
+
+void UINV_InventoryComponent::NotifyItemCollected(FINV_ItemData ItemData, int32 ItemUID) const
+{
+	ItemData.ItemIdentification.Id = ItemUID;
+	OnItemCollected.ExecuteIfBound(ItemData);
 }
 
 void UINV_InventoryComponent::PerformAction(const FINV_ItemActionType& ActionType, const FINV_ItemIdentification& ItemId, const int32 Amount)
@@ -381,7 +393,7 @@ void UINV_InventoryComponent::UpdateDisplayInventoryDataEntry(const FINV_ItemDat
 	{
 		return;
 	}
-		
+	
 	CachedInventoryDisplayData.AddOrUpdateItem(ItemDisplayData.GetValue());
 }
 

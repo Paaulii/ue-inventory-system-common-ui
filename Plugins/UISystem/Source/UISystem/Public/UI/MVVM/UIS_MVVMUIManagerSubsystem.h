@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UIS_UIManagerSubsystem.h"
-#include "UIS_MvvmUIManagerSubsystem.generated.h"
+#include "UIS_MVVMUIManagerSubsystem.generated.h"
 
 class AUIS_PlayerController;
 class UINV_InventoryViewModel;
@@ -11,7 +11,7 @@ class UMVVMViewModelBase;
 class UUIS_ViewModelBase;
 
 UCLASS(Blueprintable)
-class UISYSTEM_API UUIS_MvvmUIManagerSubsystem : public UUIS_UIManagerSubsystem
+class UISYSTEM_API UUIS_MVVMUIManagerSubsystem : public UUIS_UIManagerSubsystem
 {
 	GENERATED_BODY()
 	

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "INV_ActivatableMvvmWidget.h"
+#include "UI/MVVM/UIS_MVVMUserWidget.h"
 #include "INV_ItemDetails.generated.h"
 
 class UCommonTextBlock;
@@ -16,12 +16,12 @@ class UINV_SelectionViewModel;
 enum class FINV_ItemActionType : uint8;
 
 UCLASS()
-class INVENTORY_API UINV_ItemDetails : public UINV_ActivatableMvvmWidget
+class INVENTORY_API UINV_ItemDetails : public UUIS_MVVMUserWidget
 {
 	GENERATED_BODY()
 	
 protected:
-	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
+	virtual void CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View) override;
 	
 private:
 	UFUNCTION(BlueprintCallable)

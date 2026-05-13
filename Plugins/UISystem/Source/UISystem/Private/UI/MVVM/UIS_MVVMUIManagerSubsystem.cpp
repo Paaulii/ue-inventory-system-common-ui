@@ -1,21 +1,21 @@
-﻿#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
+﻿#include "UI/MVVM/UIS_MVVMUIManagerSubsystem.h"
 #include "Player/UIS_LocalPlayer.h"
 #include "Player/UIS_PlayerController.h"
 #include "UI/MVVM/UIS_ViewModelBase.h"
 
-void UUIS_MvvmUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UUIS_MVVMUIManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 	InitializeViewModels();
 }
 
-void UUIS_MvvmUIManagerSubsystem::Deinitialize()
+void UUIS_MVVMUIManagerSubsystem::Deinitialize()
 {
 	DeinitializeViewModels();
 	Super::Deinitialize();
 }
 
-void UUIS_MvvmUIManagerSubsystem::InitializeViewModels()
+void UUIS_MVVMUIManagerSubsystem::InitializeViewModels()
 {
 	for (const auto& ViewModelClass : ViewModelsToSpawn)
 	{
@@ -24,7 +24,7 @@ void UUIS_MvvmUIManagerSubsystem::InitializeViewModels()
 	}
 }
 
-void UUIS_MvvmUIManagerSubsystem::DeinitializeViewModels()
+void UUIS_MVVMUIManagerSubsystem::DeinitializeViewModels()
 {
 	for (const auto& ViewModel : ViewModels)
 	{
@@ -37,12 +37,12 @@ void UUIS_MvvmUIManagerSubsystem::DeinitializeViewModels()
 	ViewModels.Empty();
 }
 
-bool UUIS_MvvmUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
+bool UUIS_MVVMUIManagerSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
-	return this->GetClass()->IsInBlueprint() && Super::ShouldCreateSubsystem(Outer);
+	return GetClass()->IsInBlueprint() && Super::ShouldCreateSubsystem(Outer);
 }
 
-void UUIS_MvvmUIManagerSubsystem::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer)
+void UUIS_MVVMUIManagerSubsystem::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer)
 {
 	Super::NotifyPlayerAdded(LocalPlayer);
 
@@ -51,12 +51,12 @@ void UUIS_MvvmUIManagerSubsystem::NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlaye
 		{
 			if (AUIS_PlayerController* Controller = Cast<AUIS_PlayerController>(PlayerController))
 			{
-				Controller->OnPossessedPawnChanged.AddDynamic(this, &UUIS_MvvmUIManagerSubsystem::OnPawnPossessed);
+				Controller->OnPossessedPawnChanged.AddDynamic(this, &UUIS_MVVMUIManagerSubsystem::OnPawnPossessed);
 			}
 		});
 }
 
-void UUIS_MvvmUIManagerSubsystem::OnPawnPossessed(APawn* OldPawn, APawn* NewPawn)
+void UUIS_MVVMUIManagerSubsystem::OnPawnPossessed(APawn* OldPawn, APawn* NewPawn)
 {
 	if (NewPawn)
 	{

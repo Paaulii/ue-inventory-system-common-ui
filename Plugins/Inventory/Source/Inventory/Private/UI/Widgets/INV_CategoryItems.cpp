@@ -1,6 +1,6 @@
 #include "UI/Widgets/INV_CategoryItems.h"
 #include "Components/DynamicEntryBox.h"
-#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
+#include "UI/MVVM/UIS_MVVMUIManagerSubsystem.h"
 #include "UI/Widgets/INV_InputAction.h"
 #include "UI/Widgets/INV_ItemTile.h"
 #include "UI/ViewModels/INV_InventoryViewModel.h"
@@ -13,8 +13,10 @@ void UINV_CategoryItems::NativeOnInitialized()
 	PopulateSlots();
 }
 
-void UINV_CategoryItems::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
+void UINV_CategoryItems::CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View)
 {
+	Super::CacheViewModels(UIManager, View);
+	
 	UINV_InventoryViewModel* InventoryVM = UIManager.GetViewModel<UINV_InventoryViewModel>();
 	checkf(InventoryVM, TEXT("UIManager cannot find InventoryViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	CachedInventoryVM = InventoryVM;

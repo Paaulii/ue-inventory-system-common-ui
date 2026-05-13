@@ -3,7 +3,7 @@
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
 #include "Components/Slider.h"
-#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
+#include "UI/MVVM/UIS_MVVMUIManagerSubsystem.h"
 #include "UI/ViewModels/INV_ItemActionViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"
 #include "View/MVVMView.h"
@@ -20,8 +20,10 @@ void UINV_ModalConfirmationWidget::NativeOnInitialized()
 	}
 }
 
-void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager)
+void UINV_ModalConfirmationWidget::CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View)
 {
+	Super::CacheViewModels(UIManager, View);
+	
 	UINV_SelectionViewModel* SelectionVM = UIManager.GetViewModel<UINV_SelectionViewModel>();
 	checkf(SelectionVM, TEXT("UIManager cannot find SelectionViewModel. Check if you added this class to UIManager's ViewModelsToSpawn array."));
 	MVVMView->SetViewModel(FName("SelectionViewModel"), SelectionVM);

@@ -16,6 +16,11 @@ struct FINV_ItemIdentification
 	
 	UPROPERTY(EditInstanceOnly)
 	FGameplayTag CategoryTag = FGameplayTag::EmptyTag;
+
+	bool operator==(const FINV_ItemIdentification& Other) const
+	{
+		return Id == Other.Id;
+	}
 };
 
 USTRUCT()

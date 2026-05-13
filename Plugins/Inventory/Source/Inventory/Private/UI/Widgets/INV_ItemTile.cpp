@@ -71,6 +71,7 @@ void UINV_ItemTile::VM_OnIsEquippedUpdated(bool bState)
 void UINV_ItemTile::VM_SetItemQuantity(int Value)
 {
 	QuantityText->SetText(FText::FromString(FString::FromInt(Value)));
+	QuantityText->SetVisibility(Value > 1 ? ESlateVisibility::Visible: ESlateVisibility::Collapsed);
 }
 
 void UINV_ItemTile::SetFocusState(bool bState, bool bSkipAnimation)
@@ -124,7 +125,11 @@ void UINV_ItemTile::SetEmptyState(bool bState)
 	SetIsSelectable(!bIsEmpty);
 	BackgroundImage->SetRenderOpacity(bState ? EmptyItemBackgroundFadeValue: 1.0f);
 	Item->SetRenderOpacity(bState ? 0.0f: 1.0f);
-	QuantityText->SetVisibility(bState? ESlateVisibility::Hidden: ESlateVisibility::Visible);
+
+	if (bIsEmpty)
+	{
+		QuantityText->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UINV_ItemTile::SetInteractable(bool bState)

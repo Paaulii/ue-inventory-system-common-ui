@@ -9,7 +9,8 @@ public class Inventory : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 		[
 			"GameplayAbilities",
-			"UISystem"
+			"UISystem",
+			"Paper2D"
 		]);
 			
 		

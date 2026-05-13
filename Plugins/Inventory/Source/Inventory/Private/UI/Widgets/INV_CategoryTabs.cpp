@@ -1,6 +1,6 @@
 ﻿#include "UI/Widgets/INV_CategoryTabs.h"
 #include "Components/DynamicEntryBox.h"
-#include "UI/MVVM/UIS_MvvmUIManagerSubsystem.h"
+#include "UI/MVVM/UIS_MVVMUIManagerSubsystem.h"
 #include "UI/Widgets/INV_CategoryButtonTab.h"
 #include "UI/ViewModels/INV_CategoryViewModel.h"
 #include "UI/ViewModels/INV_InventoryViewModel.h"
@@ -27,7 +27,7 @@ void UINV_CategoryTabs::VM_CreateTabs(const TArray<UINV_CategoryViewModel*> Cate
 
 void UINV_CategoryTabs::CacheViewModels()
 {
-	UUIS_MvvmUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIS_MvvmUIManagerSubsystem>();
+	UUIS_MVVMUIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIS_MVVMUIManagerSubsystem>();
 
 	if (CacheSelectionVM == nullptr)
 	{

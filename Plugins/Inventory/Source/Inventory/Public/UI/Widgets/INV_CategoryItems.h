@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "INV_ActivatableMvvmWidget.h"
+#include "UI/MVVM/UIS_MVVMActivatableWidget.h"
 #include "INV_CategoryItems.generated.h"
 
 class UDynamicEntryBox;
@@ -14,13 +14,13 @@ class UINV_SelectionViewModel;
 class UMVVMView;
 
 UCLASS()
-class INVENTORY_API UINV_CategoryItems : public UINV_ActivatableMvvmWidget
+class INVENTORY_API UINV_CategoryItems : public UUIS_MVVMActivatableWidget
 {
 	GENERATED_BODY()
 	
 public:
 	virtual void NativeOnInitialized() override;
-	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
+	virtual void CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View) override;
 
 private:
 	UFUNCTION(BlueprintCallable)

@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "INV_ActivatableMvvmWidget.h"
 #include "Components/Slider.h"
+#include "UI/MVVM/UIS_MVVMActivatableWidget.h"
 #include "INV_ModalConfirmationWidget.generated.h"
 
 class UCommonTextBlock;
@@ -13,13 +13,13 @@ class UINV_ItemViewModel;
 class UINV_SelectionViewModel;
 
 UCLASS()
-class INVENTORY_API UINV_ModalConfirmationWidget : public UINV_ActivatableMvvmWidget
+class INVENTORY_API UINV_ModalConfirmationWidget : public UUIS_MVVMActivatableWidget
 {
 	GENERATED_BODY()
 public:
 	virtual void NativeOnInitialized() override;
 protected:
-	virtual void CacheViewModels(UUIS_MvvmUIManagerSubsystem& UIManager) override;
+	virtual void CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View) override;
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_ToggleQuantityDisplayInfo(bool bState);
