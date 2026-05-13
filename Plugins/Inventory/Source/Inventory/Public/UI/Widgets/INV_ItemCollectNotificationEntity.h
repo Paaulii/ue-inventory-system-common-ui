@@ -5,12 +5,12 @@
 #include "UI/MVVM/UIS_MVVMUserWidget.h"
 #include "INV_ItemCollectNotificationEntity.generated.h"
 
-class UINV_RarityMarker;
-class UDynamicEntryBox;
-enum class EINV_ItemRarity : uint8;
 class UCommonTextBlock;
+class UDynamicEntryBox;
 class UMVVMView;
 class UINV_ItemViewModel;
+class UINV_RarityMarker;
+enum class EINV_ItemRarity : uint8;
 
 UCLASS()
 class INVENTORY_API UINV_ItemCollectNotificationEntity : public UUserWidget

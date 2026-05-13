@@ -37,16 +37,6 @@ void UINV_ItemNotificationSystem::OnItemCollected(FINV_ItemData& ItemData)
 	ShowNotification(ItemData);
 }
 
-void UINV_ItemNotificationSystem::TryShowNextNotification()
-{
-	if (NotificationQueue.Num() <= 0)
-	{
-		return;
-	}
-	
-	ShowNotification(NotificationQueue.Pop());
-}
-
 void UINV_ItemNotificationSystem::ShowNotification(const FINV_ItemData& ItemData)
 {
 	if (UWorld* World = GetWorld())
@@ -70,6 +60,16 @@ void UINV_ItemNotificationSystem::ShowNotification(const FINV_ItemData& ItemData
 	}
 	
 	OnShowNotification.Broadcast(ItemDisplayData.GetValue());
+}
+
+void UINV_ItemNotificationSystem::TryShowNextNotification()
+{
+	if (NotificationQueue.Num() <= 0)
+	{
+		return;
+	}
+	
+	ShowNotification(NotificationQueue.Pop());
 }
 
 void UINV_ItemNotificationSystem::OnItemDisplayTimeout(const FINV_ItemIdentification ItemId, FTimerHandle TimerHandle)

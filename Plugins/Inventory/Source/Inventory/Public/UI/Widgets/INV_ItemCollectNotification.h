@@ -4,10 +4,10 @@
 #include "UI/MVVM/UIS_MVVMUserWidget.h"
 #include "INV_ItemCollectNotification.generated.h"
 
-class UINV_ItemViewModel;
 class UDynamicEntryBox;
 class UINV_ItemCollectNotificationEntity;
 class UINV_ItemNotificationViewModel;
+class UINV_ItemViewModel;
 
 UCLASS()
 class INVENTORY_API UINV_ItemCollectNotification : public UUIS_MVVMUserWidget

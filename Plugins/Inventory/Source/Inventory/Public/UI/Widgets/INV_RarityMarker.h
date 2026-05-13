@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "PaperSprite.h"
 #include "INV_RarityMarker.generated.h"
 
 class UImage;
