@@ -28,13 +28,9 @@ Before                     |  Confirmation window      |  After
 :-------------------------:|:-------------------------:|:-------------------------:
 <img width="1912" height="991" alt="image" src="https://github.com/user-attachments/assets/df2d4039-bfb7-493c-8fad-077bf2ecfc61" /> | <img width="1913" height="989" alt="image" src="https://github.com/user-attachments/assets/ab99b7a9-2d55-4be3-ad65-9bedc79c3d77" /> | <img width="1914" height="992" alt="image" src="https://github.com/user-attachments/assets/3bf1ed45-05f2-42d1-ae26-9e7f75edc06c" />
 
-- Equipping items - Player's stats change depending on equipped items
+- Equipping items - Player's stats change depending on equipped items ( Armor, Magic, Attack )
 
-Before                     |  After
-:-------------------------:|:-------------------------:
-<img width="1914" height="985" alt="image" src="https://github.com/user-attachments/assets/efe6a764-ea53-469e-ad29-1bd78bdf1506" /> | <img width="1912" height="985" alt="image" src="https://github.com/user-attachments/assets/150536c5-d1bc-4186-98a3-3d94b94b3212" />
-
-<img width="1916" height="986" alt="image" src="https://github.com/user-attachments/assets/c97f54a4-a6ae-4e25-9b59-d2e099b6d286" />
+https://github.com/user-attachments/assets/dbaec373-5f06-4e08-ae93-3e0ac156ebd0
  
 - Dropping items
 
