@@ -1,13 +1,12 @@
 # Inventory System 🎒
-###### Last update: 06.05.2026
+###### Last update: 14.05.2026
 An inventory system implements MVVM pattern and was created using Common UI, it handles navigation for both gamepad and keyboard/mouse input.  Inventory System uses Gameplay Ability System for making actions on items, such as consume, equip.
 
 Gamepad                    |  Keyboard                  
 :-------------------------:|:-------------------------:
 <img width="1915" height="985" alt="image" src="https://github.com/user-attachments/assets/531fd717-5103-45e3-942c-445bd34d0d83" /> | <img width="1913" height="989" alt="image" src="https://github.com/user-attachments/assets/d2b4f85f-1069-4fb6-90e2-603e8f5ce7fc" />
 
-
-The project currently is **still in progress** but it has already implemented several features such as:
+Features:
 - Easy to extend and mantain data array with item's definitions. This is the place where we can specify what Gameplay Effects item has.
 <img width="1325" height="842" alt="image" src="https://github.com/user-attachments/assets/08b51a03-e8c6-4c98-a66c-28d4182829d4" />
 
@@ -18,8 +17,6 @@ Consumable                 |  Weapons                  |  Armor
 <img width="1913" height="989" alt="image" src="https://github.com/user-attachments/assets/d2b4f85f-1069-4fb6-90e2-603e8f5ce7fc" /> | <img width="1915" height="988" alt="image" src="https://github.com/user-attachments/assets/4554382e-4178-4d9f-87d8-45435fd3a046" /> | <img width="1914" height="988" alt="image" src="https://github.com/user-attachments/assets/92a93f34-3b27-4c25-a738-f4c78353bc94" />
 
 - Pagination
-  
-⚠️ Ability to extend player's inventory size in progress
 
 First page                 |  Second Page               
 :-------------------------:|:-------------------------:
@@ -63,25 +60,31 @@ Single item action         |  Multiple item action
 :-------------------------:|:-------------------------:
 <img width="1909" height="985" alt="image" src="https://github.com/user-attachments/assets/7228adb8-d99f-4c08-8082-7da6dd22bf27" /> |  <img width="1914" height="985" alt="image" src="https://github.com/user-attachments/assets/f2866257-80d5-48cd-8741-f63909c189d0" />
 
-### Plans for the future:
-- Integrate Enhanced Input with Common UI for opening inventory and picking up items.
-- Create Popup when hovering on item to inform Player that this item can be pick up.
-- Add ability to rotate character's display in Inventory
-- Create Pick-up notification widget.
-- Create popup error message when consuming isn't available - when player has max health or mana.
-- Add lock image on items that have higher level than player's.
-- Move UI System onto separate Github repository and add it as a repository module to this repository.
+- Pickup popup when hovering over an item
+<img width="1914" height="990" alt="image" src="https://github.com/user-attachments/assets/d5c398c3-8a8e-4ef4-a130-6208751e36e9" />
+
+- Pick-up notification system
+
+Single item notification   | Multiple item notification
+:-------------------------:|:-------------------------:
+<img width="452" height="160" alt="20260514-0947-41 2120515" src="https://github.com/user-attachments/assets/f2a5f31d-2fb3-4628-a8b9-9067e511da81" /> |<img width="452" height="160" alt="20260514-0949-21 0821725" src="https://github.com/user-attachments/assets/8054d11a-f57a-43f8-ae99-9bd7a1831fa3" />
+
+- Pick-up notification system - configurable max number of notifications - notification's queue system
+
+https://github.com/user-attachments/assets/d29bede7-13a1-4830-9324-d549516462c4
 
 ### Inspiration:
 I took an inspiration for UI layout and separation of data stored in ViewModels from Irene Zanon, presented in Handling UI navigation with MVVM and Common Activatable Widgets tutorial : https://dev.epicgames.com/community/learning/tutorials/ep4k/unreal-engine-handling-ui-navigation-with-mvvm-and-common-activatable-widgets 
 
 ### Used assets:
+
 #### 3D assets:
 - Viking Helmet - https://www.fab.com/listings/a3891f55-339a-47ad-b75c-b97c792ab579
 - Magic Potion Free game-ready 3D asset - https://fab.com/s/1b428cca34bf
 - High-res Potion Bottles - https://cadelegeberg.itch.io/free-potion-bottles-transparent-in-hand-painted-style
 - KayKit : Fantasy Weapons Bits - https://kaylousberg.itch.io/fantasy-weapons-bits
 - 5 Piece Platemail - MetaHuman (rigged) by DevonLux is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). - https://sketchfab.com/3d-models/5-piece-platemail-metahuman-rigged-d5a36fd5d69640b29bb7e92f72f61608
+
 #### GUI assets:
 - 50 Free Stylized Icons - [https://assetstore.unity.com/packages/2d/gui/icons/2d-casual-ui-hd-82080#asset_quality](https://assetstore.unity.com/packages/2d/50-free-stylized-icons-307753?srsltid=AfmBOoqv7bltzKUTCW7nOJrxS7JLfQMwV2Ggd7GKm2n4wbyVVTCrZ8oE)
  
@@ -90,6 +93,8 @@ I took an inspiration for UI layout and separation of data stored in ViewModels 
 - Free Icon Pack by @gvesster - https://gvesster.itch.io/free-icon-pack
  
 - GUI Parts - PONETI - https://www.fab.com/pl/listings/695e149d-93e3-42bb-b021-4f1bbf6eac2a
+
+- Sprout Lands UI Pack- https://cupnooble.itch.io/sprout-lands-ui-pack
 
 #### Fonts:
 - Caslon Antique is licensed under the 1001Fonts Free For Commercial Use License (FFC) - [https://www.1001fonts.com/caslon-antique-font.html#license](https://www.1001fonts.com/caslon-antique-font.html)
