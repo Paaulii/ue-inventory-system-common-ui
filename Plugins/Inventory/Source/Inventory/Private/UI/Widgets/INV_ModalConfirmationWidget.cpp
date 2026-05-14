@@ -88,3 +88,14 @@ void UINV_ModalConfirmationWidget::VM_OnItemImageChanged(UTexture2D* ItemImage)
 	ImageIcon->SetBrushFromTexture(ItemImage);
 }
 
+void UINV_ModalConfirmationWidget::VM_SetItemViewModel(UINV_ItemViewModel* ItemVM)
+{
+	if (!ItemVM)
+	{
+		// UninitializeBindings before assigning ItemVM to nullptr
+		MVVMView->UninitializeBindings();
+	}
+
+	MVVMView->SetViewModel(FName("ItemViewModel"), ItemVM);
+}
+

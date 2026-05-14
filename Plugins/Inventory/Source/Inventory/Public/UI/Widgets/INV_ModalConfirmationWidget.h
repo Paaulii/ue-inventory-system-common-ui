@@ -16,8 +16,10 @@ UCLASS()
 class INVENTORY_API UINV_ModalConfirmationWidget : public UUIS_MVVMActivatableWidget
 {
 	GENERATED_BODY()
+	
 public:
 	virtual void NativeOnInitialized() override;
+	
 protected:
 	virtual void CacheViewModels(UUIS_MVVMUIManagerSubsystem& UIManager, UMVVMView* View) override;
 	
@@ -29,6 +31,9 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void VM_OnItemImageChanged(UTexture2D* ItemImage);
+	
+	UFUNCTION(BlueprintCallable)
+	void VM_SetItemViewModel(UINV_ItemViewModel* ItemVM);
 	
 private:
 	UFUNCTION(BlueprintCallable)
