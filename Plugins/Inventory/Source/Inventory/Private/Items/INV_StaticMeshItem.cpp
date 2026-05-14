@@ -5,6 +5,7 @@ AINV_StaticMeshItem::AINV_StaticMeshItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
+	MeshComponent->SetupAttachment(RootComponent);
 }
 
 void AINV_StaticMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition)

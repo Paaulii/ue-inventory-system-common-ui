@@ -4,7 +4,10 @@
 AINV_StaticEquippedItem::AINV_StaticEquippedItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	USceneComponent* SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
+	SetRootComponent(SceneRoot);
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
+	StaticMeshComponent->SetupAttachment(RootComponent);
 	SetActorEnableCollision(false);
 }
 

@@ -6,6 +6,8 @@
 AINV_Item::AINV_Item()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	USceneComponent* SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
+	SetRootComponent(SceneRoot);
 	RotatingComponent = CreateDefaultSubobject<URotatingMovementComponent>(FName("RotatingComponent"));
 }
 

@@ -5,6 +5,7 @@ AINV_SkeletalMeshItem::AINV_SkeletalMeshItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(FName("SkeletalMesh"));
+	MeshComponent->SetupAttachment(RootComponent);
 }
 
 void AINV_SkeletalMeshItem::ChangeMesh(const FINV_ItemAssetDefinition* ItemAssetDefinition)

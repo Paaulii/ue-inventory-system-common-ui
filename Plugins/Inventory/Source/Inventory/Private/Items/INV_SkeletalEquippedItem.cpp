@@ -4,7 +4,10 @@
 AINV_SkeletalEquippedItem::AINV_SkeletalEquippedItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	USceneComponent* SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
+	SetRootComponent(SceneRoot);
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(FName("SkeletalMesh"));
+	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	SetActorEnableCollision(false);
 }
 
