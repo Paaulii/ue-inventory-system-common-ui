@@ -63,7 +63,7 @@ bool UINV_ModalConfirmationWidget::IsSingleItemDisplayed() const
 
 void UINV_ModalConfirmationWidget::VM_SetupSlider(const int32 ItemQuantity)
 {
-	if (IsSingleItemDisplayed())
+	if (ItemQuantity <= 1)
 	{
 		return;
 	}
