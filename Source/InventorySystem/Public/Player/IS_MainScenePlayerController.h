@@ -5,7 +5,7 @@
 #include "IS_MainScenePlayerController.generated.h"
 
 UCLASS()
-class INVENTORYSYSTEM_API AIS_MainScenePlayerController : public AINV_PlayerController
+class INVENTORYSYSTEM_API AIS_PlayerController : public AINV_PlayerController
 {
 	GENERATED_BODY()
 	
