@@ -1,10 +1,11 @@
-﻿#include "GameModes/IS_AutoOpenWidgetGameMode.h"
+﻿#include "GameModes/UIS_AutoOpenWidgetGameMode.h"
 #include "CommonActivatableWidget.h"
+#include "Engine/GameInstance.h"
 #include "UIS_UIManagerSubsystem.h"
 #include "UI/UIS_GameUIPolicy.h"
 #include "UI/UIS_PrimaryGameLayout.h"
 
-void AIS_AutoOpenWidgetGameMode::PostLogin(APlayerController* NewPlayer)
+void AUIS_AutoOpenWidgetGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 	if (UUIS_UIManagerSubsystem* UIManager = GetGameInstance()->GetSubsystem<UUIS_UIManagerSubsystem>())

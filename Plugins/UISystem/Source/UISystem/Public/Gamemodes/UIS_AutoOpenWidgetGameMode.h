@@ -3,12 +3,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
 #include "GameplayTagContainer.h"
-#include "IS_AutoOpenWidgetGameMode.generated.h"
+#include "UIS_AutoOpenWidgetGameMode.generated.h"
 
 class UCommonActivatableWidget;
 
 UCLASS()
-class INVENTORYSYSTEM_API AIS_AutoOpenWidgetGameMode : public AGameMode
+class UISYSTEM_API AUIS_AutoOpenWidgetGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	

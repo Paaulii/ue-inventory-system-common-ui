@@ -12,7 +12,7 @@ class UISYSTEM_API UUIS_InputAction : public UCommonButtonBase
 public:
 	virtual void NativePreConstruct() override;
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Input Action")
 	void UpdateTriggeringInputAction(const FDataTableRowHandle& InputAction);
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FINV_OnTriggered);
