@@ -1,6 +1,6 @@
 ﻿#include "UI/Widgets/INV_ItemActionButton.h"
 #include "CommonTextBlock.h"
-#include "UI/Widgets/INV_InputAction.h"
+#include "UI/Components//UIS_InputAction.h"
 
 void UINV_ItemActionButton::NativePreConstruct()
 {

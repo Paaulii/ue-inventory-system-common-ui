@@ -6,7 +6,7 @@
 
 class UDynamicEntryBox;
 class UINV_CategoryViewModel;
-class UINV_InputAction;
+class UUIS_InputAction;
 class UINV_InventoryViewModel;
 class UINV_ItemTile;
 class UINV_ItemViewModel;
@@ -55,10 +55,10 @@ private:
 	TObjectPtr<UDynamicEntryBox> DynamicEntryBoxItems = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_InputAction> PreviousPageInputAction = nullptr;
+	TObjectPtr<UUIS_InputAction> PreviousPageInputAction = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_InputAction> NextPageInputAction = nullptr;
+	TObjectPtr<UUIS_InputAction> NextPageInputAction = nullptr;
 	
 	UPROPERTY()
 	TObjectPtr<UINV_SelectionViewModel> CachedSelectionVM = nullptr;

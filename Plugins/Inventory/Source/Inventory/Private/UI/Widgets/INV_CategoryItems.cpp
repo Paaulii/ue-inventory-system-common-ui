@@ -1,7 +1,7 @@
 #include "UI/Widgets/INV_CategoryItems.h"
 #include "Components/DynamicEntryBox.h"
+#include "UI/Components/UIS_InputAction.h"
 #include "UI/MVVM/UIS_MVVMUIManagerSubsystem.h"
-#include "UI/Widgets/INV_InputAction.h"
 #include "UI/Widgets/INV_ItemTile.h"
 #include "UI/ViewModels/INV_InventoryViewModel.h"
 #include "UI/ViewModels/INV_SelectionViewModel.h"

@@ -2,10 +2,10 @@
 
 #include "CommonButtonBase.h"
 #include "CoreMinimal.h"
-#include "INV_InputAction.generated.h"
+#include "UIS_InputAction.generated.h"
 
 UCLASS()
-class INVENTORY_API UINV_InputAction : public UCommonButtonBase
+class UISYSTEM_API UUIS_InputAction : public UCommonButtonBase
 {
 	GENERATED_BODY()
 	

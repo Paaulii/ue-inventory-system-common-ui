@@ -1,7 +1,7 @@
-﻿#include "UI/Widgets/INV_InputAction.h"
+﻿#include "UI/Components//UIS_InputAction.h"
 #include "CommonActionWidget.h"
 
-void UINV_InputAction::NativePreConstruct()
+void UUIS_InputAction::NativePreConstruct()
 {
 	Super::NativePreConstruct();
 	if (!CustomInputAction.IsNull())
@@ -10,14 +10,14 @@ void UINV_InputAction::NativePreConstruct()
 	}
 }
 
-void UINV_InputAction::UpdateTriggeringInputAction(const FDataTableRowHandle& InputAction)
+void UUIS_InputAction::UpdateTriggeringInputAction(const FDataTableRowHandle& InputAction)
 {
 	CustomInputAction = InputAction;
 	SetTriggeringInputAction(InputAction);
 	InputAction_CustomAction->SetInputAction(CustomInputAction);
 }
 
-void UINV_InputAction::HandleTriggeringActionCommited()
+void UUIS_InputAction::HandleTriggeringActionCommited()
 {
 	Super::HandleTriggeringActionCommited();
 

@@ -5,7 +5,7 @@
 #include "INV_ItemActionButton.generated.h"
 
 class UCommonTextBlock;
-class UINV_InputAction;
+class UUIS_InputAction;
 
 UCLASS()
 class INVENTORY_API UINV_ItemActionButton : public UCommonButtonBase
@@ -30,7 +30,7 @@ private:
 	FDataTableRowHandle ClickInputAction = {};
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UINV_InputAction> InputActionButton = nullptr;
+	TObjectPtr<UUIS_InputAction> InputActionButton = nullptr;
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCommonTextBlock> TextLabel = nullptr;
