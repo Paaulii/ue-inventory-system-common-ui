@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "Blueprint/UserWidget.h"
 #include "CoreMinimal.h"
 
 class UMVVMView;

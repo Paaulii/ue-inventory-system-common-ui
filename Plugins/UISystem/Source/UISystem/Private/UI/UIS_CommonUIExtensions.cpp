@@ -1,5 +1,6 @@
 ﻿#include "UI/UIS_CommonUIExtensions.h"
 #include "CommonActivatableWidget.h"
+#include "Engine/GameInstance.h"
 #include "GameplayTagContainer.h"
 #include "UIS_UIManagerSubsystem.h"
 #include "UI/UIS_GameUIPolicy.h"

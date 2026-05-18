@@ -1,8 +1,8 @@
 ﻿#pragma once
+#include "UIS_PrimaryGameLayout.h"
 #include "UIS_GameUIPolicy.generated.h"
 
 class UUIS_LocalPlayer;
-class UUIS_PrimaryGameLayout;
 
 UCLASS(Abstract, Blueprintable)
 class UISYSTEM_API UUIS_GameUIPolicy : public UObject
@@ -22,7 +22,7 @@ private:
 	void NotifyPlayerAdded(UUIS_LocalPlayer* LocalPlayer);
 	void NotifyPlayerDestroyed(UUIS_LocalPlayer* LocalPlayer);
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "UI | Layout")
 	TSubclassOf<UUIS_PrimaryGameLayout> LayoutClass = {};
 
 	UPROPERTY()

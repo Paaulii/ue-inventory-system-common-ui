@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
+#include "Engine/LocalPlayer.h"
 #include "UIS_LocalPlayer.generated.h"
 
 UCLASS()

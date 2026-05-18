@@ -44,7 +44,7 @@ private:
 	void InitializeViewModels();
 	void DeinitializeViewModels();
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "ViewModel")
 	TArray<TSubclassOf<UUIS_ViewModelBase>> ViewModelsToSpawn = {};
 	
 	UPROPERTY()

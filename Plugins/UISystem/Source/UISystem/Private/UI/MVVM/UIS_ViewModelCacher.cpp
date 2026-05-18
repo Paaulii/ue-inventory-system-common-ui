@@ -1,5 +1,6 @@
 ﻿#include "UI/MVVM/UIS_ViewModelCacher.h"
 #include "Blueprint/UserWidget.h"
+#include "Engine/GameInstance.h"
 #include "UI/MVVM/UIS_MVVMUIManagerSubsystem.h"
 #include "View/MVVMView.h"
 

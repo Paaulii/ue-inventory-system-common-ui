@@ -9,10 +9,8 @@ public class Inventory : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 		[
 			"GameplayAbilities",
-			"UISystem",
-			"Paper2D"
+			"UISystem"
 		]);
-			
 		
 		PrivateDependencyModuleNames.AddRange(
 		[
@@ -25,6 +23,7 @@ public class Inventory : ModuleRules
 			"UMG",
 			"CommonUI",
 			"GameplayTags",
+			"Paper2D"
 		]);
 	}
 }

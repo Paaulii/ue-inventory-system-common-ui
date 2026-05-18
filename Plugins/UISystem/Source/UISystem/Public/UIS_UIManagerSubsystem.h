@@ -7,7 +7,7 @@
 class UUIS_GameUIPolicy;
 class UUIS_LocalPlayer;
 
-UCLASS(Abstract, config = UISystem)
+UCLASS(Abstract)
 class UISYSTEM_API UUIS_UIManagerSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
@@ -24,9 +24,9 @@ protected:
 	void SwitchToPolicy(UUIS_GameUIPolicy* InPolicy);
 	
 private:
-	UPROPERTY(Config, EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "UIPolicy")
 	TSoftClassPtr<UUIS_GameUIPolicy> DefaultUIPolicyClass = nullptr;
 	
-	UPROPERTY(Transient)
+	UPROPERTY()
 	TObjectPtr<UUIS_GameUIPolicy> CurrentPolicy = nullptr;
 };

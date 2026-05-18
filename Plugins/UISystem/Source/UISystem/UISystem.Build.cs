@@ -19,7 +19,7 @@ public class UISystem : ModuleRules
 		[
 			"CoreUObject",
 			"Engine",
-			"Slate",
+			"Slate"
 		]);
 	}
 }
