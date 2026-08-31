@@ -4,8 +4,7 @@
 AINV_SkeletalEquippedItem::AINV_SkeletalEquippedItem()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	USceneComponent* SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
-	SetRootComponent(SceneRoot);
+	RootComponent =  CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(FName("SkeletalMesh"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	SetActorEnableCollision(false);
@@ -26,11 +25,6 @@ void AINV_SkeletalEquippedItem::SetMesh(const FINV_ItemAssetDefinition* ItemDefi
 
 			if (ParentMeshComponent && ParentMeshComponent->GetAnimInstance())
 			{
-				if (UClass* AnimClass = ParentMeshComponent->GetAnimInstance()->GetClass())
-				{
-					SkeletalMeshComponent->SetAnimInstanceClass(AnimClass);
-				}
-
 				if (USkinnedMeshComponent* SkinnedMeshComponent = Cast<USkinnedMeshComponent>(ParentMeshComponent))
 				{
 					SkeletalMeshComponent->SetLeaderPoseComponent(SkinnedMeshComponent);
